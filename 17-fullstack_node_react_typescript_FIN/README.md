@@ -474,8 +474,6 @@ dist/
 
 ## Dbeaver
 
-
-
 // Para conectarse a un cliente como Dbeaver para ver los datos de la base de datos.
 
 // Puedes instalar Dbeaver desde el siguiente enlace: https://dbeaver.io/download/ (versión community)
@@ -519,3 +517,79 @@ console.log(colors.red("Texto de error"))
 // Color de texto cyan y en negrita
 console.log(colors.cyan.bold("REST API en el puerto 4000"))
 ```
+
+## Definir el modelo de una tabla en el servidor
+
+- Para generar las tablas y columnas de forma automatica, desde el servidor, puedes crear un modulo siguiendo la sintaxis `nombre.model.ts` para el nombre del archivo y luego utilizar los decoradores:
+  
+  - @Table: Nombre de la tabla
+  
+  - @Column: Nombre de columna, incluye su tipo de dato.
+  
+  - @Default: Valor por defecto que se asignara a la columna
+
+- PostgreSQL no soporta el tipo de dato FLOAT con decimales, por ello importante tener en cuenta los [tipos de datos](https://sequelize.org/docs/v7/models/data-types/) que soporta los distintos motores de bases de datos
+
+- Ejemplo para la definición de una tabla products con 3 columnas (no se genera el campo ID porque se genera automaticamente)
+
+```ts
+import { Table, Column, Model, DataType, Default } from 'sequelize-typescript'
+
+@Table({
+    tableName: 'products'
+})
+
+class Product extends Model {
+    @Column({
+        type: DataType.STRING(100)
+    })
+    name: string
+
+    @Column({
+        type: DataType.FLOAT
+    })
+    price: number
+
+    @Default(true)
+    @Column({
+        type: DataType.BOOLEAN
+    })
+    availability: boolean
+}
+
+export default Product
+```
+
+- Luego añade las siguientes configuraciones en el archivo `tsconfig.json`
+
+```json
+{
+    "compilerOptions": {
+        "outDir": "./dist",
+        "rootDir": "./src",
+        "lib": ["esnext"],
+        // Añade estas 3 configuraciones para que el código TypeScript sea compatible con Node.js y aplicar las configuraciones de los decoradores
+        "target": "ESNext",
+        "moduleResolution": "NodeNext",
+        "module": "NodeNext",
+        "strict": false,
+        "sourceMap": true,
+        "esModuleInterop": true,
+        "declaration": true,
+        // Configuraciones para los decoradores de TypeScript en el modelo de datos
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true
+    },
+    "include": ["src/**/*.ts"],
+}
+```
+
+- Ejecuta el servidor y al observar la base de datos en DBeaver, en el panel izquierdo luego de haberse conectado a la base de datos, ve a la carpeta `tablas`, haz clic derecho, selecciona `Refresh` y observa que se ha generado una tabla `products` con las columnas definidas en ese modelo.
+
+## Validaciones en las peticiones
+
+- Se requiere instalar la dependencia de express validator con el comando `npm i express-validator`.
+
+- Las validaciones se aplican en el contrador o en las definiciones de las funciones que realizan la petición.
+
+**Nota**: El codigo fuente es muy largo, por lo cual necesitas acceder al codigo fuente de la aplicación para visualizar las definiciones de los endpoints y las validaciones en los archivos: `router.ts`, `index.ts` y `product.ts`.
