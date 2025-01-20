@@ -1,20 +1,24 @@
 // Objetos - Manipulación
-const producto = {
-    nombre : "Tablet",
-    precio: 300,
-    disponible: false
-}
 
+const producto = {
+  nombre: "Tablet",
+  precio: 300,
+  disponible: false,
+};
+
+// No permite modificar, añadir ni eliminar propiedades.
 // Object.freeze(producto)
+
+// Permite modificar propiedades existentes, pero no permite añadir ni eliminar propiedades.
 // Object.seal(producto)
 
-// Reescribir un valor
-producto.disponible = true
+// Reescribe un valor
+producto.disponible = true;
 
-// Sino existe, lo va a añadir
-producto.imagen = 'imagen.jpg'
+// Si no existe la propiedad, lo añade
+producto.imagen = "imagen.jpg";
 
-// Eliminar propiedad
-delete producto.precio
+// Elimina una propiedad
+delete producto.precio;
 
-console.log(producto)
+console.log(producto);
