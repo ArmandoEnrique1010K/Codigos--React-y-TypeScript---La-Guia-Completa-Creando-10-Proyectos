@@ -4,11 +4,13 @@ import { useCart } from './hooks/useCart'
 
 function App() {
 
+  // Instancia del custom hook useCart, ejecuta la lógica definida en useCart
   const { data, cart, addToCart, removeFromCart, decreaseQuantity, increaseQuantity, clearCart, isEmpty, cartTotal } = useCart()
 
   return (
     <>
-      <Header 
+      {/* Se reciben las variables de estado isEmpty y cartTotal en el componente Header */}
+      <Header
         cart={cart}
         removeFromCart={removeFromCart}
         decreaseQuantity={decreaseQuantity}
@@ -17,27 +19,25 @@ function App() {
         isEmpty={isEmpty}
         cartTotal={cartTotal}
       />
-      
-      <main className="container-xl mt-5">
-          <h2 className="text-center">Nuestra Colección</h2>
 
-          <div className="row mt-5">
-              {data.map((guitar) => (
-                  <Guitar 
-                    key={guitar.id}
-                    guitar={guitar}
-                    addToCart={addToCart}
-                  />
-              ))}
-              
-          </div>
+      <main className="container-xl mt-5">
+        <h2 className="text-center">Nuestra Colección</h2>
+
+        <div className="row mt-5">
+          {data.map((guitar) => (
+            <Guitar
+              key={guitar.id}
+              guitar={guitar}
+              addToCart={addToCart}
+            />
+          ))}
+        </div>
       </main>
 
-
       <footer className="bg-dark mt-5 py-5">
-          <div className="container-xl">
-              <p className="text-white text-center fs-4 mt-4 m-md-0">GuitarLA - Todos los derechos Reservados</p>
-          </div>
+        <div className="container-xl">
+          <p className="text-white text-center fs-4 mt-4 m-md-0">GuitarLA - Todos los derechos Reservados</p>
+        </div>
       </footer>
     </>
   )
