@@ -1,3 +1,4 @@
+// Datos estaticos, se utiliza un arreglo que contiene objetos con datos de cada guitarra
 export const db = [
     {
         id: 1,
