@@ -1,11 +1,13 @@
+// No olvidar importar el type
 import type { Guitar } from '../types'
 
+// Define el tipo de dato para las props de este componente y luego asigna el type al componente
 type GuitarProps = {
-    guitar : Guitar, 
-    addToCart : (item: Guitar) => void
+    guitar: Guitar,
+    addToCart: (item: Guitar) => void
 }
 
-export default function Guitar({guitar, addToCart} : GuitarProps) {
+export default function Guitar({ guitar, addToCart }: GuitarProps) {
 
     const { name, image, description, price } = guitar
 
@@ -18,7 +20,7 @@ export default function Guitar({guitar, addToCart} : GuitarProps) {
                 <h3 className="text-black fs-4 fw-bold text-uppercase">{name}</h3>
                 <p>{description}</p>
                 <p className="fw-black text-primary fs-3">${price}</p>
-                <button 
+                <button
                     type="button"
                     className="btn btn-dark w-100"
                     onClick={() => addToCart(guitar)}
