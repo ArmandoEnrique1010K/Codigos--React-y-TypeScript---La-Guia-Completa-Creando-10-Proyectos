@@ -10,8 +10,8 @@ function App() {
   const initialCart = () => {
     // Obtiene los items almacenados en el key 'cart' de la API localStorage
     const localStorageCart = localStorage.getItem('cart')
-
-    return localStorageCart ? JSON.parse(localStorageCart) : [] // Retorna el carrito almacenado o un array vacío
+    // Si existe el key 'cart', retorna el carrito almacenado, de lo contrario un array vacío
+    return localStorageCart ? JSON.parse(localStorageCart) : [] 
   }
 
   // Variables de estado
@@ -48,6 +48,7 @@ function App() {
 
   // Función para eliminar un producto del carrito por su ID
   function removeFromCart(id) {
+    // Se excluye en el arreglo de cart, el producto que coincide con el ID
     setCart(prevCart => prevCart.filter(guitar => guitar.id !== id))
   }
 
