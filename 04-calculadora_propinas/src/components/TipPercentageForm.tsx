@@ -1,7 +1,7 @@
 // Se puede simplicar las importaciones, de la siguiente manera
 import type { Dispatch, SetStateAction } from "react"
 
-// Arreglo para las opciones de la propina 
+// Opciones de propina
 // El value es un numero de tipo decimal, ejm: 0.10 = .10
 const tipOptions = [
   {
@@ -21,14 +21,14 @@ const tipOptions = [
   },
 ]
 
-// Type para las props recibidas
+// Tipo para las props
 type TipPercentageFormProps = {
   // Recibe directamente la función para actualizar el estado de tip
   setTip: Dispatch<SetStateAction<number>>,
   tip: number
 }
 
-// Componente del formulario de propinas
+// Componente de formulario de propinas
 export default function TipPercentageForm({ setTip, tip }: TipPercentageFormProps) {
   return (
     <div>

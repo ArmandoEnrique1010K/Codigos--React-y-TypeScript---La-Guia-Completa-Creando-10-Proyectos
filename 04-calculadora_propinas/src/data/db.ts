@@ -1,6 +1,6 @@
 import type { MenuItem } from '../types'
 
-// Los items del menú se especifican en un arreglo de objetos, se asigna el type MenuItem
+// Lista de elementos del menú con su id, nombre y precio
 export const menuItems: MenuItem[] = [
   {
     "id": 1,
@@ -39,7 +39,7 @@ export const menuItems: MenuItem[] = [
   },
   {
     "id": 8,
-    "name": "Jugo de Naranja",
+    "name": "Jugo de Manzana",
     "price": 15
   },
   {

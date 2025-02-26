@@ -7,12 +7,12 @@ import useOrder from "./hooks/useOrder"
 
 function App() {
 
-  // Llama a una instancia del custom hook useOrder
+  // Instancia del custom hook useOrder para manejar el estado de la orden
   const { order, tip, setTip, addItem, removeItem, placeOrder } = useOrder()
 
   return (
     <>
-      {/* Cabecera de la pagina web */}
+      {/* Cabecera */}
       <header className=" bg-teal-400 py-5">
         <h1 className="text-center text-4xl font-black">Calculadora de Propinas y Consumo</h1>
       </header>
@@ -22,7 +22,7 @@ function App() {
         <div className='p-5'>
           <h2 className='font-black text-4xl'>Menú</h2>
 
-          {/* Itera sobre menuItems para mostrar cada item del menú en un componente MenuItem */}
+          {/* Renderiza los elementos del menú */}
           <div className='mt-10 space-y-3'>
             {menuItems.map(item => (
               <MenuItem
@@ -34,11 +34,12 @@ function App() {
           </div>
         </div>
 
+        {/* Sección del pedido */}
         <div className="border border-dashed border-slate-300 p-5 rounded-lg space-y-10">
-          {/* Solamente muestra el contenido si hay algun elemento en order */}
+          {/* Muestra el contenido si hay algun elemento en la orden */}
           {order.length ? (
             <>
-              {/* Muestra los componentes para la lista de ordenes, formulario de propinas y calculo de totales */}
+              {/* Componentes de la orden, propinas y totales */}
               <OrderContents
                 order={order}
                 removeItem={removeItem}
@@ -54,7 +55,7 @@ function App() {
               />
             </>
           ) : (
-            // De lo contrario muestra un mensaje
+            // Mensaje si no hay elementos en la orden
             <p className="text-center">La orden esta vacia</p>
           )}
         </div>

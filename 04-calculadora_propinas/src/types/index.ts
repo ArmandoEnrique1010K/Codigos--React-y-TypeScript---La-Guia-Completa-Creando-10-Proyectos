@@ -1,11 +1,13 @@
-// Un objeto de tipo MenuItem tiene los siguientes tipos de datos en sus propiedades
+// Tipos de datos de los objetos
+
+// Representa un ítem del menú con su identificador, nombre y precio
 export type MenuItem = {
     id: number,
     name: string,
     price: number
 }
 
-// El objeto de tipo OrderItem hereda las propiedades de MenuItem y se agrega la propiedad quantity
+// Extiende MenuItem para incluir la cantidad de unidades en un pedido
 export type OrderItem = MenuItem & {
     quantity: number
 }

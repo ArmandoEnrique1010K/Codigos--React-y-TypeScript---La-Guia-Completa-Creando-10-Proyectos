@@ -1,15 +1,12 @@
 import type { MenuItem } from "../types";
 
-// type para las props recibidas
+// Props que recibe el componente
 type MenuItemProps = {
-  // Objeto de tipo MenuItem
-  item: MenuItem,
-  // Función para agregar el item
-  addItem: (item: MenuItem) => void
-
+  item: MenuItem; // Objeto del menú
+  addItem: (item: MenuItem) => void; // Función para agregar el item
 }
 
-// Componente para mostrar un item del menú
+// Componente para mostrar un ítem del menú
 export default function MenuItem({ item, addItem }: MenuItemProps) {
   return (
     // Botón para agregar el item, llama a addItem y pasa el objeto item

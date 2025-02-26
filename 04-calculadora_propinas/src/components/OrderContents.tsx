@@ -1,15 +1,13 @@
 import { formatCurrency } from "../helpers"
 import { MenuItem, OrderItem } from "../types"
 
-// Type para las props recibidas
+// Props que recibe el componente
 type OrderContentsProps = {
-    // Arreglo de objetos de tipo OrderItem
-    order: OrderItem[],
-    // Función para eliminar el item por su id
-    removeItem: (id: MenuItem['id']) => void
+    order: OrderItem[]; // Arreglo de objetos de tipo OrderItem
+    removeItem: (id: MenuItem["id"]) => void; // Función para eliminar un ítem por su id
 }
 
-// Componente para la lista de ordenes
+// Componente para la lista de órdenes
 export default function OrderContents({ order, removeItem }: OrderContentsProps) {
     return (
         <div>

@@ -1,8 +1,10 @@
-// Función auxiliar para aplicar el formato de moneda a un número
+// Función auxiliar
+
+// Formatea un número como moneda en dólares estadounidenses (USD)
 export function formatCurrency(quantity: number) {
     return new Intl.NumberFormat('en-US', {
         style: 'currency', currency: 'USD'
     }).format(quantity)
 }
 
-// Posible valor retornado: $ 20.00
+// Ejemplo de salida: "$20.00"

@@ -3,16 +3,16 @@ import type { MenuItem, OrderItem } from "../types"
 
 export default function useOrder() {
 
-    // Variable de estado para la orden, contiene un arreglo, cuyos elementos son de tipo OrderItem
+    // Estado para la orden, almacena una lista de productos con cantidad
     const [order, setOrder] = useState<OrderItem[]>([])
 
-    // Variable de estado para la propina
+    // Estado para la propina
     const [tip, setTip] = useState(0)
 
-    // Función para agregar un item al pedido
+    // Agrega un producto a la orden
     const addItem = (item: MenuItem) => {
 
-        // Verifica que si el item ya existe en order
+        // Verifica que si el producto ya existe en la orden
         const itemExist = order.find(orderItem => orderItem.id === item.id)
 
         if (itemExist) {
@@ -29,12 +29,12 @@ export default function useOrder() {
         }
     }
 
-    // Función para eliminar un item por su id
+    // Elimina un producto de la orden por su id
     const removeItem = (id: MenuItem['id']) => {
         setOrder(order.filter(item => item.id !== id))
     }
 
-    // Función para limpiar la orden (simula el envio de la orden)
+    // Limpia la orden y resetea la propina
     const placeOrder = () => {
         setOrder([])
         setTip(0)
@@ -43,7 +43,7 @@ export default function useOrder() {
     return {
         order,
         tip,
-        setTip, // En este caso, se pasa la función que actualiza el estado
+        setTip, // Permite actualizar directamente el estado de la propina
         addItem,
         removeItem,
         placeOrder
