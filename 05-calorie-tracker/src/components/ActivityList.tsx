@@ -7,18 +7,18 @@ import { ActivityActions } from "../reducers/activity-reducer"
 // Type para las props recibidas
 type ActivityListProps = {
     activities: Activity[],
-    dispatch: Dispatch<ActivityActions> // Se establece el type Dispatch con el generic ActivityActions (contiene el type de las posbiles acciones)
+    // Se establece el type Dispatch con el generic ActivityActions (contiene el type de las posbiles acciones)
+    dispatch: Dispatch<ActivityActions>
 }
 
 // Componente para mostrar la lista de actividades
 export default function ActivityList({ activities, dispatch }: ActivityListProps) {
 
-    // Estado derivado para mostrar el nombre de la categoria
-    const categoryName = useMemo(() =>
-        (category: Activity['category']) => categories.map(cat => cat.id === category ? cat.name : '')
+    // Muestra el nombre de la categoria (puede ser redundante)
+    const categoryName = useMemo(() => (category: Activity['category']) => categories.map(cat => cat.id === category ? cat.name : '')
         , [activities])
 
-    // Estado derivada para verificar que no haya actividades en la lista
+    // Verifica que no haya actividades en la lista
     const isEmptyActivities = useMemo(() => activities.length === 0, [activities])
 
     return (
@@ -37,6 +37,7 @@ export default function ActivityList({ activities, dispatch }: ActivityListProps
                             {/* Se asigna un estilo dinamico que depende del valor de la propiedad category, como hay 2 valores se puede usar un operador ternario */}
                             <p className={`absolute -top-8 -left-8 px-10 py-2 text-white uppercase font-bold 
                             ${activity.category === 1 ? 'bg-lime-500' : 'bg-orange-500'}`}>
+                                {/* Utiliza el signo + para convertir de string a number */}
                                 {categoryName(+activity.category)}
                             </p>
                             <p className="text-2xl font-bold pt-5">{activity.name}</p>

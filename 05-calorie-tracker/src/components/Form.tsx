@@ -4,13 +4,13 @@ import { categories } from "../data/categories"
 import type { Activity } from "../types"
 import { ActivityActions, ActivityState } from "../reducers/activity-reducer"
 
-// Se especifica el type para las props recibidas
+// Define las props del formulario con sus respectivos tipos.
 type FormProps = {
-  dispatch: Dispatch<ActivityActions>,
+  dispatch: Dispatch<ActivityActions>, // Se especifica el generic ActivityActions
   state: ActivityState
 }
 
-// Valores iniciales para una actividad
+// Valores iniciales para una actividad nueva.
 const initialState: Activity = {
   id: uuidv4(), // La función genera el ID aleatorio
   category: 1, // ID de la categoria
@@ -21,18 +21,20 @@ const initialState: Activity = {
 // Componente para el formulario de entrada de datos
 export default function Form({ dispatch, state }: FormProps) {
 
-  // Estado para la actividad
+  // Estado local para la actividad en el formulario.
   const [activity, setActivity] = useState<Activity>(initialState)
 
-  // ... 
   useEffect(() => {
+    // Si hay una actividad activa, carga sus datos en el formulario para edición.
     if (state.activeId) {
       const selectedActivity = state.activities.filter(stateActivity => stateActivity.id === state.activeId)[0]
       setActivity(selectedActivity)
     }
   }, [state.activeId])
 
-  // Función para gestionar el cambio en el campo asociado, el type del argumento e tiene 2 tipos de datos tal y como se muestra
+  // Función para gestionar el cambio en el campo asociado
+  // Maneja cambios en los inputs y convierte valores numéricos cuando es necesario.
+  // El tipo de dato del evento "e" tiene 2 tipos de datos tal y como se muestra
   const handleChange = (e: ChangeEvent<HTMLSelectElement> | ChangeEvent<HTMLInputElement>) => {
     // Devuelve true si el atributo id tiene el valor 'category' o 'calories'
     const isNumberField = ['category', 'calories'].includes(e.target.id)
@@ -45,29 +47,23 @@ export default function Form({ dispatch, state }: FormProps) {
     })
   }
 
-  // Función para verificar si es una actividad valida
+  // Verifica si la actividad ingresada es válida.
   const isValidActivity = () => {
-
-    // Desestructura las propiedades de activity
-    const { name, calories } = activity
-
-    // Devuelve un true si se cumple ambas condiciones
-    return name.trim() !== '' && calories > 0
+    const { name, calories } = activity // Desestructura las propiedades
+    return name.trim() !== '' && calories > 0 // Devuelve true si se cumple ambas condiciones
   }
 
-  // Función para enviar el formulario, recibe un argumento que es el evento del campo asociado
+  // Función para manejar el envío del formulario, recibe un argumento que es el evento del campo asociado
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault() // Evita el comportamiento por defecto
 
-    // Evita el comportamiento por defecto
-    e.preventDefault()
-
-    // Llama a la acción para guardar la activad, pasa activity como payload
+    // Llama a la acción para guardar la actividad, pasa activity como payload de newActivity
     dispatch({ type: 'save-activity', payload: { newActivity: activity } })
 
     // Establece los valores iniciales en activity
     setActivity({
       ...initialState,
-      id: uuidv4()
+      id: uuidv4() // Vuelve a generar un ID aleatorio
     })
   }
 
@@ -77,6 +73,7 @@ export default function Form({ dispatch, state }: FormProps) {
       // El evento onSubmit tiene una función para enviar el formualrio
       onSubmit={handleSubmit}
     >
+      {/* Campo de selección de categoría */}
       <div className="grid grid-cols-1 gap-3">
         <label htmlFor="category" className="font-bold">Categoría:</label>
         <select
@@ -102,6 +99,7 @@ export default function Form({ dispatch, state }: FormProps) {
         </select>
       </div>
 
+      {/* Campo para el nombre de la actividad */}
       <div className="grid grid-cols-1 gap-3">
         <label htmlFor="name" className="font-bold">Actividad:</label>
         <input
@@ -115,6 +113,7 @@ export default function Form({ dispatch, state }: FormProps) {
         />
       </div>
 
+      {/* Campo para las calorías */}
       <div className="grid grid-cols-1 gap-3">
         <label htmlFor="calories" className="font-bold">Calorias:</label>
         <input
@@ -127,6 +126,7 @@ export default function Form({ dispatch, state }: FormProps) {
         />
       </div>
 
+      {/* Botón de envío */}
       <input
         type="submit"
         className="bg-gray-800 hover:bg-gray-900 w-full p-2 font-bold uppercase text-white cursor-pointer disabled:opacity-10"

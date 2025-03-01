@@ -6,16 +6,16 @@ type CalorieTrackerProps = {
     activities: Activity[]
 }
 
-// Componente para los contadores de calorias
+// Componente para mostrar el resumen de calorías.
 export default function CalorieTracker({ activities }: CalorieTrackerProps) {
 
-    // Numero de caliorias consumidas (se suma todas las actividades que tenga la categoria 1)
+    // Total de calorías consumidas (categoría 1).
     const caloriesConsumed = useMemo(() => activities.reduce((total, activity) => activity.category === 1 ? total + activity.calories : total, 0), [activities])
 
-    // Numero de calorias quemadas (se suma todas las actividades que tenga la categoria 2)
+    // Total de calorías quemadas (categoría 2).
     const caloriesBurned = useMemo(() => activities.reduce((total, activity) => activity.category === 2 ? total + activity.calories : total, 0), [activities])
 
-    // La ganancia de calorias se obtiene restando las calorias consumidas y las calorias quemadas
+    // Balance neto de calorías (consumidas - quemadas).
     const netCalories = useMemo(() => caloriesConsumed - caloriesBurned, [activities])
 
     return (
@@ -24,7 +24,7 @@ export default function CalorieTracker({ activities }: CalorieTrackerProps) {
 
             <div className="flex flex-col items-center md:flex-row md:justify-between gap-5 mt-10">
 
-                {/* Por cada tipo de calorias, se pasa el numero de calorias y un texto */}
+                {/* Muestra los totales de calorías en cada categoría */}
                 <CalorieDisplay
                     calories={caloriesConsumed}
                     text="Consumidas"
