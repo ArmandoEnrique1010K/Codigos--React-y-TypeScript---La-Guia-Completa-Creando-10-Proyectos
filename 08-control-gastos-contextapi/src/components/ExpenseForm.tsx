@@ -108,6 +108,7 @@ export default function ExpenseForm() {
             {/* Muestra un mensaje de error si hay algún problema en el formulario */}
             {error && <ErrorMessage>{error}</ErrorMessage>}
 
+            {/* Campo para el nombre del gasto */}
             <div className="flex flex-col gap-2">
                 <label
                     htmlFor="expenseName"
@@ -119,12 +120,12 @@ export default function ExpenseForm() {
                     placeholder="Añade el Nombre del gasto"
                     className="bg-slate-100 p-2"
                     name="expenseName"
-                    // Utiliza la función para manejar el cambio
                     onChange={handleChange}
                     value={expense.expenseName}
                 />
             </div>
 
+            {/* Campo para el monto del gasto */}
             <div className="flex flex-col gap-2">
                 <label
                     htmlFor="amount"
@@ -141,6 +142,7 @@ export default function ExpenseForm() {
                 />
             </div>
 
+            {/* Selección de categoría del gasto */}
             <div className="flex flex-col gap-2">
                 <label
                     htmlFor="category"
@@ -164,21 +166,20 @@ export default function ExpenseForm() {
                 </select>
             </div>
 
+            {/* Selección de fecha del gasto */}
             <div className="flex flex-col gap-2">
                 <label
                     htmlFor="date"
                     className="text-xl"
                 >Fecha Gasto:</label>
-                {/* Componente para mostrar el input asociado al calendario */}
                 <DatePicker
                     className="bg-slate-100 p-2 border-0"
-                    // En el caso de DatePicker, acepta una prop llamada value para que contenga el valor inicial (la fecha actual)
                     value={expense.date}
-                    // Utiliza la función para manejar el cambio en la fecha
                     onChange={handleChangeDate}
                 />
             </div>
-
+            
+            {/* Botón de envío */}
             <input
                 type="submit"
                 className="bg-blue-600 cursor-pointer w-full p-2 text-white uppercase font-bold rounded-lg"
