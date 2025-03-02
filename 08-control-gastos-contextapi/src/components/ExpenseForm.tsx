@@ -41,61 +41,53 @@ export default function ExpenseForm() {
 
     // Maneja los cambios en los campos de texto y select del formulario
     const handleChange = (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => {
-        // Recuerda que en el type la cantidad tiene que ser un numero, se puede tener una condición que revise si es un numero
+        const { name, value } = e.target // Referencia al elemento HTML asociado
 
-        // e.target hace referencia al elemento del formulario, incluye todos sus atributos como name y value
-        const { name, value } = e.target
-
-        // No se puede desestructurar nameAsValue porque los elementos <select> no soportan ese atributo
-
-        // Retorna false si el valor de name no es "amount"
+        // Convierte a número si el campo es el monto del gasto
         const isAmountField = ['amount'].includes(name)
 
         setExpense({
             ...expense,
-            // Variable computarizada (busca el elemento por el valor del atributo name y escribe el valor ingresado), convierte el valor a un number si se trata del 'campo' amount del formulario
             [name]: isAmountField ? Number(value) : value
         })
     }
 
-    // Función para el manejo de la fecha del calendario
+    // Maneja la selección de fecha en el DatePicker
     const handleChangeDate = (value: Value) => {
-        // Actualiza el valor de date
         setExpense({
             ...expense,
             date: value
         })
     }
 
-    // Función para enviar el formulario
+    // Maneja el envío del formulario
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault() // Previene el envio por defecto
+        e.preventDefault(); // Previene el comportamiento predeterminado del formulario
 
-        // validar que ningun campo tenga un string vacio
-        if (Object.values(expense).includes('')) {
-            setError('Todos los campos son obligatorios') // Se establece un mensaje
-            return // Detiene la ejecución de la función
+        // Validaciones de los campos
+        if (!expense.expenseName.trim() || !expense.category || expense.amount <= 0) {
+            setError('Todos los campos son obligatorios y la cantidad debe ser mayor a 0');
+            return;
         }
 
-        // Validar que no me pase del limite
+        // Verifica que el gasto no supere el presupuesto disponible
         if ((expense.amount - previousAmount) > remainingBudget) {
-            setError('Ese gasto se sale del presupuesto')
-            return
+            setError('Ese gasto se sale del presupuesto');
+            return;
         }
 
-        // Si existe un ID editable, se procede a actualizar el gasto, de lo contrario, agrega el gasto
+        // Si se está editando un gasto existente, actualiza los datos
         if (state.editingId) {
-            // Ejecuta la acción pasando como payload el id editable y una copia del state expense
             dispatch({
-                type: 'update-expense', payload:
-                    { expense: { id: state.editingId, ...expense } }
-            })
+                type: 'update-expense',
+                payload: { expense: { id: state.editingId, ...expense } }
+            });
         } else {
-            // Ejecuta la acción pasando el objeto expense como payload
-            dispatch({ type: 'add-expense', payload: { expense } })
+            // Si es un gasto nuevo, lo agrega a la lista
+            dispatch({ type: 'add-expense', payload: { expense } });
         }
 
-        // Reinicia el state de expense a sus valores iniciales
+        // Reinicia los valores del formulario después de registrar/editar un gasto
         setExpense({
             amount: 0,
             expenseName: '',
@@ -103,17 +95,17 @@ export default function ExpenseForm() {
             date: new Date()
         })
 
-        // Establece el gasto anterior a 0
-        setPreviousAmount(0)
+        setPreviousAmount(0); // Reinicia el monto previo
     }
 
     return (
         <form className="space-y-5" onSubmit={handleSubmit}>
+            {/* Titulo del formulario, si hay un id editable, se cambia el texto */}
             <legend
                 className="uppercase text-center text-2xl font-black border-b-4 border-blue-500 py-2"
             >{state.editingId ? 'Guardar Cambios' : 'Nuevo Gasto'}</legend>
 
-            {/* Si hay un error, renderiza el componente que contiene el mensaje de error, pasa por prop el mensaje de error */}
+            {/* Muestra un mensaje de error si hay algún problema en el formulario */}
             {error && <ErrorMessage>{error}</ErrorMessage>}
 
             <div className="flex flex-col gap-2">
