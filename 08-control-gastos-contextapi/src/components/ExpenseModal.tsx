@@ -4,23 +4,29 @@ import { Dialog, Transition } from '@headlessui/react'
 import { useBudget } from '../hooks/useBudget'
 import ExpenseForm from './ExpenseForm'
 
+// Componente para mostrar la ventana modal de un gasto
 export default function ExpenseModal() {
 
-    const { state, dispatch } = useBudget()
+    // Obtiene el estado global y la función dispatch desde el contexto de presupuesto
+    const { state, dispatch } = useBudget()
 
     return (
         <>
+            {/* Botón flotante para abrir el modal */}
             <div className="fixed right-5 bottom-5 flex items-center justify-center">
                 <button
-                type="button"
-                onClick={() => dispatch({type: 'show-modal' })}
+                    type="button"
+                    onClick={() => dispatch({ type: 'show-modal' })}
                 >
-                <PlusCircleIcon className='w-16 h-16 text-blue-600 rounded-full' />
+                    <PlusCircleIcon className='w-16 h-16 text-blue-600 rounded-full' />
                 </button>
             </div>
 
+            {/* Modal de formulario de gasto */}
             <Transition appear show={state.modal} as={Fragment}>
-                <Dialog as="div" className="relative z-10" onClose={() => dispatch({type: 'close-modal'})}>
+                <Dialog as="div" className="relative z-10" onClose={() => dispatch({ type: 'close-modal' })}>
+
+                    {/* Fondo oscuro con opacidad al abrir el modal */}
                     <Transition.Child
                         as={Fragment}
                         enter="ease-out duration-300"
@@ -35,21 +41,24 @@ export default function ExpenseModal() {
 
                     <div className="fixed inset-0 overflow-y-auto">
                         <div className="flex min-h-full items-center justify-center p-4 text-center">
-                        <Transition.Child
-                            as={Fragment}
-                            enter="ease-out duration-300"
-                            enterFrom="opacity-0 scale-95"
-                            enterTo="opacity-100 scale-100"
-                            leave="ease-in duration-200"
-                            leaveFrom="opacity-100 scale-100"
-                            leaveTo="opacity-0 scale-95"
-                        >
-                            <Dialog.Panel className="w-full max-w-3xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                
-                                <ExpenseForm />
-                
-                            </Dialog.Panel>
-                        </Transition.Child>
+
+                            {/* Contenedor del modal con animación */}
+                            <Transition.Child
+                                as={Fragment}
+                                enter="ease-out duration-300"
+                                enterFrom="opacity-0 scale-95"
+                                enterTo="opacity-100 scale-100"
+                                leave="ease-in duration-200"
+                                leaveFrom="opacity-100 scale-100"
+                                leaveTo="opacity-0 scale-95"
+                            >
+                                <Dialog.Panel className="w-full max-w-3xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+
+                                    {/* Formulario de gastos dentro del modal */}
+                                    <ExpenseForm />
+
+                                </Dialog.Panel>
+                            </Transition.Child>
                         </div>
                     </div>
                 </Dialog>

@@ -1,6 +1,7 @@
 import type { Category } from "../types";
 
-export const categories : Category[] = [
+// Arreglo de categorias, el valor de icon coincide con el nombre de las imagenes en /public
+export const categories: Category[] = [
     { id: '1', name: 'Ahorro', icon: 'ahorro' },
     { id: '2', name: 'Comida', icon: 'comida' },
     { id: '3', name: 'Casa', icon: 'casa' },
