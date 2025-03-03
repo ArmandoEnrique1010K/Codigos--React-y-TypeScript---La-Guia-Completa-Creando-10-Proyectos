@@ -6,14 +6,15 @@ import { useActivity } from './hooks/useActivity'
 
 function App() {
 
-    const { state, dispatch } = useActivity()
+    // Extrae state y dispatch del custom hook
+    const { state, dispatch } = useActivity()
 
     useEffect(() => {
         localStorage.setItem('activities', JSON.stringify(state.activities))
     }, [state.activities])
 
-    const canRestartApp = () => useMemo(() => state.activities.length, [state.activities])
-    
+    const canRestartApp = useMemo(() => state.activities.length, [state.activities])
+
     return (
         <>
             <header className="bg-lime-600 py-3">
@@ -24,17 +25,18 @@ function App() {
 
                     <button
                         className='bg-gray-800 hover:bg-gray-900 p-2 font-bold uppercase text-white cursor-pointer rounded-lg text-sm disabled:opacity-10'
-                        disabled={!canRestartApp()}
-                        onClick={() => dispatch({type: 'restart-app'})}
+                        disabled={!canRestartApp}
+                        onClick={() => dispatch({ type: 'restart-app' })}
                     >
                         Reiniciar App
                     </button>
                 </div>
             </header>
 
+            {/* Recuerda que la idea de tener un contexto es evitar pasar props entre varios componentes a la vez */}
             <section className="bg-lime-500 py-20 px-5">
                 <div className="max-w-4xl mx-auto">
-                    <Form  />
+                    <Form />
                 </div>
             </section>
 
@@ -45,7 +47,7 @@ function App() {
             </section>
 
             <section className="p-10 mx-auto max-w-4xl">
-                <ActivityList  />
+                <ActivityList />
             </section>
         </>
     )

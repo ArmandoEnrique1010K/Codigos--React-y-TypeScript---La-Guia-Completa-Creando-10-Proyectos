@@ -3,8 +3,9 @@ import { useActivity } from "../hooks/useActivity"
 
 export default function CalorieTracker() {
 
-    const { caloriesConsumed, caloriesBurned, netCalories } = useActivity()
-    
+    // Si has trasladado las funciones, necesitas extraer las funciones para los calculos y no el state
+    const { caloriesConsumed, caloriesBurned, netCalories } = useActivity()
+
     return (
         <>
             <h2 className="text-4xl font-black text-white text-center">Resumen de Calorias</h2>
@@ -23,7 +24,7 @@ export default function CalorieTracker() {
                     text="Diferencia"
                 />
             </div>
- 
+
         </>
     )
 }
