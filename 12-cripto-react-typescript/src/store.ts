@@ -14,7 +14,7 @@ type CryptoStore = {
 export const useCryptoStore = create<CryptoStore>()(devtools((set) => ({
     cryptocurrencies: [],
     result: {
-        IMAGEURL : '',
+        IMAGEURL: '',
         PRICE: '',
         HIGHDAY: '',
         LOWDAY: '',

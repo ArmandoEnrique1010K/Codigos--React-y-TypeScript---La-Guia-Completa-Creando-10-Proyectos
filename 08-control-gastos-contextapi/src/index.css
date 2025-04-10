@@ -18,5 +18,11 @@
 }
 
 .swipeable-list .swipe-action {
-  @apply flex justify-center items-center
+  @apply flex justify-center items-center;
+}
+
+.react-calendar {
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
