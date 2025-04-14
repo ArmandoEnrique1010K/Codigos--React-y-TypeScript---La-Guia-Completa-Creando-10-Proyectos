@@ -1,26 +1,57 @@
 import { Router } from "express"
-import { createProduct } from './handlers/products';
-
+import { createProduct, deleteProduct, getProductById, getProducts, updateAvailability, updateProduct } from './handlers/products';
+import { body, param } from "express-validator";
+import { handleInputErrors } from "./middleware";
 
 const router = Router();
 
+router.get('/',
+  getProducts
+)
 
-router.get('/', (req, res) => {
-  res.json('Desde GET')
-})
+router.post('/',
+  body('name')
+    .notEmpty().withMessage('El nombre del Producto no puede ir vacio'),
 
-router.post('/', createProduct)
+  body('price')
+    .isNumeric().withMessage("Valor no válido")
+    .notEmpty().withMessage('El precio del Producto no puede ir vacio')
+    .custom(value => value > 0).withMessage("Precio no válido")
+  ,
 
-router.put('/', (req, res) => {
-  res.json('Desde PUT')
-})
+  handleInputErrors,
+  createProduct
+)
 
-router.patch('/', (req, res) => {
-  res.json('Desde PATCH')
-})
+router.get('/:id',
+  param('id').isInt().withMessage('ID no válido'), handleInputErrors,
+  getProductById
+)
 
-router.delete('/', (req, res) => {
-  res.json('Desde DELETE')
-})
+router.put('/:id',
+  param('id').isInt().withMessage('ID no válido'),
+
+  body('name').notEmpty().withMessage('El nombre del Producto no puede ir vacio'),
+  body('price')
+    .isNumeric().withMessage("Valor no válido")
+    .notEmpty().withMessage('El precio del Producto no puede ir vacio')
+    .custom(value => value > 0).withMessage("Precio no válido"),
+  body('availability').isBoolean().withMessage('Valor para disponibilidad no válido'),
+  handleInputErrors,
+  updateProduct
+)
+
+router.patch('/:id',
+  param('id').isInt().withMessage('ID no válido'),
+  handleInputErrors,
+  updateAvailability
+)
+
+router.delete('/:id',
+  param('id').isInt().withMessage('ID no válido'),
+  handleInputErrors,
+  deleteProduct
+)
+
 
 export default router
