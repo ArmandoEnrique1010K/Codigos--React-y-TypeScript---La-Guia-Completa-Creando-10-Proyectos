@@ -3,8 +3,6 @@ import { validationResult } from "express-validator"
 
 export const handleInputErrors = (req: Request, res: Response, next: NextFunction) => {
 
-  // console.log("Desde MiddleWare")
-
   let errors = validationResult(req)
 
   if (!errors.isEmpty()) {
