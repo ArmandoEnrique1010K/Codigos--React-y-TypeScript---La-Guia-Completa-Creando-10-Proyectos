@@ -12,11 +12,14 @@
   "author": "Juan De la torre @codigoconjuan",
   "license": "ISC",
   "dependencies": {
+    "@types/morgan": "^1.9.9",
     "14-rest-api-node-ts-server": "file:",
     "colors": "^1.4.0",
+    "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "express-validator": "^7.2.1",
+    "morgan": "^1.10.0",
     "pg": "^8.14.1",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.7",
@@ -25,6 +28,7 @@
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.17",
     "@types/express": "^5.0.1",
     "@types/jest": "^29.5.14",
     "@types/supertest": "^6.0.3",
