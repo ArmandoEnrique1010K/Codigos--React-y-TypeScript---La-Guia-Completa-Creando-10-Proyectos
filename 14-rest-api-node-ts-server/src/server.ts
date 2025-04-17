@@ -3,7 +3,7 @@ import router from './router'
 import db from './config/db'
 import colors from 'colors'
 import swaggerUi from 'swagger-ui-express';
-import swaggerSpec from './config/swagger';
+import swaggerSpec, { swaggerUIOptions } from './config/swagger';
 
 export async function connectDB() {
   try {
@@ -24,7 +24,8 @@ server.get('/api', (req, res) => {
   res.json({ msg: 'Desde API' })
 })
 
-server.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
+// Aqui se coloca la configuración, luego de swaggerSpec
+server.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, swaggerUIOptions))
 
 
 export default server
