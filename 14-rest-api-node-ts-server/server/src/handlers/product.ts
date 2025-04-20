@@ -18,7 +18,7 @@ export const getProducts = async (req: Request, res: Response) => {
     ],
 
     attributes: {
-      exclude: ['createdAt', 'updatedAt', 'availability']
+      exclude: ['createdAt', 'updatedAt']
     }
   });
 
