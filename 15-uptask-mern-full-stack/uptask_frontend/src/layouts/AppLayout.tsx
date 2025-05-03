@@ -1,4 +1,6 @@
 import { Outlet } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Logo from "@/components/Logo";
 import NavMenu from "@/components/NavMenu";
 
@@ -21,6 +23,12 @@ export default function AppLayout() {
           Todos los derechos reservados {new Date().getFullYear()}
         </p>
       </footer>
+
+      <ToastContainer
+        // Coloca el cursor sobre la notificación toast y se detiene el tiempo restante que le queda para cerrar la notificacion
+        pauseOnHover={false}
+        pauseOnFocusLoss={false}
+      />
     </>
   );
 }
