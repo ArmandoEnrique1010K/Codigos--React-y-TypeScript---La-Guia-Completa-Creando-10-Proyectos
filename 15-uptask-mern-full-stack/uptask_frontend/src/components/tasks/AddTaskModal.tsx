@@ -39,7 +39,6 @@ export default function AddTaskModal() {
     formState: { errors },
   } = useForm({ defaultValues: initialValues });
 
-  // Llama al hook useQueryClient
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
@@ -48,9 +47,6 @@ export default function AddTaskModal() {
       toast.error(error.message);
     },
     onSuccess: (data) => {
-      // Invalida el key del proyecto, el proyecto del cual nos encontramos
-      // En el componente ProjectDetailsView.tsx se tiene un queryKey para el proyecto
-      // Se coloca antes del mostrar la tarea en la vista
       queryClient.invalidateQueries({ queryKey: ["editProject", projectId] });
       toast.success(data);
       reset();
