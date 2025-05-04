@@ -19,7 +19,7 @@ export default function EditTaskData() {
     retry: 1,
   });
 
-  console.log(data);
+  // console.log(data);
 
   if (isError) return <Navigate to={"/404"} />;
 

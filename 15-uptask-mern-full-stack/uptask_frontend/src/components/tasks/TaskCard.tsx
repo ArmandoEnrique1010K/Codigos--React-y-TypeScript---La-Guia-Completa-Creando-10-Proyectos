@@ -67,6 +67,10 @@ export default function TaskCard({ task }: TaskCardProps) {
                   <button
                     type="button"
                     className="block px-3 py-1 text-sm leading-6 text-gray-900"
+                    // Al hacer clic, agrega el query param viewTask con el id de la tarea
+                    onClick={() =>
+                      navigate(location.pathname + `?viewTask=${task._id}`)
+                    }
                   >
                     Ver Tarea
                   </button>
