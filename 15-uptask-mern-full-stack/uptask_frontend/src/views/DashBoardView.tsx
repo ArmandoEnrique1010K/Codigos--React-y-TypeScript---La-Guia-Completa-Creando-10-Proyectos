@@ -18,10 +18,8 @@ export default function DashBoardView() {
     queryFn: getProjects,
   });
 
-  // Obtiene los datos
   const queryClient = useQueryClient();
 
-  // Modifica los datos
   const { mutate } = useMutation({
     mutationFn: deleteProject,
     onError: (error) => {
@@ -29,7 +27,6 @@ export default function DashBoardView() {
     },
     onSuccess: (data) => {
       toast.success(data);
-      // Invalida el queryKey de projects para visualizar los cambios
       queryClient.invalidateQueries({ queryKey: ["projects"] });
     },
   });

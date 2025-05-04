@@ -55,12 +55,9 @@ export async function updateProject({ formData, projectId }: ProjectAPIType) {
   }
 }
 
-// Función para eliminar un proyecto
 export async function deleteProject(id: Project['_id']) {
   try {
-    // Otra forma, separa la URL
     const url = `/projects/${id}`
-    // Se espera un string en la respuesta
     const { data } = await api.delete<string>(url)
     return data
   } catch (error) {
