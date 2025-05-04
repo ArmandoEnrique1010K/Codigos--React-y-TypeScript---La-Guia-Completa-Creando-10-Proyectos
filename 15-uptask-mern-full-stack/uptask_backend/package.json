@@ -16,11 +16,13 @@
     "express": "^5.1.0",
     "express-validator": "^7.2.1",
     "mongoose": "^8.13.2",
+    "morgan": "^1.10.0",
     "uptask_backend": "file:"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.1",
+    "@types/morgan": "^1.9.9",
     "nodemon": "^3.1.9",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"

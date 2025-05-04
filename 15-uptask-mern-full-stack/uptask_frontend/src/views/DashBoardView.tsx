@@ -8,8 +8,9 @@ import {
 } from "@headlessui/react";
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
 import { Link } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { getProjects } from "@/api/ProjectAPI";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteProject, getProjects } from "@/api/ProjectAPI";
+import { toast } from "react-toastify";
 
 export default function DashBoardView() {
   const { data, isLoading } = useQuery({
@@ -17,7 +18,21 @@ export default function DashBoardView() {
     queryFn: getProjects,
   });
 
-  console.log(data);
+  // Obtiene los datos
+  const queryClient = useQueryClient();
+
+  // Modifica los datos
+  const { mutate } = useMutation({
+    mutationFn: deleteProject,
+    onError: (error) => {
+      toast.error(error.message);
+    },
+    onSuccess: (data) => {
+      toast.success(data);
+      // Invalida el queryKey de projects para visualizar los cambios
+      queryClient.invalidateQueries({ queryKey: ["projects"] });
+    },
+  });
 
   if (isLoading) return "Cargando...";
 
@@ -92,7 +107,7 @@ export default function DashBoardView() {
                         </MenuItem>
                         <MenuItem>
                           <Link
-                            to={``}
+                            to={`/projects/${project._id}/edit`}
                             className="block px-3 py-1 text-sm leading-6 text-gray-900"
                           >
                             Editar Proyecto
@@ -102,7 +117,7 @@ export default function DashBoardView() {
                           <button
                             type="button"
                             className="block px-3 py-1 text-sm leading-6 text-red-500"
-                            onClick={() => {}}
+                            onClick={() => mutate(project._id)}
                           >
                             Eliminar Proyecto
                           </button>
