@@ -7,10 +7,11 @@ export class ProjectController {
 
     const project = new Project(req.body)
 
-    if (true) {
-      const error = new Error('Proyecto no encontrado')
-      res.status(404).json({ error: error.message })
-    }
+    // NO OLVIDAR ELIMINAR ESTO
+    // if (false) {
+    //   const error = new Error('Proyecto no encontrado')
+    //   res.status(404).json({ error: error.message })
+    // }
 
 
     try {
