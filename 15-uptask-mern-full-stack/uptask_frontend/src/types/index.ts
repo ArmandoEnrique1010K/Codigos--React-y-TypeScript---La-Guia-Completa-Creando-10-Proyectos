@@ -19,6 +19,21 @@ export type ForgotPasswordForm = Pick<Auth, "email">
 export type ConfirmToken = Pick<Auth, "token">
 export type NewPasswordForm = Pick<Auth, "password" | "password_confirmation">
 
+/** Users */
+
+// Schema de usuario que fue autenticado
+export const userSchema = authSchema.pick({
+  // Solamente se requieren 2 campos de authSchema
+  name: true,
+  email: true,
+}).extend({
+  // Hereda una nueva propiedad llamada "_id"
+  _id: z.string()
+})
+
+// Infiere el tipo de dato de userSchema
+export type User = z.infer<typeof userSchema>
+
 
 /** Tasks */
 

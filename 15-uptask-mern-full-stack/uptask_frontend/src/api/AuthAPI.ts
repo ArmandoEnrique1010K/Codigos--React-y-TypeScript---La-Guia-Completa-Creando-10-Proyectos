@@ -1,6 +1,6 @@
 import api from "@/lib/axios";
 import { isAxiosError } from "axios";
-import { ConfirmToken, ForgotPasswordForm, RequestConfirmationCodeForm, UserLoginForm, UserRegistrationForm } from "../types";
+import { ConfirmToken, ForgotPasswordForm, RequestConfirmationCodeForm, UserLoginForm, UserRegistrationForm, userSchema } from "../types";
 
 export async function createAccount(formData: UserRegistrationForm) {
   try {
@@ -124,11 +124,27 @@ export async function forgotPassword(formData: ForgotPasswordForm) {
 export async function getUser() {
   try {
     // Realiza una solicitud al endpoint para obtener el usuario mediante el token
-    const { data } = await api('/auth/user')
+    // const { data } = await api('/auth/user')
     // console.log(data)
 
+    const { data } = await api('/auth/user')
     // Devuelve esos datos
-    return data
+    // return data
+
+    // No olvidar el tipo de dato User que se encuentra en los types
+    // const { data } = await api<User>('/auth/user')
+
+    // Puedes optar por un Schema tambien
+    const response = userSchema.safeParse(data)
+
+    // Al imprimir response, devuelve un objeto que contiene data: un objeto con los datos del usuarios y
+    // success: true, ese ultimo indica que se pueden utilizar los datos
+    // console.log(response)
+
+    if (response.success) {
+      return response.data
+    }
+
   } catch (error) {
     if (isAxiosError(error) && error.response) {
       throw new Error(error.response.data.error)
