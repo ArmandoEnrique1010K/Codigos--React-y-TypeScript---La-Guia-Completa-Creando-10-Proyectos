@@ -17,13 +17,11 @@ import { toast } from "react-toastify";
 export default function AddTaskModal() {
   const navigate = useNavigate();
 
-  // Leer si el modal existe
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const modalTask = queryParams.get("newTask");
   const show = modalTask ? true : false;
 
-  // Obtener projectId
   const params = useParams();
   const projectId = params.projectId!;
 

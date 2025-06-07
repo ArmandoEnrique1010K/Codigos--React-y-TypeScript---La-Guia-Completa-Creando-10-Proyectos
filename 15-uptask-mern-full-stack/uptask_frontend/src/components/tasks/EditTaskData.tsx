@@ -19,8 +19,6 @@ export default function EditTaskData() {
     retry: 1,
   });
 
-  // console.log(data);
-
   if (isError) return <Navigate to={"/404"} />;
 
   if (data) return <EditTaskModal data={data} taskId={taskId} />;

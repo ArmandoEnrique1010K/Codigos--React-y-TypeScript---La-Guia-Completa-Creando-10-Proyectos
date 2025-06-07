@@ -22,7 +22,6 @@ export default function RegisterView() {
     formState: { errors },
   } = useForm<UserRegistrationForm>({ defaultValues: initialValues });
 
-  // Uso del hook useMutation para manejar el registro de usuarios
   const { mutate } = useMutation({
     mutationFn: createAccount,
     onError: (error) => {
@@ -30,14 +29,12 @@ export default function RegisterView() {
     },
     onSuccess: (data) => {
       toast.success(data);
-      reset(); // Limpia los campos
+      reset();
     },
   });
 
-  // watch es una función de React Hook Form, se le pasa el nombre del campo para revisar el valor introducido
   const password = watch("password");
 
-  // Llama a la función mutate
   const handleRegister = (formData: UserRegistrationForm) => mutate(formData);
 
   return (
@@ -117,7 +114,6 @@ export default function RegisterView() {
             {...register("password_confirmation", {
               required: "Repetir Password es obligatorio",
               validate: (value) =>
-                // Valida que el valor introducido sea igual que el campo password
                 value === password || "Los Passwords no son iguales",
             })}
           />
@@ -140,6 +136,12 @@ export default function RegisterView() {
           className="text-center text-gray-300 font-normal"
         >
           ¿Ya tienes cuenta? Iniciar Sesión
+        </Link>
+        <Link
+          to="/auth/forgot-password"
+          className="text-center text-gray-300 font-normal"
+        >
+          ¿Olvidastes tu contraseña? Reestablecer
         </Link>
       </nav>
     </>

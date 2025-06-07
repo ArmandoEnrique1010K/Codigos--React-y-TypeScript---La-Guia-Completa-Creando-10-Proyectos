@@ -6,7 +6,6 @@ type TaskAPI = {
   formData: TaskFormData,
   projectId: Project['_id'],
   taskId: Task['_id'],
-  // Añade una propiedad status
   status: Task['status']
 }
 

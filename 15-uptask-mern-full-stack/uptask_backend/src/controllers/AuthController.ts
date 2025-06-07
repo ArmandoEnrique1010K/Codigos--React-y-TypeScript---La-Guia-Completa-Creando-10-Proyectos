@@ -48,6 +48,7 @@ export class AuthController {
       if (!tokenExists) {
         const error = new Error('Token no valido')
         res.status(401).json({ error: error.message })
+        return
       }
 
       const user = await User.findById(tokenExists.user)
@@ -144,5 +145,56 @@ export class AuthController {
     }
   }
 
+  static forgotPassword = async (req: Request, res: Response) => {
+    try {
+      const { email } = req.body
+
+      const user = await User.findOne({ email })
+
+      if (!user) {
+        const error = new Error('El usuario no está registrado')
+        res.status(404).json({ error: error.message })
+        return
+      }
+
+      const token = new Token()
+      token.token = generateToken()
+      token.user = user.id
+
+      await token.save()
+
+      AuthEmail.sendPasswordResetToken({
+        email: user.email,
+        name: user.name,
+        token: token.token,
+      })
+
+      res.send('Revisa tu email para instrucciones')
+    } catch (error) {
+      res.status(500).json({ error: "Hubo un error" })
+    }
+  }
+
+  static validateToken = async (req: Request, res: Response) => {
+    try {
+      const { token } = req.body
+
+      const tokenExists = await Token.findOne({ token })
+
+      if (!tokenExists) {
+        const error = new Error('Token no valido')
+        res.status(404).json({ error: error.message })
+        console.log('ERROR')
+        return
+      }
+      res.send('Token válido. Define tu nuevo password')
+
+    } catch (error) {
+      res.status(500).json({ error: "Hubo un error" })
+      return
+    }
+  }
+
 
 }
+

@@ -1,6 +1,5 @@
 import { Task } from "@/types/index";
 import TaskCard from "./TaskCard";
-// Importa statusTranslations
 import { statusTranslations } from "@/locales/es";
 
 type TaskListProps = {

@@ -1,7 +1,6 @@
 import nodemailer from 'nodemailer'
 import dotenv from 'dotenv'
 
-// Habilita las variables de entorno
 dotenv.config()
 
 const config = () => {
