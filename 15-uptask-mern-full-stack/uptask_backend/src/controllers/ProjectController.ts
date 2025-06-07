@@ -8,7 +8,7 @@ export class ProjectController {
     const project = new Project(req.body)
 
     // Imprime los datos del usuario
-    console.log(req.user)
+    // console.log(req.user)
 
     // Posible valor:
     /*
@@ -18,6 +18,13 @@ export class ProjectController {
       name: 'Armando Enrique'
     }
     */
+
+    // Añade el usuario que ha iniciado sesión al project.manager
+    project.manager = req.user.id
+
+    // Recordar que al agregar un nuevo proyecto por medio de la URL en postman localhost:4000/api/projects, tambien debes colocar un token del usuario que ha iniciado sesión (en el endpoint: localhost:4000/api/auth/login, genera un nuevo token)
+
+    // Puedes comprobar en MongoDB Compass que en la colección projects, la propiedad "manager" contiene el ObjectId del usuario que ha iniciado sesión (Recuerda que se obtiene desde el JWT) 
 
     try {
       await project.save()
