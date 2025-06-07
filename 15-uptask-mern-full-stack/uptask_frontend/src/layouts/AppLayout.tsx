@@ -35,7 +35,8 @@ export default function AppLayout() {
                 <Logo />
               </Link>
             </div>
-            <NavMenu />
+            {/* Pasa el nombre del usuario como prop */}
+            <NavMenu name={data.name} />
           </div>
         </header>
         <section className="max-w-screen-2xl mx-auto mt-10 p-5">
