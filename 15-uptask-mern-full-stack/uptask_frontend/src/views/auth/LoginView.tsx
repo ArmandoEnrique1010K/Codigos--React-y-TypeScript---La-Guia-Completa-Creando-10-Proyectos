@@ -22,8 +22,16 @@ export default function LoginView() {
     onError: (error) => {
       toast.error(error.message);
     },
-    onSuccess: (data) => {
-      toast.success(data);
+
+    // data contiene el JWT
+    // onSuccess: (data) => {
+    //   toast.success(data);
+    // },
+
+    // Ejemplo de un posible valor de data: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MjBkODRhYmFjNThjZGY0MWExMWMxYyIsImlhdCI6MTc0OTMxMTI5OCwiZXhwIjoxNzQ5MzExNjU4fQ.bVMbmJjh2uDVSi8aNbt_UhfEJ3BeyxZTp04dx559KQU
+
+    onSuccess: () => {
+      toast.success("Iniciando Sesión...");
     },
   });
 
