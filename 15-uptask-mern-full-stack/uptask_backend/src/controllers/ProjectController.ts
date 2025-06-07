@@ -26,6 +26,27 @@ export class ProjectController {
 
     // Puedes comprobar en MongoDB Compass que en la colección projects, la propiedad "manager" contiene el ObjectId del usuario que ha iniciado sesión (Recuerda que se obtiene desde el JWT) 
 
+    /* */
+
+    // Autenticación y Autorización
+
+    // Son dos procesos fundamentales en la seguridad de sistemas y aplicaciones, que a menudo se confunden, pero tienen propositos distintos
+
+    // Autenticación
+
+    // Es el proceso de verificar la identidad del usuario o entidad. Se trata de asegurarse de que el usuario es realmente quien dice ser.
+    // Esto se hace típicamente a través de credenciales como nombres de usuario y contraseñas, tokens de seguridad, reconocimiento biométrico (como huellas dactilares o reconocimiento facial), entre otros
+    // La autenticación responde a la pregunta: "¿Eres realmente quien dices ser?"
+
+    // Autorización
+
+    // Una vez que la identidad del usuario ha sido verificada mediante la autenticación, la autorización es el proceso de determinar si se le debe permitir acceder a recursos o realizar ciertas acciones.
+    // Esto implica verificar sus permisos y roles en el sistema. Por ejemplo, en una empresa, un empleado puede estar autenticado (el sistema sabe quien es) pero puede o no estar autorizado para acceder a ciertos archivos o aplicaciones, dependiendo de su rol o permisos asignados.
+    // La autorización responde a la pregunta: ¿Tienes permiso para hacer esto?
+
+    // En resumen la autenticación es sobre verificar quien eres, mientras que la autorización es sobre qué te permite hacer.
+
+
     try {
       await project.save()
       res.send('Proyecto creado correctamente')
