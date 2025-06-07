@@ -120,5 +120,3 @@ export async function forgotPassword(formData: ForgotPasswordForm) {
   }
 }
 
-// TODO: CONTINUA EN 574
-
