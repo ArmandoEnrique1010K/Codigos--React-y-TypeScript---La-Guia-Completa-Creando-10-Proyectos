@@ -67,7 +67,8 @@ export const generateJWT = (payload: UserPayload) => {
   const token = jwt.sign(payload, process.env.JWT_SECRET, {
 
     // Tiempo de validez del JWT
-    expiresIn: "6m" // 6 minutos
+    expiresIn: '180d' // 180 dias
+    // "6m" // 6 minutos
     // "1y" // 1 año
     // "30s" // 30 segundos
     // "1h" // 1 hora

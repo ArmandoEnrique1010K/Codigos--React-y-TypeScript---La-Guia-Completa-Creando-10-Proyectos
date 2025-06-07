@@ -1,4 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
+import jwt from 'jsonwebtoken'
+import User from '../models/User';
 
 // Se puede crear un middleware que verifique el usuario este autenticado
 export const authenticate = async (req: Request, res: Response, next: NextFunction) => {
@@ -46,7 +48,42 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
 
   // Otra forma es utilizar un array destructuring
   const [, token] = bearer.split(' ')
-  console.log(token)
+  // console.log(token)
+
+
+  try {
+    // Verifica que el token sea valido, el metodo verify requiere del token generado y la palabra clave secreta desde ".env"
+    // Debe ser la misma clave con la que se firma el token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET)
+
+    // Imprime el token decodificado
+    // console.log(decoded)
+
+    // Para tener un nuevo token (en el caso de que muestre un error porque el token ya ha caducado), puedes
+    // volver a iniciar sesión desde el frontend en "http://localhost:5173/auth/login" o desde Postman, endpoint
+    // "localhost:4000/api/auth/login"
+
+    // Ve a localhost:4000/api/projects en Postman, coloca el token (opción "Bearer Token")
+    // Posible valor que imprimira "decoded": { id: '6820d84abac58cdf41a11c1c', iat: 1749313803, exp: 1749314163 }
+
+    // id: el id del usuario
+    // iat: Indica cuándo se emitió el token.*
+    // exp: Indica cuándo expira el token.*
+
+    // *El tiempo se mide en segundos desde la época Unix (Unix epoch), es decir, desde el 1 de enero de 1970 a las 00:00:00 UTC
+
+    // Tambien se debe garantizar que el usuario exista (realizando una consulta a la base de datos)
+    // decoded es un objeto y se debe validar con typescript
+    // decoded.id es el id del usuario que se encuentra en el token
+    if (typeof decoded === 'object' && decoded.id) {
+      const user = await User.findById(decoded.id)
+      // Imprime los datos del usuario
+      console.log(user)
+    }
+
+  } catch (error) {
+    res.status(500).json({ error: "Token No Válido" })
+  }
 
   next()
 }
