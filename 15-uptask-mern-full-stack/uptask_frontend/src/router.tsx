@@ -16,6 +16,7 @@ export default function Router() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* El proyecto consta de 2 Layouts, uno relacionado a los proyectos y el otro al sistema de autenticación del usuario */}
         <Route element={<AppLayout />}>
           <Route path="/" element={<DashBoardView />} index />
           <Route path="/projects/create" element={<CreateProjectView />} />

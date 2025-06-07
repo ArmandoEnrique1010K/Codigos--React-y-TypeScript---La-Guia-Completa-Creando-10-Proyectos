@@ -8,6 +8,7 @@ import {
 import { Bars3Icon } from "@heroicons/react/20/solid";
 import { Link } from "react-router-dom";
 import { User } from "../types";
+import { useQueryClient } from "@tanstack/react-query";
 
 // Type para props recibidas
 type NavMenuProps = {
@@ -15,6 +16,21 @@ type NavMenuProps = {
 };
 
 export default function NavMenu({ name }: NavMenuProps) {
+  // Para cerrar sesión se tiene que invalidar el query de profile y tambien eliminar el token
+
+  // Instancia de useQueryClient
+  const queryClient = useQueryClient();
+
+  // Función para cerrar sesión
+  const logout = () => {
+    // Elimina el token de localStorage
+    localStorage.removeItem("AUTH_TOKEN");
+    // Invalida el key de user
+    queryClient.invalidateQueries({ queryKey: ["user"] });
+  };
+
+  // Luego de iniciar sesión, pulsa el botón del menú de hamburguesa, selecciona "Cerrar Sesión", para invalidar el key de user (abre la consola de TanStack query pulsando el boton en la esquina inferior de la derecha, debe eliminar el key de user)
+
   return (
     <Popover className="relative">
       <PopoverButton className="inline-flex items-center gap-x-1 text-sm font-semibold leading-6 p-1 rounded-lg bg-purple-400">
@@ -43,7 +59,8 @@ export default function NavMenu({ name }: NavMenuProps) {
             <button
               className="block p-2 hover:text-purple-950"
               type="button"
-              onClick={() => {}}
+              // Llama a la función para cerrar sesión
+              onClick={logout}
             >
               Cerrar Sesión
             </button>
