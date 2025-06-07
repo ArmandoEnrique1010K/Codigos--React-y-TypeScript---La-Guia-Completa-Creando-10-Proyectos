@@ -1,6 +1,17 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken'
-import User from '../models/User';
+import User, { IUser } from '../models/User';
+
+// Reescribe el type de Request de manera global, 
+declare global {
+  namespace Express {
+    interface Request {
+      // La interface Request va heredar la interface de IUser, el user es una propiedad opcional
+      user?: IUser
+    }
+  }
+}
+
 
 // Se puede crear un middleware que verifique el usuario este autenticado
 export const authenticate = async (req: Request, res: Response, next: NextFunction) => {
@@ -76,9 +87,20 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
     // decoded es un objeto y se debe validar con typescript
     // decoded.id es el id del usuario que se encuentra en el token
     if (typeof decoded === 'object' && decoded.id) {
-      const user = await User.findById(decoded.id)
+      // Luego de reescribir el type de User, utiliza el metodo select para seleccionar las propiedades necesarias
+      const user = await User.findById(decoded.id).select('_id name email')
       // Imprime los datos del usuario
-      console.log(user)
+      // console.log(user)
+
+      // Si el usuario existe
+      if (user) {
+        // Puedes pasar datos de un middleware hacia otro, se escribe en el objeto de req, pero antes debes modificar la interface de Request
+        req.user = user
+
+        // De esa forma se evita que el password se guarde en algun lugar de la aplicación
+      } else {
+        res.status(500).json({ error: "Token No Válido" })
+      }
     }
 
   } catch (error) {

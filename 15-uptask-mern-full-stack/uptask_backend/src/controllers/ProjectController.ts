@@ -7,6 +7,18 @@ export class ProjectController {
 
     const project = new Project(req.body)
 
+    // Imprime los datos del usuario
+    console.log(req.user)
+
+    // Posible valor:
+    /*
+    {
+      _id: new ObjectId('6820d84abac58cdf41a11c1c'),
+      email: 'admin@correo.com',
+      name: 'Armando Enrique'
+    }
+    */
+
     try {
       await project.save()
       res.send('Proyecto creado correctamente')
