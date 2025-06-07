@@ -14,8 +14,25 @@ export async function createProject(formData: ProjectFormData) {
 }
 
 export async function getProjects() {
+
+  // Obtiene el token desde localStorage
+  const token = localStorage.getItem('AUTH_TOKEN')
+  // console.log(token)
+
+  // Para generar el token ve a http://localhost:5173/auth/login, e inicia sesión con un usuario existente
+
   try {
-    const { data } = await api('/projects')
+    const { data } = await api('/projects', {
+      // Puedes inyectar el token en los headers
+      headers: {
+        // Necesariamente debe llevar el termino "Bearer " al inicio del token, porque el backend es el encargado de eliminar la palabra "Bearer " cuando recibe el token
+        Authorization: `Bearer ${token}`
+      }
+    })
+
+    // Primero inicia sesión desde http://localhost:5173/auth/login (escribe la URL en la barra de direcciones del navegador)
+    // Luego accede manualmente a http://localhost:5173/, se observa los proyectos del usuario que ha iniciado sesión
+    // Realiza el mismo procedimiento con otro usuario existente
     const response = dashBoardSchema.safeParse(data)
 
     if (response.success) {
