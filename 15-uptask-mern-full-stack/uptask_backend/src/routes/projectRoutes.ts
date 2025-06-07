@@ -9,9 +9,15 @@ import { authenticate } from "../middlewares/auth";
 
 const router = Router();
 
+// Protege todos los endpoints de este modulo (tecnica de middleware)
+router.use(authenticate)
+
+// Recordar que aqui estan definidas todas las rutas relacionadas a proyectos
+
+
 router.post('/',
   // llama al middleware de authenticate
-  authenticate,
+  // authenticate,
   body('projectName')
     .notEmpty().withMessage('El nombre del proyecto es obligatorio'),
   body('clientName')
@@ -24,14 +30,18 @@ router.post('/',
 
 
 // Tambien se debe llamar al middleware authenticate para proteger el endpoint
-router.get('/', authenticate,
+router.get('/',
+  // authenticate,
   ProjectController.getAllProjects)
 // Ahora se requiere el JWT del usuario que ha iniciado sesión para obtener los proyectos en el endpoint: localhost:4000/api/projects
 
+
+// Se debe autorizar al usuario a que acceda a un proyecto por su ID
 router.get('/:id',
   param('id').isMongoId().withMessage('ID no válido'),
   handleInputErrors,
   ProjectController.getProjectById)
+
 
 router.put('/:id',
   param('id').isMongoId().withMessage('ID no válido'),

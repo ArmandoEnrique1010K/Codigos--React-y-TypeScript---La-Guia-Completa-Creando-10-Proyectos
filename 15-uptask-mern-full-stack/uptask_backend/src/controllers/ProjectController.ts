@@ -98,7 +98,20 @@ export class ProjectController {
         res.status(404).json({ error: error.message })
       }
 
+      // Si el manager no es el mismo que el usuario que fue autenticado
+      if (project.manager.toString() !== req.user.id.toString()) {
+        // No se debe revelar demasiada información al usuario
+        const error = new Error('Acción no valida')
+        res.status(404).json({ error: error.message })
+      }
+
+      // Ve al endpoint: localhost:4000/api/projects/{projectId}, reemplaza {projectId} por el objectId de un proyecto que exista
+      // No olvidar colocar en Bearer Token el JWT del usuario autenticado para mostrar la respuesta
       res.json(project)
+
+      // Si te autenticas con otro usuario y accedes a un proyecto que no es del usuario autenticado mostrara el mensaje de error "Acción no valida"
+
+
     } catch (error) {
       console.log(error)
     }
