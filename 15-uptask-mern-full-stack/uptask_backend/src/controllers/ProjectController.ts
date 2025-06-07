@@ -128,6 +128,12 @@ export class ProjectController {
         res.status(404).json({ error: error.message })
       }
 
+      // Comprueba que sea el manager del proyecto sea el usuario autenticado para modificar el proyecto
+      if (project.manager.toString() !== req.user.id.toString()) {
+        const error = new Error('Solo el manager puede actualizar un proyecto')
+        res.status(404).json({ error: error.message })
+      }
+
       project.projectName = req.body.projectName
       project.clientName = req.body.clientName
       project.description = req.body.description
@@ -151,6 +157,12 @@ export class ProjectController {
         res.status(404).json({ error: error.message })
       }
 
+      // Comprueba que sea el manager del proyecto sea el usuario autenticado para eliminar el proyecto
+      if (project.manager.toString() !== req.user.id.toString()) {
+        const error = new Error('Solo el manager puede eliminar un proyecto')
+        res.status(404).json({ error: error.message })
+      }
+
       await project.deleteOne()
       res.send('Proyecto Eliminado')
     } catch (error) {
@@ -158,4 +170,5 @@ export class ProjectController {
     }
   }
 
+  // No olvidar colocar el JWT del usuario autenticado en "Bearer Token" (Pestaña Auth) para realizar las solicitudes a los endpoints
 }
