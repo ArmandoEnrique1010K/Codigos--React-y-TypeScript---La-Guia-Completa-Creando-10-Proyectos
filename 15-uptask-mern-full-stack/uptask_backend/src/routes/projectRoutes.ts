@@ -23,7 +23,10 @@ router.post('/',
 )
 
 
-router.get('/', ProjectController.getAllProjects)
+// Tambien se debe llamar al middleware authenticate para proteger el endpoint
+router.get('/', authenticate,
+  ProjectController.getAllProjects)
+// Ahora se requiere el JWT del usuario que ha iniciado sesión para obtener los proyectos en el endpoint: localhost:4000/api/projects
 
 router.get('/:id',
   param('id').isMongoId().withMessage('ID no válido'),

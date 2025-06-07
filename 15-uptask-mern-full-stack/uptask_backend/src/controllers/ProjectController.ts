@@ -46,6 +46,15 @@ export class ProjectController {
 
     // En resumen la autenticación es sobre verificar quien eres, mientras que la autorización es sobre qué te permite hacer.
 
+    /* */
+
+    // Realiza lo siguiente
+    // Ten 2 usuarios registrados, si no lo tienes:
+    // 1. Crea un nuevo usuario: localhost:4000/api/auth/create-account
+    // 2. Confirma el token localhost:4000/api/auth/confirm-account
+    // 3. Inicia sesión y obten el JWT: localhost:4000/api/auth/login
+
+    // Luego crea proyectos asignados a cada usuario, minimo 2 de cada uno (no olvidar colocar el JWT al iniciar sesion en Bearer Token)
 
     try {
       await project.save()
@@ -55,10 +64,23 @@ export class ProjectController {
     }
   }
 
+  // No deberia traer todos los proyectos de todos los usuarios
   static getAllProjects = async (req: Request, res: Response) => {
 
     try {
-      const projects = await Project.find({})
+      const projects = await Project.find({
+        // Realiza ciertas condiciones 
+        $or: [
+          {
+            // Trae los proyectos que pertenecen al usuario que esta autenticado (iniciado sesión)
+            manager: {
+              $in: req.user.id
+            }
+          }
+        ]
+
+        // Esta funcionalidad va a servir en el frontend
+      })
       res.json(projects)
     } catch (error) {
       console.log(error)
