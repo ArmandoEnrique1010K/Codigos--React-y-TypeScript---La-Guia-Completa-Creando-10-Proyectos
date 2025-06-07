@@ -1,6 +1,7 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Schema, Document, Types } from "mongoose";
 
 export interface IUser extends Document {
+  _id: Types.ObjectId, // No olvidar especificar el type para la propiedad _id
   email: string
   password: string
   name: string

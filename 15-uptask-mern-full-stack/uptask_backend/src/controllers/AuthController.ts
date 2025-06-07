@@ -4,6 +4,7 @@ import { checkPassword, hashPassword } from "../utils/auth"
 import { generateToken } from "../utils/token"
 import Token from "../models/Token"
 import { AuthEmail } from "../email/AuthEmail"
+import { generateJWT } from "../utils/jwt"
 
 export class AuthController {
   static createAccount = async (req: Request, res: Response) => {
@@ -103,7 +104,30 @@ export class AuthController {
         return
       }
 
-      res.send('Autenticado...')
+      // res.send('Autenticado...')
+
+      // Generar el JWT y mostrarlo en la respuesta
+      // const token = generateJWT()
+      // res.send(token)
+
+      // Requiere el ID del usuario para generar el JWT 
+      const token = generateJWT({ id: user._id })
+      res.send(token)
+
+      // En Postman debe retornar una cadena que es un JWT, ejemplo:
+      // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSnVhbiIsImNyZWRpdF9jYXJkIjoiMTIzODQzMzI5MzQzNCIsInBhc3N3b3JkIjoicGFzc3dvcmQiLCJpYXQiOjE3NDkyNzQzMTksImV4cCI6MTc0OTI3NDY3OX0.sYyxX2aJji3j34Pi79ML7rcI5lKzXefwNhep7rezvyc
+
+      // Copia el codigo y ve a la pagina de JWT, en la sección Encoded
+      // https://jwt.io/
+
+      // En la parte de Decoded se mostrara decodificado el header, payload y signature
+
+      // La firma es invalida (aparece Invalid Signature) porque no sabe cual es la palabra secreta definida en JWT_SECRET (en el archivo ".env"), copia el valor de JWT_SECRET y pegalo en la sección de la pagina que dice "your-256-bit-secret"
+
+      // Ahora si se decodifica el token que posee el id del usuario solamente se muestra el id del usuario
+      // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MjBkODRhYmFjNThjZGY0MWExMWMxYyIsImlhdCI6MTc0OTI3NTUyNCwiZXhwIjoxNzQ5Mjc1ODg0fQ.7524KQYFihkXw9G3F993N4V0mow05li0wbqXi2yMGaw
+
+      // Puedes comprobar si es el mismo ID del usuario que se encuentra en la base de datos y se vera que es el mismo ID
 
     } catch (error) {
       res.status(500).json({ error: "Hubo un error" })
@@ -197,4 +221,5 @@ export class AuthController {
 
 
 }
+
 
