@@ -2,6 +2,7 @@ import { Router } from "express";
 import { body } from "express-validator";
 import { AuthController } from "../controllers/AuthController";
 import { handleInputErrors } from "../middlewares/validation";
+import { authenticate } from "../middlewares/auth";
 
 const router = Router()
 
@@ -49,5 +50,16 @@ router.post('/validate-token',
   handleInputErrors,
   AuthController.validateToken
 )
+
+// Endpoint para mostrar los datos del usuario
+router.get('/user',
+  authenticate,
+  AuthController.user
+)
+
+
+// En postman, luego de autenticarse al iniciar sesión, copia el token
+// Añade un nuevo request (petición) de tipo GET, hacia localhost:4000/api/auth/user
+// pega el token en "Bearer Token" y al realizar la petición devuelve los datos del usuario
 
 export default router;

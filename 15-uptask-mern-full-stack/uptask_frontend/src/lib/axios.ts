@@ -25,3 +25,5 @@ api.interceptors.request.use((config) => {
 // Si tratas de acceder a un proyecto del otro usuario con un usuario que no es el mismo, va a mostrar una pagina en blanco, endpoint /404
 
 export default api
+
+// Si entras a la URL http://localhost:5173/ desde una ventana de incognito, no se mostrara los proyectos porque no hay ningun usuario autenticado, para aquello se debe redirigir al usuario a la pagina de login, como React Query hace varios intentos para cargar los proyectos, puedes evitar que no se haga reintentos

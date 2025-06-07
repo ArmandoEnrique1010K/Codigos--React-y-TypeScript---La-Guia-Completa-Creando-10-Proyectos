@@ -120,3 +120,18 @@ export async function forgotPassword(formData: ForgotPasswordForm) {
   }
 }
 
+// Función para obtener el usuario actual
+export async function getUser() {
+  try {
+    // Realiza una solicitud al endpoint para obtener el usuario mediante el token
+    const { data } = await api('/auth/user')
+    // console.log(data)
+
+    // Devuelve esos datos
+    return data
+  } catch (error) {
+    if (isAxiosError(error) && error.response) {
+      throw new Error(error.response.data.error)
+    }
+  }
+}

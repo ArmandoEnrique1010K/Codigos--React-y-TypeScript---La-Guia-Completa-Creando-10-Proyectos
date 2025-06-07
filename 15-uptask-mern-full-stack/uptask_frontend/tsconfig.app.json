@@ -16,7 +16,10 @@
       "@/types/*": ["types/*"],
       "@/lib/*": ["lib/*"],
       "@/utils/*": ["utils/*"],
-      "@/locales/*": ["locales/*"]
+      "@/locales/*": ["locales/*"],
+      // No olvidar un path para la carpeta hooks
+      "@/hooks/*": ["hooks/*"]
+
     },
 
     /* Bundler mode */

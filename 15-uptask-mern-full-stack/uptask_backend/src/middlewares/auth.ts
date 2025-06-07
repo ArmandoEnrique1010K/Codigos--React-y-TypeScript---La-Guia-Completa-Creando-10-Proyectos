@@ -96,7 +96,8 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
       if (user) {
         // Puedes pasar datos de un middleware hacia otro, se escribe en el objeto de req, pero antes debes modificar la interface de Request
         req.user = user
-
+        // Puedes colocar la función next aqui para ir al siguiente middleware
+        next()
         // De esa forma se evita que el password se guarde en algun lugar de la aplicación
       } else {
         res.status(500).json({ error: "Token No Válido" })
@@ -107,5 +108,4 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
     res.status(500).json({ error: "Token No Válido" })
   }
 
-  next()
 }

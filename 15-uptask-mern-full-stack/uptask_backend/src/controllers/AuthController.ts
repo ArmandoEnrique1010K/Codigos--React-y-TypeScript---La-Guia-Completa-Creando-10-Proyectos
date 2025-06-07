@@ -219,7 +219,11 @@ export class AuthController {
     }
   }
 
-
+  // Método estatico para obtener datos del usuario autenticado
+  static user = async (req: Request, res: Response) => {
+    res.json(req.user)
+    return
+  }
 }
 
 
