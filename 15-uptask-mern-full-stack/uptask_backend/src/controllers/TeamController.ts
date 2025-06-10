@@ -55,8 +55,29 @@ export class TeamMemberController {
 
     // Devuelve un mensaje, En MongoDB Compass, debes asegurarte que en la propiedad team tenga el id del usuario que fue agregado al proyecto como parte del equipo
     res.send('Usuario agregado correctamente')
-
   }
+
+  // Elimina a un miembro por id
+  static removeMemberById = async (req: Request, res: Response) => {
+    const { id } = req.body;
+
+    // No debe eliminar a un usuario que no existe en el proyecto
+    if (!req.project.team.some(team => team.toString() === id)) {
+      const error = new Error('El usuario no existe en el proyecto')
+      res.status(409).json({ error: error.message })
+      return
+    }
+
+    // Debe eliminar al miembro por su id (dentro de la propiedad team)
+    req.project.team = req.project.team.filter(teamMember => teamMember.toString() !== id)
+
+
+    await req.project.save()
+
+    res.send('Usuario eliminado correctamente')
+  }
+
+
 }
 
 // En Postman crea una nueva carpeta llamada "TEAM" para agrupar las solicitudes relacionadas con equipos

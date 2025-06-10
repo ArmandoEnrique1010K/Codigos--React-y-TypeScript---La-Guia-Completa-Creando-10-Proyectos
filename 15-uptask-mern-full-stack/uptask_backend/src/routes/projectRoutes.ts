@@ -151,4 +151,18 @@ router.post('/:projectId/team',
 // AUTH: Bearer Token - (JWT generado al autenticarse)
 
 
+// Endpoint para eliminar a un miembro del equipo por id
+router.delete('/:projectId/team',
+  body('id').isMongoId().withMessage('ID no Válido'),
+  handleInputErrors,
+  TeamMemberController.removeMemberById
+)
+
+// DELETE - localhost:4000/api/projects/68478ad2762ce02cc975befa/team
+// BODY:
+// {
+//   "id": "6844739dbce5f539aabb5cb3"
+// }
+// AUTH: Bearer Token - (JWT generado al autenticarse)
+
 export default router
