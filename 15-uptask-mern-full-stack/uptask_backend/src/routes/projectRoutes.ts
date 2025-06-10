@@ -131,6 +131,24 @@ router.post('/:projectId/team/find',
 // {
 //   "email": "juan@correo.com"
 // }
-// AUTH: Bearer Token - (JWT generado)
+// AUTH: Bearer Token - (JWT generado al autenticarse)
+
+
+// Endpoint para agregar un miembro del equipo por id
+router.post('/:projectId/team',
+  // Debe ser un id de mongoDB (Object Id)
+  body('id').isMongoId().withMessage('ID no Válido'),
+  handleInputErrors,
+  TeamMemberController.addMemberById
+)
+
+// Añade una nueva solicitud en postman (requiere el id del proyecto y el id del usuario)
+// POST - localhost:4000/api/projects/68478ad2762ce02cc975befa/team
+// BODY:
+// {
+//   "id": "6844739dbce5f539aabb5cb3"
+// }
+// AUTH: Bearer Token - (JWT generado al autenticarse)
+
 
 export default router
