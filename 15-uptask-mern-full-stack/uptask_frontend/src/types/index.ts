@@ -75,3 +75,18 @@ export const dashBoardSchema = z.array(
 export type Project = z.infer<typeof projectSchema>
 
 export type ProjectFormData = Pick<Project, 'clientName' | 'projectName' | 'description'>
+
+/** Team */
+
+// Schema para el miembro del equipo, toma los campos de userSchema
+export const teamMemberSchema = userSchema.pick({
+  name: true,
+  email: true,
+  _id: true
+})
+
+// type para un miembro de un equipo, lo ifniere de teamMemberSchema
+export type TeamMember = z.infer<typeof teamMemberSchema>
+
+// type para el formulario de un miembro del equipo (solamente toma el campo email)
+export type TeamMemberForm = Pick<TeamMember, 'email'>

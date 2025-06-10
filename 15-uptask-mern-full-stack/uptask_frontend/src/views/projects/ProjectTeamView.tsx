@@ -1,3 +1,4 @@
+import AddMemberModal from "@/components/team/addMemberModal";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 // Vista que representa los miembros del proyecto
@@ -18,6 +19,7 @@ export default function ProjectTeamView() {
         Administra el equipo de trabajo para este proyecto
       </p>
       <nav className="my-5 flex gap-3">
+        {/* Al hacer clic en el botón se agrega en la URL el query string addMember=true */}
         <button
           type="button"
           className="bg-purple-400 hover:bg-purple-500 px-10 py-3 text-white text-xl font-bold cursor-pointer transition-colors"
@@ -34,6 +36,9 @@ export default function ProjectTeamView() {
           Volver a proyecto
         </Link>
       </nav>
+
+      {/* Llama al componente para mostrar la ventana modal */}
+      <AddMemberModal />
     </>
   );
 }
