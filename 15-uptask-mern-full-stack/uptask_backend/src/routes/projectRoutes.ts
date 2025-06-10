@@ -6,6 +6,7 @@ import { TaskController } from "../controllers/TaskController";
 import { projectExists } from "../middlewares/project";
 import { taskBelongsToProject, taskExists } from "../middlewares/task";
 import { authenticate } from "../middlewares/auth";
+import { TeamMemberController } from "../controllers/TeamController";
 
 const router = Router();
 
@@ -113,5 +114,23 @@ router.post('/:projectId/tasks/:taskId/status',
   handleInputErrors,
   TaskController.updateStatus
 )
+
+/** Routes for team */
+
+// Petición de tipo post, para enviar el email del usuario con validación
+router.post('/:projectId/team/find',
+  body('email').isEmail().toLowerCase().withMessage('E-mail no válido'),
+  handleInputErrors,
+  // Llama al metodo del controlador
+  TeamMemberController.findMemberByEmail
+)
+
+// En Postman, recuerda autenticarse para obtener el token, luego copias y lo pegas el token en "Bearer Token", pasa tambien el id de un proyecto, de lo contrario mostrara un error si el proyecto no se encuentra en la base de datos o si el usuario no esta autenticado. Coloca en el body un campo email con el correo de un usuario existente (no el mismo usuario autenticado). Ejemplo:
+// POST - localhost:4000/api/projects/68478ad2762ce02cc975befa/team/find
+// BODY:
+// {
+//   "email": "juan@correo.com"
+// }
+// AUTH: Bearer Token - (JWT generado)
 
 export default router
