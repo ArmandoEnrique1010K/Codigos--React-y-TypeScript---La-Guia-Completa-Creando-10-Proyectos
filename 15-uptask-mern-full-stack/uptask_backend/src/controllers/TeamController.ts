@@ -1,5 +1,6 @@
 import type { Request, Response } from "express"
 import User from "../models/User"
+import Project from "../models/Project"
 
 // Controlador para los equipos
 export class TeamMemberController {
@@ -21,6 +22,24 @@ export class TeamMemberController {
 
     res.json(user)
   }
+
+
+  // Obtener todos los miembros de un equipo asignado a un proyecto
+  static getProjectTeam = async (req: Request, res: Response) => {
+    // Debe obtener el proyecto por su id
+    // El metodo populate se utiliza para reemplazar los ObjectId almacenados en un campo de referencia por los documentos completos a los que hacen referencia.
+    const project = await (await Project.findById(req.project.id)).populate({
+      // El campo es team (contiene un arreglo con los ObjectId de los miembros)
+      path: 'team',
+      // Solamente selecciona esos campos
+      select: 'id email name'
+    })
+
+    // En resumen, muestra los datos de cada miembro del equipo del proyecto
+    res.json(project.team)
+  }
+
+
 
   // Agregar un miembro por id
   static addMemberById = async (req: Request, res: Response) => {
