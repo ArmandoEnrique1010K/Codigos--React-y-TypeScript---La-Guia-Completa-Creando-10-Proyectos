@@ -12,6 +12,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteProject, getProjects } from "@/api/ProjectAPI";
 import { toast } from "react-toastify";
 import { useAuth } from "@/hooks/useAuth";
+import { isManager } from "@/utils/policies";
 
 export default function DashBoardView() {
   // Renombra las variables traidas de useAuth
@@ -36,17 +37,18 @@ export default function DashBoardView() {
   });
 
   // Al imprimir data, si no viene la propiedad manager, se debe hacer una modificacion en types/index.ts
-  console.log(data);
+  // console.log(data);
 
   // Imprime el id del usuario que ha iniciado sesión
-  console.log(user?._id);
+  // console.log(user?._id);
 
   // En cada uno de los objetos impresos desde data, la propiedad manager debe coincidir con el valor del usuario en user?._id, para que esa persona tenga la autorización de acceder al panel de gestionar el proyecto
 
   // Comprueba ambos estados de carga
   if (isLoading && authLoading) return "Cargando...";
 
-  if (data)
+  // No olvidar tambien que debe haber un user definido
+  if (data && user)
     return (
       <>
         <h1 className="text-5xl font-black">Mis proyectos</h1>
@@ -77,7 +79,7 @@ export default function DashBoardView() {
                     <div className="mb-2">
                       {
                         // Comprueba de que si el manager del proyecto es el usuario autenticado para mostrar el rol de manager o miembro del equipo
-                        project.manager === user?._id ? (
+                        isManager(project.manager, user._id) ? (
                           <p className="font-bold text-xs uppercase bg-indigo-50 text-indigo-500 border-2 border-indigo-500 rounded-lg inline-block py-1 px-5">
                             Manager
                           </p>
@@ -133,7 +135,7 @@ export default function DashBoardView() {
                         </MenuItem>
 
                         {/* Si el manager del proyecto sea igual que el id del usuario autenticado (el que ha iniciado sesión), debe mostrar ese contenido */}
-                        {project.manager === user?._id && (
+                        {isManager(project.manager, user._id) && (
                           <>
                             <MenuItem>
                               <Link
