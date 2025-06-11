@@ -15,8 +15,9 @@ import { toast } from "react-toastify";
 
 type TaskCardProps = {
   task: Task;
+  canEdit: boolean;
 };
-export default function TaskCard({ task }: TaskCardProps) {
+export default function TaskCard({ task, canEdit }: TaskCardProps) {
   const navigate = useNavigate();
 
   const params = useParams();
@@ -35,12 +36,17 @@ export default function TaskCard({ task }: TaskCardProps) {
     },
   });
 
+  // Imprime las tareas del proyecto, tiene una propiedad llamada project que contiene el id del proyecto
+  console.log(task);
+
   return (
     <li className="p-5 bg-white border border-slate-300 flex justify-between gap-3">
       <div className="min-w-0 flex flex-col gap-y-4">
         <button
           type="button"
           className="text-xl font-bold text-slate-600 text-left"
+          // Ahora al hacer clic en el titulo de una tarea, abre la ventana de editar tarea
+          onClick={() => navigate(location.pathname + `?editTask=${task._id}`)}
         >
           {task.name}
         </button>
@@ -74,27 +80,33 @@ export default function TaskCard({ task }: TaskCardProps) {
                     Ver Tarea
                   </button>
                 </MenuItem>
-                <MenuItem>
-                  <button
-                    type="button"
-                    className="block px-3 py-1 text-sm leading-6 text-gray-900"
-                    onClick={() =>
-                      navigate(location.pathname + `?editTask=${task._id}`)
-                    }
-                  >
-                    Editar Tarea
-                  </button>
-                </MenuItem>
 
-                <MenuItem>
-                  <button
-                    type="button"
-                    className="block px-3 py-1 text-sm leading-6 text-red-500"
-                    onClick={() => mutate({ projectId, taskId: task._id })}
-                  >
-                    Eliminar Tarea
-                  </button>
-                </MenuItem>
+                {/* Si canEdit es true, muestra las opciones para editar y eliminar tarea */}
+                {canEdit && (
+                  <>
+                    <MenuItem>
+                      <button
+                        type="button"
+                        className="block px-3 py-1 text-sm leading-6 text-gray-900"
+                        onClick={() =>
+                          navigate(location.pathname + `?editTask=${task._id}`)
+                        }
+                      >
+                        Editar Tarea
+                      </button>
+                    </MenuItem>
+
+                    <MenuItem>
+                      <button
+                        type="button"
+                        className="block px-3 py-1 text-sm leading-6 text-red-500"
+                        onClick={() => mutate({ projectId, taskId: task._id })}
+                      >
+                        Eliminar Tarea
+                      </button>
+                    </MenuItem>
+                  </>
+                )}
               </MenuItems>
             </Transition>
           </Menu>

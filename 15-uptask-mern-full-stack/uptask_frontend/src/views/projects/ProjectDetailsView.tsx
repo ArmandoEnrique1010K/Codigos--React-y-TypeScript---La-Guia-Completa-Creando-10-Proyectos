@@ -6,6 +6,7 @@ import TaskModalDetails from "@/components/tasks/TaskModalDetails";
 import { useAuth } from "@/hooks/useAuth";
 import { isManager } from "@/utils/policies";
 import { useQuery } from "@tanstack/react-query";
+import { useMemo } from "react";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 
 export default function ProjectDetailsView() {
@@ -21,6 +22,12 @@ export default function ProjectDetailsView() {
     queryFn: () => getProjectById(projectId),
     retry: false,
   });
+
+  // Para evitar que una función se ejecute varias veces se utiliza useMemo, memoriza el resultado de una función hasta que una de sus depedencias cambie su valor
+
+  // Función para verificar que el usuario pueda editar
+  const canEdit = useMemo(() => data?.manager === user?._id, [data, user]);
+  console.log(canEdit);
 
   // Verifica si authLoading tambien es true (esta cargando), además tambien se verifica que haya un user autenticado
   if (isLoading && authLoading) return "Cargando...";
@@ -53,7 +60,9 @@ export default function ProjectDetailsView() {
             </Link>
           </nav>
         )}
-        <TaskList tasks={data.tasks} />
+
+        {/* Pasa la prop canEdit */}
+        <TaskList tasks={data.tasks} canEdit={canEdit} />
         <AddTaskModal />
         <EditTaskData />
         <TaskModalDetails />
