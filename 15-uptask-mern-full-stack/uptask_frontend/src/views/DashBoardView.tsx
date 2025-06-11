@@ -11,8 +11,12 @@ import { Link } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteProject, getProjects } from "@/api/ProjectAPI";
 import { toast } from "react-toastify";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function DashBoardView() {
+  // Renombra las variables traidas de useAuth
+  const { data: user, isLoading: authLoading } = useAuth();
+
   const { data, isLoading } = useQuery({
     queryKey: ["projects"],
     queryFn: getProjects,
@@ -31,7 +35,16 @@ export default function DashBoardView() {
     },
   });
 
-  if (isLoading) return "Cargando...";
+  // Al imprimir data, si no viene la propiedad manager, se debe hacer una modificacion en types/index.ts
+  console.log(data);
+
+  // Imprime el id del usuario que ha iniciado sesión
+  console.log(user?._id);
+
+  // En cada uno de los objetos impresos desde data, la propiedad manager debe coincidir con el valor del usuario en user?._id, para que esa persona tenga la autorización de acceder al panel de gestionar el proyecto
+
+  // Comprueba ambos estados de carga
+  if (isLoading && authLoading) return "Cargando...";
 
   if (data)
     return (
@@ -102,23 +115,33 @@ export default function DashBoardView() {
                             Ver Proyecto
                           </Link>
                         </MenuItem>
-                        <MenuItem>
-                          <Link
-                            to={`/projects/${project._id}/edit`}
-                            className="block px-3 py-1 text-sm leading-6 text-gray-900"
-                          >
-                            Editar Proyecto
-                          </Link>
-                        </MenuItem>
-                        <MenuItem>
-                          <button
-                            type="button"
-                            className="block px-3 py-1 text-sm leading-6 text-red-500"
-                            onClick={() => mutate(project._id)}
-                          >
-                            Eliminar Proyecto
-                          </button>
-                        </MenuItem>
+
+                        {/* Si el manager del proyecto sea igual que el id del usuario autenticado (el que ha iniciado sesión), debe mostrar ese contenido */}
+                        {project.manager === user?._id && (
+                          <>
+                            <MenuItem>
+                              <Link
+                                to={`/projects/${project._id}/edit`}
+                                className="block px-3 py-1 text-sm leading-6 text-gray-900"
+                              >
+                                Editar Proyecto
+                              </Link>
+                            </MenuItem>
+                            <MenuItem>
+                              <button
+                                type="button"
+                                className="block px-3 py-1 text-sm leading-6 text-red-500"
+                                onClick={() => mutate(project._id)}
+                              >
+                                Eliminar Proyecto
+                              </button>
+                            </MenuItem>
+                          </>
+                        )}
+
+                        {/* Puedes iniciar sesion en la aplicacion en 2 ventanas (una de ellas en modo incognito del navegador), cada ventana con un usuario diferente y compara que si aparece las opciones en el panel de inicio (editar y eliminar proyecto) */}
+
+                        {/* El usuario que ha iniciado sesion puede crear sus proyectos y se considera manager del proyecto, luego el podra agregar miembros a su equipo */}
                       </MenuItems>
                     </Transition>
                   </Menu>

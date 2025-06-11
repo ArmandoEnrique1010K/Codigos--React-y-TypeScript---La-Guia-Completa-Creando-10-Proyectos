@@ -60,7 +60,8 @@ export const projectSchema = z.object({
   _id: z.string(),
   projectName: z.string(),
   clientName: z.string(),
-  description: z.string()
+  description: z.string(),
+  manager: z.string(userSchema.pick({ _id: true })) // Añade la propiedad manager
 })
 
 export const dashBoardSchema = z.array(
@@ -69,6 +70,7 @@ export const dashBoardSchema = z.array(
     projectName: true,
     clientName: true,
     description: true,
+    manager: true // Muestra la propiedad manager
   })
 )
 
