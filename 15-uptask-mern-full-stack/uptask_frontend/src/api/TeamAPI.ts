@@ -1,6 +1,6 @@
 import { isAxiosError } from "axios";
 import api from "@/lib/axios";
-import { Project, TeamMember, TeamMemberForm } from "../types";
+import { Project, TeamMember, TeamMemberForm, teamMembersSchema } from "../types";
 
 // Llamada hacia la API para buscar usuario por email (requiere el id del proyecto y los datos del formulario)
 export async function findUserByEmail({ projectId, formData }: { projectId: Project['_id'], formData: TeamMemberForm }) {
@@ -29,6 +29,27 @@ export async function addUserToProject({ projectId, id }: { projectId: Project['
     // El id se tiene que enviar dentro de un objeto
     const { data } = await api.post(url, { id })
     return data
+  } catch (error) {
+    if (isAxiosError(error) && error.response) {
+      throw new Error(error.response.data.error)
+    }
+  }
+}
+
+// Obtener los miembros del equipo del proyecto, requiere el id del proyecto
+export async function getProjectTeam(projectId: Project['_id']) {
+  try {
+    const url = `/projects/${projectId}/team`
+    // Peticion de tipo get
+    const { data } = await api.post(url)
+
+    // Infiere que la respuesta obtenida sea del mismo schema que teamMembersSchema
+    const response = teamMembersSchema.safeParse(data)
+    if (response.success) {
+      return response.data // Devolvera los datos si es correcto la inferencia
+    }
+
+    // return data
   } catch (error) {
     if (isAxiosError(error) && error.response) {
       throw new Error(error.response.data.error)

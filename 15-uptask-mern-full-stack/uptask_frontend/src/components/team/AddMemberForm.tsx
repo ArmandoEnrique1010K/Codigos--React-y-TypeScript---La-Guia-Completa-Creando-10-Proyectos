@@ -41,8 +41,9 @@ export default function AddMemberForm() {
 
   // Función para reiniciar los datos
   const resetData = () => {
-    reset(), // Reset de useForm
-      mutation.reset(); // Reset de useMutation
+    reset(); // Reset de useForm
+    mutation.reset();
+    // Reset de useMutation
   };
 
   return (

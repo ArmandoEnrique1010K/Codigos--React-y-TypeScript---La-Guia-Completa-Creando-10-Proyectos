@@ -85,6 +85,9 @@ export const teamMemberSchema = userSchema.pick({
   _id: true
 })
 
+// type para los miembros del equipo (un arreglo de teamMemberSchema)
+export const teamMembersSchema = z.array(teamMemberSchema);
+
 // type para un miembro de un equipo, lo ifniere de teamMemberSchema
 export type TeamMember = z.infer<typeof teamMemberSchema>
 

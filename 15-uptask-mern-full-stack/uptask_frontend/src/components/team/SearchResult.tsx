@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { TeamMember } from "@/types/index";
 import { addUserToProject } from "@/api/TeamAPI";
 import { toast } from "react-toastify";
-import { replace, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 type SearchResultProps = {
   user: TeamMember;
