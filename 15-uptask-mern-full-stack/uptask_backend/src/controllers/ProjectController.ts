@@ -76,6 +76,12 @@ export class ProjectController {
             manager: {
               $in: req.user.id
             }
+          },
+          {
+            // Trae los proyectos que pertenecen al usuario que forma parte del equipo
+            team: {
+              $in: req.user.id
+            }
           }
         ]
 
@@ -99,7 +105,8 @@ export class ProjectController {
       }
 
       // Si el manager no es el mismo que el usuario que fue autenticado
-      if (project.manager.toString() !== req.user.id.toString()) {
+      // Tambien se evalua si el usuario no forma parte del equipo del proyecto
+      if (project.manager.toString() !== req.user.id.toString() && !project.team.includes(req.user.id)) {
         // No se debe revelar demasiada información al usuario
         const error = new Error('Acción no valida')
         res.status(404).json({ error: error.message })
