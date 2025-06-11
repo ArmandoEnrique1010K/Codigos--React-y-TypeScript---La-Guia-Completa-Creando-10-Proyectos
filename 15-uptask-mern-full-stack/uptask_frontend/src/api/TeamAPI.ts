@@ -7,11 +7,13 @@ export async function findUserByEmail({ projectId, formData }: { projectId: Proj
   try {
     // Realiza la solicitud al endpoint de la API y devuelve los datos obtenidos de la respuesta
     const url = `/projects/${projectId}/team/find`
-    const data = await api.post(url, formData)
+    const response = await api.post(url, formData)
 
     // Imprime el objeto que se trae de la API, los datos del usuario en la propiedad data del objeto (email, name e _id)
     // console.log(data)
-    return data
+
+    // Corrección, debe retornar los datos de la API
+    return response.data
   } catch (error) {
     // Si hay algun mensaje de error
     if (isAxiosError(error) && error.response) {
