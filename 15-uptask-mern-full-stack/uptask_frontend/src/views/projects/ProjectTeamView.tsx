@@ -1,4 +1,4 @@
-import AddMemberModal from "@/components/team/addMemberModal";
+import AddMemberModal from "@/components/team/AddMemberModal";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 // Vista que representa los miembros del proyecto

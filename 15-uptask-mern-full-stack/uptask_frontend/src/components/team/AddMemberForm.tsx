@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import ErrorMessage from "../ErrorMessage";
 import { TeamMemberForm } from "@/types/index";
+import { findUserByEmail } from "@/api/TeamAPI";
 
 export default function AddMemberForm() {
   const initialValues: TeamMemberForm = {
@@ -18,9 +19,24 @@ export default function AddMemberForm() {
     formState: { errors },
   } = useForm({ defaultValues: initialValues });
 
-  const mutation = useMutation({});
+  // Aqui no se utiliza el objeto mutate para llamar al hook useMutation, porque si se quiere el objeto de mutación completo, la variable mutation almacena el resultado de la mutación, se requiere obtener la información y mostrarla en pantalla
+  const mutation = useMutation({
+    mutationFn: findUserByEmail,
+  });
 
-  const handleSearchUser = async () => {};
+  // Función auxiliar para buscar el usuario
+  const handleSearchUser = async (formData: TeamMemberForm) => {
+    // Requiere el id del proyecto y los datos del formulario (el email del usuario)
+    const data = { projectId, formData };
+
+    // Muta los datos
+    mutation.mutate(data);
+
+    // Imprime un objeto con las propiedades con valores y funciones (metodos) que se pueden llamar
+    // console.log(mutation);
+  };
+
+  // Llamas a la función handleSearchUser cuando haces clic en el boton del formulario para agregar un usuario al equipo del proyecto
 
   return (
     <>
@@ -55,6 +71,17 @@ export default function AddMemberForm() {
           value="Buscar Usuario"
         />
       </form>
+
+      <div className="mt-10">
+        {/* Mientras esta cargando el resultado de useMutation, muestra lo siguiente */}
+        {mutation.isPending && <p className="text-center">Cargando</p>}
+
+        {/* Como no se va a utilizar un Toast de Toastify, se debe mostrar el mensaje de error en la vista del usuario */}
+        {/* Muestra el mensaje de error, por ejemplo, si no existiera el usuario */}
+        {mutation.isError && (
+          <p className="text-center">{mutation.error.message}</p>
+        )}
+      </div>
     </>
   );
 }
