@@ -2,15 +2,19 @@ import { useMutation } from "@tanstack/react-query";
 import { TeamMember } from "@/types/index";
 import { addUserToProject } from "@/api/TeamAPI";
 import { toast } from "react-toastify";
-import { useParams } from "react-router-dom";
+import { replace, useNavigate, useParams } from "react-router-dom";
 
 type SearchResultProps = {
   user: TeamMember;
+  reset: () => void; // No olvidar esta prop
 };
 
-export default function SearchResult({ user }: SearchResultProps) {
+export default function SearchResult({ user, reset }: SearchResultProps) {
   // Antes de asignar el type, imprime el usuario que ha sido encontrado
   // console.log(user);
+
+  // Hook useNavigate para navegar entre paginas
+  const navigate = useNavigate();
 
   // Extrae el id del proyecto de la URL como parametro
   const params = useParams();
@@ -25,6 +29,10 @@ export default function SearchResult({ user }: SearchResultProps) {
     },
     onSuccess: (data) => {
       toast.success(data); // Recuerda que la respuesta de la petición es un String con un mensaje
+      reset(); // Reinicia el formulario y la mutación
+
+      // Navega hacia la misma pagina sin recargar la misma pagina, como resultado, cierra la ventana modal
+      navigate(location.pathname, { replace: true });
     },
   });
 
@@ -52,6 +60,8 @@ export default function SearchResult({ user }: SearchResultProps) {
         >
           Agregar al Proyecto
         </button>
+
+        {/* Luego de pulsar el botón, el formulario se reiniciara y el resultado del usuario encontrado debe limpiarse (la mutación) */}
       </div>
     </>
   );

@@ -39,6 +39,12 @@ export default function AddMemberForm() {
 
   // Llamas a la función handleSearchUser cuando haces clic en el boton del formulario para agregar un usuario al equipo del proyecto
 
+  // Función para reiniciar los datos
+  const resetData = () => {
+    reset(), // Reset de useForm
+      mutation.reset(); // Reset de useMutation
+  };
+
   return (
     <>
       <form
@@ -83,8 +89,10 @@ export default function AddMemberForm() {
           <p className="text-center">{mutation.error.message}</p>
         )}
 
-        {/* Si hay un usuario, mostrara el componente... */}
-        {mutation.data && <SearchResult user={mutation.data} />}
+        {/* Si hay un usuario, mostrara el componente..., pasa las props necesarias */}
+        {mutation.data && (
+          <SearchResult user={mutation.data} reset={resetData} />
+        )}
 
         {/* Al realizar una busqueda del usuario, debe mostrar el usuario encontrado por su email */}
       </div>
