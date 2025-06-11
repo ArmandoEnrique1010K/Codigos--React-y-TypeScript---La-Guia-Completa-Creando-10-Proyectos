@@ -27,7 +27,7 @@ export async function addUserToProject({ projectId, id }: { projectId: Project['
   try {
     const url = `/projects/${projectId}/team`
     // El id se tiene que enviar dentro de un objeto
-    const { data } = await api.post(url, { id })
+    const { data } = await api.post<string>(url, { id })
     return data
   } catch (error) {
     if (isAxiosError(error) && error.response) {
@@ -50,6 +50,21 @@ export async function getProjectTeam(projectId: Project['_id']) {
     }
 
     // return data
+  } catch (error) {
+    if (isAxiosError(error) && error.response) {
+      throw new Error(error.response.data.error)
+    }
+  }
+}
+
+// No puedes enviar un body si es una solicitud de tipo delete, realiza una correcion en el backend
+// Eliminar un miembro del proyecto 
+export async function removeUserFromProject({ projectId, userId }: { projectId: Project['_id'], userId: TeamMember['_id'] }) {
+  try {
+    const url = `/projects/${projectId}/team/${userId}`
+    // Si es una solicitud de tipo delete, el segundo parametro es de configuración, no es el body
+    const { data } = await api.delete<string>(url)
+    return data
   } catch (error) {
     if (isAxiosError(error) && error.response) {
       throw new Error(error.response.data.error)

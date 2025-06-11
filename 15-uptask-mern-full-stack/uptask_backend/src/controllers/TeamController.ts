@@ -78,17 +78,17 @@ export class TeamMemberController {
 
   // Elimina a un miembro por id
   static removeMemberById = async (req: Request, res: Response) => {
-    const { id } = req.body;
+    const { userId } = req.params; // Aqui debe ser param, corrige id por userId
 
     // No debe eliminar a un usuario que no existe en el proyecto
-    if (!req.project.team.some(team => team.toString() === id)) {
+    if (!req.project.team.some(team => team.toString() === userId)) {
       const error = new Error('El usuario no existe en el proyecto')
       res.status(409).json({ error: error.message })
       return
     }
 
     // Debe eliminar al miembro por su id (dentro de la propiedad team)
-    req.project.team = req.project.team.filter(teamMember => teamMember.toString() !== id)
+    req.project.team = req.project.team.filter(teamMember => teamMember.toString() !== userId)
 
 
     await req.project.save()

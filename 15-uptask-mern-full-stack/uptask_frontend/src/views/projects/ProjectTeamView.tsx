@@ -1,7 +1,7 @@
 import AddMemberModal from "@/components/team/AddMemberModal";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { getProjectTeam } from "@/api/TeamAPI";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getProjectTeam, removeUserFromProject } from "@/api/TeamAPI";
 import {
   Menu,
   MenuButton,
@@ -11,6 +11,7 @@ import {
 } from "@headlessui/react";
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
 import { Fragment } from "react/jsx-runtime";
+import { toast } from "react-toastify";
 
 // Vista que representa los miembros del proyecto
 export default function ProjectTeamView() {
@@ -24,11 +25,28 @@ export default function ProjectTeamView() {
 
   const projectId = params.projectId!;
 
+  // Hook useQuery, para obtener los datos de la respuesta de la petición
   const { data, isLoading, isError } = useQuery({
     queryKey: ["projectTeam", projectId], // Asigna un queryKey unico basado en el id del proyecto
     queryFn: () => getProjectTeam(projectId),
     retry: false, // Evita segundo intento
   });
+
+  const queryClient = useQueryClient();
+
+  // Hook useMutate, maneja la función para eliminar al usuario del proyecto
+  const { mutate } = useMutation({
+    mutationFn: removeUserFromProject,
+    onError: (error) => {
+      toast.error(error.message);
+    },
+    onSuccess: (data) => {
+      toast.success(data);
+      queryClient.invalidateQueries({ queryKey: ["projectTeam", projectId] });
+    },
+  });
+
+  // Se necesita invalidar el queryKey, porque sucede que si pulsa el boton de eliminar miembro del proyecto (eliminar usuario), en la vista del usuario, todavia se puede ver el usuario, pero desaparece si vuelve a cargar la pagina. Se realiza en el componente SearchResult.tsx y en este componente cuando se agrega un miembro y cuando se elimina uno-
 
   // Casos si esta cargando o hay un error en el resultado de useQuery
   if (isLoading) return "Cargando...";
@@ -105,6 +123,10 @@ export default function ProjectTeamView() {
                           <button
                             type="button"
                             className="block px-3 py-1 text-sm leading-6 text-red-500"
+                            // Llama a la función mutate, pasa los parametros necesarios, projectId y userId
+                            onClick={() =>
+                              mutate({ projectId, userId: member._id })
+                            }
                           >
                             Eliminar del Proyecto
                           </button>

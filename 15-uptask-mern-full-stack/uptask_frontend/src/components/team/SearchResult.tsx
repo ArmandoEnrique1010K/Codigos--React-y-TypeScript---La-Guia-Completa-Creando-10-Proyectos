@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { TeamMember } from "@/types/index";
 import { addUserToProject } from "@/api/TeamAPI";
 import { toast } from "react-toastify";
@@ -20,6 +20,9 @@ export default function SearchResult({ user, reset }: SearchResultProps) {
   const params = useParams();
   const projectId = params.projectId!; // Siempre habra un projectId
 
+  // Instancia de useQueryClient
+  const queryClient = useQueryClient();
+
   // Instancia de useMutation para el manejo de la función de agregar miembro al proyecto
   const { mutate } = useMutation({
     mutationFn: addUserToProject,
@@ -33,6 +36,9 @@ export default function SearchResult({ user, reset }: SearchResultProps) {
 
       // Navega hacia la misma pagina sin recargar la misma pagina, como resultado, cierra la ventana modal
       navigate(location.pathname, { replace: true });
+
+      // Debe invalidar el queryKey que se utiliza para listar los miembros del proyecto
+      queryClient.invalidateQueries({ queryKey: ["projectTeam", projectId] });
     },
   });
 
