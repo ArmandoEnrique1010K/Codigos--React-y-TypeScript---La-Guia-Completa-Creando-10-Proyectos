@@ -40,8 +40,8 @@ export async function addUserToProject({ projectId, id }: { projectId: Project['
 export async function getProjectTeam(projectId: Project['_id']) {
   try {
     const url = `/projects/${projectId}/team`
-    // Peticion de tipo get
-    const { data } = await api.post(url)
+    // Peticion de tipo get (corrección, debe ser de tipo get)
+    const { data } = await api.get(url)
 
     // Infiere que la respuesta obtenida sea del mismo schema que teamMembersSchema
     const response = teamMembersSchema.safeParse(data)

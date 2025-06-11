@@ -4,7 +4,7 @@ import { ProjectController } from "../controllers/ProjectController";
 import { handleInputErrors } from "../middlewares/validation";
 import { TaskController } from "../controllers/TaskController";
 import { projectExists } from "../middlewares/project";
-import { taskBelongsToProject, taskExists } from "../middlewares/task";
+import { hasAuthorization, taskBelongsToProject, taskExists } from "../middlewares/task";
 import { authenticate } from "../middlewares/auth";
 import { TeamMemberController } from "../controllers/TeamController";
 
@@ -19,6 +19,7 @@ router.use(authenticate)
 router.post('/',
   // llama al middleware de authenticate
   // authenticate,
+  hasAuthorization, // No olvidar el middleware
   body('projectName')
     .notEmpty().withMessage('El nombre del proyecto es obligatorio'),
   body('clientName')
@@ -92,6 +93,7 @@ router.get('/:projectId/tasks/:taskId',
 
 
 router.put('/:projectId/tasks/:taskId',
+  hasAuthorization, // Llama al middleware para validar que el usuario autenticado sea el mismo que el manager del proyecto
   param('taskId').isMongoId().withMessage('ID no válido'),
   body('name')
     .notEmpty().withMessage('El nombre de la tarea es obligatorio'),
@@ -102,10 +104,14 @@ router.put('/:projectId/tasks/:taskId',
 )
 
 router.delete('/:projectId/tasks/:taskId',
+  hasAuthorization,
   param('taskId').isMongoId().withMessage('ID no válido'),
   handleInputErrors,
   TaskController.deleteTask
 )
+
+// Recuerda que el middleware hasAuthorization retorna un mensaje de error si no se cumple la condicion
+// Si vas a validar en un solo lado, debe ser en el servidor, pero se recomienda validar tanto en el backend como en el frontend
 
 router.post('/:projectId/tasks/:taskId/status',
   param('taskId').isMongoId().withMessage('ID no válido'),
