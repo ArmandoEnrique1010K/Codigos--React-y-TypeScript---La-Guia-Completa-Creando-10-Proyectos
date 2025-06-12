@@ -10,9 +10,9 @@ export default function AppLayout() {
   const { data, isError, isLoading } = useAuth();
 
   // Si el usuario ha iniciado sesión, debe imprimir los datos del usuario, y 2 veces false (sin considerar el doble renderizado de React)
-  console.log(data);
-  console.log(isError);
-  console.log(isLoading);
+  // console.log(data);
+  // console.log(isError);
+  // console.log(isLoading);
 
   // Si esta cargando, retorna un mensaje
   if (isLoading) return "Cargando...";

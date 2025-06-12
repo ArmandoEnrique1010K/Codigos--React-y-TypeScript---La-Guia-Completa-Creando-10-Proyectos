@@ -27,7 +27,7 @@ export default function ProjectDetailsView() {
 
   // Función para verificar que el usuario pueda editar
   const canEdit = useMemo(() => data?.manager === user?._id, [data, user]);
-  console.log(canEdit);
+  // console.log(canEdit);
 
   // Verifica si authLoading tambien es true (esta cargando), además tambien se verifica que haya un user autenticado
   if (isLoading && authLoading) return "Cargando...";

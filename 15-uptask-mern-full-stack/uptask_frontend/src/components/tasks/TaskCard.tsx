@@ -37,7 +37,7 @@ export default function TaskCard({ task, canEdit }: TaskCardProps) {
   });
 
   // Imprime las tareas del proyecto, tiene una propiedad llamada project que contiene el id del proyecto
-  console.log(task);
+  // console.log(task);
 
   return (
     <li className="p-5 bg-white border border-slate-300 flex justify-between gap-3">
