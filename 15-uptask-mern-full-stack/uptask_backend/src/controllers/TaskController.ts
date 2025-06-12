@@ -34,7 +34,20 @@ export class TaskController {
 
   static getTaskById = async (req: Request, res: Response) => {
     try {
-      res.json(req.task)
+      // En lugar de retornar la tarea del middleware se realiza otra consulta a la base de datos y se trae los detalles de la tarea
+      // Porque en la base de datos ya se habia hecho una consulta por medio del middleware
+
+      // Recuerda que este metodo se llama luego del middleware handleInputErrors
+      // Busca la tarea por id
+      // Con el metodo populate se indica que devuelva todos los datos que se encuentran en el campo completedBy, usuario que completo la tarea y dentro de select, los campos necesarios
+      const task = await Task.findById(req.task.id).populate({ path: 'completedBy', select: 'id name email' })
+
+      // res.json(req.task)
+
+      // Retorna la tarea
+      res.json(task)
+
+      // La información es la misma que req.task
 
     } catch (error) {
       res.status(500).json({ error: 'Hubo un error' })

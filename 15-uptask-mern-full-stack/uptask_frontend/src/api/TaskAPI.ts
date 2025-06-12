@@ -25,11 +25,18 @@ export async function getTaskById({ projectId, taskId }: Pick<TaskAPI, 'projectI
   try {
     const url = `/projects/${projectId}/tasks/${taskId}`
     const { data } = await api(url)
+
+    // Imprime la respuesta de la petición (información de la tarea, tiene la propiedad completedBy con el id del usuario que ha completado la tarea)
+    // console.log(data)
+
     const response = taskSchema.safeParse(data)
 
     if (response.success) {
       return response.data
     }
+
+    // Si no ves la propiedad completedBy, debes realizar una modificacion en los types
+    // console.log(response.data)
 
   } catch (error) {
     if (isAxiosError(error) && error.response) {
