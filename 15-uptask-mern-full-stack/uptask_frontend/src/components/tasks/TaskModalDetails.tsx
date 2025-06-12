@@ -117,6 +117,20 @@ export default function TaskModalDetails() {
                     <p className="text-lg text-slate-500 mb-2">
                       Descripción: {data.description}
                     </p>
+
+                    {/* Muestra en la vista del usuario la persona que realizo el ultimo cambio del estado de la tarea */}
+                    {data.completedBy && (
+                      <p>
+                        <span className="font-bold text-slate-600">
+                          Estado actualizado por:
+                        </span>
+                        {""}
+                        {data.completedBy.name}
+                      </p>
+                    )}
+
+                    {/* No se mostrara la persona si el estado de la tarea es pendiente, porque completedBy es null */}
+
                     <div className="my-5 space-y-3">
                       <label className="font-bold">Estado Actual:</label>
 
