@@ -37,4 +37,15 @@ export class NoteController {
     // Añade una nueva nota y en la coleccion tasks debe habe un campo notes para las notas de esa tarea
   }
 
+  // Muestra todas las notas de la tarea
+  static getTaskNotes = async (req: Request<{}, {}, INote>, res: Response) => {
+    // console.log('getTaskNotes')
+
+    try {
+      const notes = await Note.find({ task: req.task.id })
+      res.json(notes)
+    } catch (error) {
+      res.status(500).json({ error: 'Hubo un error' })
+    }
+  }
 }

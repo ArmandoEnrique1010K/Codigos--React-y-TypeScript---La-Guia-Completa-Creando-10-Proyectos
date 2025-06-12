@@ -42,7 +42,10 @@ export class TaskController {
       // Con el metodo populate se indica que devuelva todos los datos que se encuentran en el campo completedBy, usuario que completo la tarea y dentro de select, los campos necesarios
 
       // En el path, modifica el campo completedBy por completedBy.user para devolver la información del usuario
-      const task = await Task.findById(req.task.id).populate({ path: 'completedBy.user', select: 'id name email' })
+      const task = await (await Task.findById(req.task.id).populate({ path: 'completedBy.user', select: 'id name email' }))
+        // Añade un segundo populate para traer la información de los demás datos
+        // Puedes colocar la propiedad populate para hacer otro populate al path de notes y como se especifica el path de createdBy, trae la información del usuario que ha creado esa nota, tambien se coloca un select para traer solamente lo necesario
+        .populate({ path: 'notes', populate: { path: 'createdBy', select: 'id name email' } })
 
       // res.json(req.task)
 

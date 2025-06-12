@@ -192,4 +192,9 @@ router.post('/:projectId/tasks/:taskId/notes',
 // POST - http://localhost:4000/api/projects/68478ad2762ce02cc975befa/tasks/684a38c450372ebd56c0cbbd/notes
 // AUTH: Bearer Token - (JWT generado al autenticarse)
 
+
+// Obtener las notas de las tarea
+router.get('/:projectId/tasks/:taskId/notes',
+  NoteController.getTaskNotes
+)
 export default router
