@@ -7,6 +7,7 @@ import { projectExists } from "../middlewares/project";
 import { hasAuthorization, taskBelongsToProject, taskExists } from "../middlewares/task";
 import { authenticate } from "../middlewares/auth";
 import { TeamMemberController } from "../controllers/TeamController";
+import { NoteController } from "../controllers/NoteController";
 
 const router = Router();
 
@@ -178,6 +179,17 @@ router.delete('/:projectId/team/:userId',
 // DELETE - localhost:4000/api/projects/68478ad2762ce02cc975befa/team/6848dbc9088866a2c93e2ff5
 // AUTH: Bearer Token - (JWT generado al autenticarse)
 
+/** Routes for Notes */
 
+// Añadir una nota
+router.post('/:projectId/tasks/:taskId/notes',
+  body('content').notEmpty().withMessage('El Contenido de la nota es obligatorio'),
+  handleInputErrors,
+  NoteController.createNote
+)
+
+// Requiere el id del proyecto y el id de la tarea
+// POST - http://localhost:4000/api/projects/68478ad2762ce02cc975befa/tasks/684a38c450372ebd56c0cbbd/notes
+// AUTH: Bearer Token - (JWT generado al autenticarse)
 
 export default router
