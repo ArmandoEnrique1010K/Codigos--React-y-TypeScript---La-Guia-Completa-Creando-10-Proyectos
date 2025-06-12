@@ -14,6 +14,27 @@ export class NoteController {
     // console.log(req.body)
 
     const { content } = req.body
+    // Establece los valores del body en una instancia de note
+    const note = new Note()
+    // console.log(note)
+
+    note.content = content;
+    note.createdBy = req.user.id;
+    note.task = req.task.id
+
+    // Se almacena en el campo notes de task la nota
+    req.task.notes.push(note.id)
+
+    try {
+      // Promesa multiple, guarda los cambios en task y guarda la nueva nota de la tarea
+      await Promise.allSettled([req.task.save(), note.save()])
+      res.send('Nota Creada Correctamente')
+    } catch (error) {
+      res.status(500).json({ error: 'Hubo un error' })
+      return
+    }
+
+    // Añade una nueva nota y en la coleccion tasks debe habe un campo notes para las notas de esa tarea
   }
 
 }

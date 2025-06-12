@@ -22,6 +22,9 @@ export interface ITask extends Document {
     user: Types.ObjectId,
     status: TaskStatus
   }[]
+
+  // Se almacena las notas en un arreglo
+  notes: Types.ObjectId[]
 }
 
 export const TaskSchema: Schema = new Schema({
@@ -63,6 +66,14 @@ export const TaskSchema: Schema = new Schema({
         enum: Object.values(taskStatus),
         default: taskStatus.PENDING
       },
+    }
+  ],
+
+  // Se añade el campo notes
+  notes: [
+    {
+      type: Types.ObjectId,
+      ref: "Note",
     }
   ]
 
