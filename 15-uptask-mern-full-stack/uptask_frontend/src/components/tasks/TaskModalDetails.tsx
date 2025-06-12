@@ -18,6 +18,7 @@ import { toast } from "react-toastify";
 import { formatDate } from "@/utils/utils";
 import { statusTranslations } from "@/locales/es";
 import { TaskStatus } from "@/types/index";
+import NotesPanel from "../notes/NotesPanel";
 
 export default function TaskModalDetails() {
   const params = useParams();
@@ -118,24 +119,28 @@ export default function TaskModalDetails() {
                       Descripción: {data.description}
                     </p>
 
-                    <p className="text-2xl text-slate-500 mb-2">
-                      Historial de cambios
-                    </p>
+                    {/* Muestra el historial de cambios si hay al menos 1 cambio en completedBy (recuerda que cuando se crea una tarea, completedBy se inicializa como null) */}
+                    {data.completedBy.length ? (
+                      <>
+                        <p className="text-2xl text-slate-500 mb-2">
+                          Historial de cambios
+                        </p>
 
-                    <ul className="list-decimal">
-                      {/* Muestra en la vista del usuario la persona que realizo el ultimo cambio del estado de la tarea */}
-                      {/* Itera con data.completedBy para mostrar el usuario que realizo el cambio y el estado */}
-                      {data.completedBy.map((activityLog) => (
-                        <li key={activityLog._id}>
-                          <span className="font-bold text-slate-600">
-                            {/* Llama a la función para traducir el estado */}
-                            {statusTranslations[activityLog.status]}
-                          </span>{" "}
-                          por: {activityLog.user.name}
-                        </li>
-                      ))}
-                    </ul>
-                    {/* No se mostrara la persona si el estado de la tarea es pendiente, porque completedBy es null */}
+                        <ul className="list-decimal">
+                          {/* Muestra en la vista del usuario la persona que realizo el ultimo cambio del estado de la tarea */}
+                          {/* Itera con data.completedBy para mostrar el usuario que realizo el cambio y el estado */}
+                          {data.completedBy.map((activityLog) => (
+                            <li key={activityLog._id}>
+                              <span className="font-bold text-slate-600">
+                                {/* Llama a la función para traducir el estado */}
+                                {statusTranslations[activityLog.status]}
+                              </span>{" "}
+                              por: {activityLog.user.name}
+                            </li>
+                          ))}
+                        </ul>
+                      </>
+                    ) : null}
 
                     <div className="my-5 space-y-3">
                       <label className="font-bold">Estado Actual:</label>
@@ -154,6 +159,9 @@ export default function TaskModalDetails() {
                         )}
                       </select>
                     </div>
+
+                    {/* Renderiza el componente de panel de notas */}
+                    <NotesPanel />
                   </DialogPanel>
                 </TransitionChild>
               </div>

@@ -85,5 +85,7 @@ export class NoteController {
     } catch (error) {
       res.status(500).json({ error: 'Hubo un error' })
     }
+
+    // Revisa la base de datos tanto en las colecciones tasks y notes y revisa que la nota se haya eliminado, además de su referencia hacia task
   }
 }
