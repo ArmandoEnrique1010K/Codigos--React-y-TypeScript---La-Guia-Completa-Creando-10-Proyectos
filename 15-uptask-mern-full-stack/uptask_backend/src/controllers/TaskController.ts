@@ -77,8 +77,22 @@ export class TaskController {
   static updateStatus = async (req: Request, res: Response) => {
     try {
       const { status } = req.body
-
       req.task.status = status
+
+      // Se almacena el usuario que ha realizado la peticion en el campo completedBy
+      // El usuario que esta autenticado manda a llamar este endpoint y se convierte en la persona que ha cambiado el estado de la tarea
+      // req.task.completedBy = req.user.id
+
+      // Hay un caso especial, si el estado de la tarea es pendiente, no deberia haber un usuario que ha completado la tarea
+      if (status === "pending") {
+        req.task.completedBy = null
+      } else {
+        req.task.completedBy = req.user.id
+      }
+
+      // Revisa en la base de datos que el campo completedBy de una tarea tenga un cambio, el usuario autenticado, porque el ha cambiado el estado
+      // Cambia el estado de la tarea de pendiente a un nuevo estado de la tarea y viceversa (si la tarea vuelve a tener el estado "pendiente", no deberia haber un usuario que ha completado la tarea)
+
       await req.task.save()
       res.send('Tarea actualizada')
 
