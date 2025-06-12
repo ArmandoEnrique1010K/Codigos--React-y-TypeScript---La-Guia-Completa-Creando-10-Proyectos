@@ -118,17 +118,23 @@ export default function TaskModalDetails() {
                       Descripción: {data.description}
                     </p>
 
-                    {/* Muestra en la vista del usuario la persona que realizo el ultimo cambio del estado de la tarea */}
-                    {data.completedBy && (
-                      <p>
-                        <span className="font-bold text-slate-600">
-                          Estado actualizado por:
-                        </span>
-                        {""}
-                        {data.completedBy.name}
-                      </p>
-                    )}
+                    <p className="text-2xl text-slate-500 mb-2">
+                      Historial de cambios
+                    </p>
 
+                    <ul className="list-decimal">
+                      {/* Muestra en la vista del usuario la persona que realizo el ultimo cambio del estado de la tarea */}
+                      {/* Itera con data.completedBy para mostrar el usuario que realizo el cambio y el estado */}
+                      {data.completedBy.map((activityLog) => (
+                        <li key={activityLog._id}>
+                          <span className="font-bold text-slate-600">
+                            {/* Llama a la función para traducir el estado */}
+                            {statusTranslations[activityLog.status]}
+                          </span>{" "}
+                          por: {activityLog.user.name}
+                        </li>
+                      ))}
+                    </ul>
                     {/* No se mostrara la persona si el estado de la tarea es pendiente, porque completedBy es null */}
 
                     <div className="my-5 space-y-3">

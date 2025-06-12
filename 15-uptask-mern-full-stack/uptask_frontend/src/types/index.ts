@@ -51,8 +51,14 @@ export const taskSchema = z.object({
   // Se añade un posible valor "null" con el metodo "or", el campo completedBy va a tener el valor  si el estado es pendiente
 
   // Si utilizas Valibot puede ser un poco más pesado que Zod
-  completedBy: userSchema.or(z.null()),
+  // completedBy: userSchema.or(z.null()),
 
+  // El campo completedBy ahora es de tipo array, se realiza un cambio
+  completedBy: z.array(z.object({
+    _id: z.string(), // Tambien se requiere el id
+    user: userSchema,
+    status: taskStatusSchema
+  })),
   createdAt: z.string(),
   updatedAt: z.string(),
 })

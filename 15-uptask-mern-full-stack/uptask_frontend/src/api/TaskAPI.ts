@@ -26,8 +26,15 @@ export async function getTaskById({ projectId, taskId }: Pick<TaskAPI, 'projectI
     const url = `/projects/${projectId}/tasks/${taskId}`
     const { data } = await api(url)
 
+    // Observa que se tiene que mostrar la información del usuario que ha realizado el cambio del estado (solo muestra el id del usuario)
+    // console.log(data)
+
     // Devuelve data para no mostrar un error cuando el usuario hace clic sobre una de sus tareas
-    return data;
+    // return data;
+
+    // Elimina el return data, ya puede ejecutar el safeParse segun el type definido en taskSchema
+
+    /* */
 
     // En el frontend puedes cambiar el estado de la tarea y se vera almacenado los cambios en la base de datos
 

@@ -40,7 +40,9 @@ export class TaskController {
       // Recuerda que este metodo se llama luego del middleware handleInputErrors
       // Busca la tarea por id
       // Con el metodo populate se indica que devuelva todos los datos que se encuentran en el campo completedBy, usuario que completo la tarea y dentro de select, los campos necesarios
-      const task = await Task.findById(req.task.id).populate({ path: 'completedBy', select: 'id name email' })
+
+      // En el path, modifica el campo completedBy por completedBy.user para devolver la información del usuario
+      const task = await Task.findById(req.task.id).populate({ path: 'completedBy.user', select: 'id name email' })
 
       // res.json(req.task)
 
