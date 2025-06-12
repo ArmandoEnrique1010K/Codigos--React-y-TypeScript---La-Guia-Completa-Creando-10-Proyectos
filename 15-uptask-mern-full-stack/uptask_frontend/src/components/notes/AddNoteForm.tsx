@@ -1,9 +1,23 @@
 import { NoteFormData } from "@/types/index";
 import { useForm } from "react-hook-form";
 import ErrorMessage from "../ErrorMessage";
+import { useMutation } from "@tanstack/react-query";
+import { createNote } from "@/api/NoteAPI";
+import { toast } from "react-toastify";
+import { useParams } from "react-router-dom";
 
 // Formulario para agregar una nota
 export default function AddNoteForm() {
+  // Extrae projectId de los parametros de la URL (con el operador ! se asegura que no sea null o undefined)
+  const params = useParams();
+  const projectId = params.projectId!;
+
+  // Extrae los query strings de la URL (parametros que van luego del signo de & en la URL) para obtener el id de la tarea
+  const queryParams = new URLSearchParams(location.search);
+
+  // El query String viewTask contiene el id de la tarea, no olvidar el signo al final
+  const taskId = queryParams.get("viewTask")!;
+
   // Se añade el type NoteFormData
   const initialValues: NoteFormData = {
     content: "",
@@ -13,13 +27,35 @@ export default function AddNoteForm() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({ defaultValues: initialValues });
+
+  // Llama al hook useMutation para llamar a la función createNote
+  const { mutate } = useMutation({
+    mutationFn: createNote,
+    onError: (error) => {
+      toast.error(error.message);
+    },
+    onSuccess: (data) => {
+      toast.success(data);
+    },
+  });
 
   // Función auxiliar para añadir una nota
   const handleAddNote = (formData: NoteFormData) => {
     // Imprime el contenido que se ha introducido en los campos del formulario en un objeto de pares campo y valor
-    console.log(formData);
+    // console.log(formData);
+
+    // Verifica los valores de los IDs (añade una nota para ver los ids en la consola, pulsa el boton crear nota luego de abrir una tarea)
+    // console.log(projectId);
+    // console.log(taskId);
+
+    // Llama a la función mutate para realizar la solicitud en la API
+    mutate({ projectId, taskId, formData });
+
+    // Reinicia el formulario
+    reset();
   };
 
   return (

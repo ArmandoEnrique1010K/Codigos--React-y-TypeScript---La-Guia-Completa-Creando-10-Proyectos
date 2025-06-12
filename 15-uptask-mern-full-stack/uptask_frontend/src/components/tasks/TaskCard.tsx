@@ -45,8 +45,9 @@ export default function TaskCard({ task, canEdit }: TaskCardProps) {
         <button
           type="button"
           className="text-xl font-bold text-slate-600 text-left"
-          // Ahora al hacer clic en el titulo de una tarea, abre la ventana de editar tarea
-          onClick={() => navigate(location.pathname + `?editTask=${task._id}`)}
+          // Correción, debe ser editTask y no viewTask
+          // Ahora al hacer clic en el titulo de una tarea, abre la ventana de ver tarea
+          onClick={() => navigate(location.pathname + `?viewTask=${task._id}`)}
         >
           {task.name}
         </button>
