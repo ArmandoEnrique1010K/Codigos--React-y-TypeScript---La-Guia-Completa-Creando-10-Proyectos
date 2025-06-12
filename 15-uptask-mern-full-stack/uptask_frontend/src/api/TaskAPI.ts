@@ -29,6 +29,8 @@ export async function getTaskById({ projectId, taskId }: Pick<TaskAPI, 'projectI
     // Imprime la respuesta de la petición (información de la tarea, tiene la propiedad completedBy con el id del usuario que ha completado la tarea)
     // console.log(data)
 
+    // Hay un problema si una tarea tiene el campo completedBy el valor null, mostrara un error en la consola, si se imprime data
+
     const response = taskSchema.safeParse(data)
 
     if (response.success) {

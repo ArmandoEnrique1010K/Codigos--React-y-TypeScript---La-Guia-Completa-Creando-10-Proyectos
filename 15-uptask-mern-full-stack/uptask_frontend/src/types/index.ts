@@ -47,6 +47,12 @@ export const taskSchema = z.object({
   description: z.string(),
   project: z.string(),
   status: taskStatusSchema,
+  // Se asigna el schema de userSchema porque tiene los campos _id, name y email
+  // Se añade un posible valor "null" con el metodo "or", el campo completedBy va a tener el valor  si el estado es pendiente
+
+  // Si utilizas Valibot puede ser un poco más pesado que Zod
+  completedBy: userSchema.or(z.null()),
+
   createdAt: z.string(),
   updatedAt: z.string(),
 })
