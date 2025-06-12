@@ -1,5 +1,11 @@
 import type { Request, Response } from 'express'
 import Note, { INote } from '../models/Note';
+import { Types } from 'mongoose';
+
+// Define un type para los parametros de la URL
+type NoteParams = {
+  noteId: Types.ObjectId
+}
 
 // Controlador para las notas
 export class NoteController {
@@ -44,6 +50,38 @@ export class NoteController {
     try {
       const notes = await Note.find({ task: req.task.id })
       res.json(notes)
+    } catch (error) {
+      res.status(500).json({ error: 'Hubo un error' })
+    }
+  }
+
+  // Eliminar una nota, se asigna un generic hacia los parametros de la URL
+  static deleteNote = async (req: Request<NoteParams>, res: Response) => {
+    // Toma el parametro noteId de la URL
+    const { noteId } = req.params
+    const note = await Note.findById(noteId)
+
+    // Mensaje de error si no encuentra la nota
+    if (!note) {
+      const error = new Error('Nota no encontrada')
+      res.status(404).json({ error: error.message })
+      return
+    }
+
+    // Valida que el usuario que ha creado la nota sea la misma que el usuario autenticado
+    if (note.createdBy.toString() !== req.user.id.toString()) {
+      const error = new Error('Acción no válida')
+      res.status(401).json({ error: error.message })
+      return
+    }
+
+    // Tambien se tiene que eliminar la referencia de la tarea (debe ser convertido a string porque se toma objectId)
+    req.task.notes = req.task.notes.filter(note => note.toString() !== noteId.toString())
+
+    try {
+      // Elimina la nota de la base de datos, se realiza una promesa doble porque tambien se guarda los cambios en task
+      await Promise.allSettled([req.task.save(), note.deleteOne()]);
+      res.send('Nota Eliminada')
     } catch (error) {
       res.status(500).json({ error: 'Hubo un error' })
     }

@@ -197,4 +197,18 @@ router.post('/:projectId/tasks/:taskId/notes',
 router.get('/:projectId/tasks/:taskId/notes',
   NoteController.getTaskNotes
 )
+
+// GET - http://localhost:4000/api/projects/68478ad2762ce02cc975befa/tasks/684a38c450372ebd56c0cbbd/notes
+
+
+// Eliminar una nota
+router.delete('/:projectId/tasks/:taskId/notes/:noteId',
+  param('noteId').isMongoId().withMessage('ID No Válido'),
+  handleInputErrors,
+  NoteController.deleteNote
+)
+
+// DELETE - http://localhost:4000/api/projects/68478ad2762ce02cc975befa/tasks/684a38c450372ebd56c0cbbd/notes/684a4493c01997d6ae3afe8c
+
+
 export default router
