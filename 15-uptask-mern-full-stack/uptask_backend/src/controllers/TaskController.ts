@@ -97,14 +97,26 @@ export class TaskController {
       // req.task.completedBy = req.user.id
 
       // Hay un caso especial, si el estado de la tarea es pendiente, no deberia haber un usuario que ha completado la tarea
-      if (status === "pending") {
-        req.task.completedBy = null
-      } else {
-        req.task.completedBy = req.user.id
+      // if (status === "pending") {
+      //   req.task.completedBy = null
+      // } else {
+      //   req.task.completedBy = req.user.id
+      // }
+
+      // Se define la data que va almacenar el historial de usuarios
+      const data = {
+        user: req.user.id,
+        status // status: status
       }
 
-      // Revisa en la base de datos que el campo completedBy de una tarea tenga un cambio, el usuario autenticado, porque el ha cambiado el estado
-      // Cambia el estado de la tarea de pendiente a un nuevo estado de la tarea y viceversa (si la tarea vuelve a tener el estado "pendiente", no deberia haber un usuario que ha completado la tarea)
+      // Se agrega el nuevo cambio a completedBy
+      req.task.completedBy.push(data)
+
+      // // Revisa en la base de datos que el campo completedBy de una tarea tenga un cambio, el usuario autenticado, porque el ha cambiado el estado
+      // // Cambia el estado de la tarea de pendiente a un nuevo estado de la tarea y viceversa (si la tarea vuelve a tener el estado "pendiente", no deberia haber un usuario que ha completado la tarea)
+
+      // Primero elimina todas las tareas de la base de datos y luego vuelve a insertar las tareas, el campo completedBy debe ser un arreglo
+
 
       await req.task.save()
       res.send('Tarea actualizada')

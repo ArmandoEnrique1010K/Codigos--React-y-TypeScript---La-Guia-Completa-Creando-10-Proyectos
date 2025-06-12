@@ -26,6 +26,11 @@ export async function getTaskById({ projectId, taskId }: Pick<TaskAPI, 'projectI
     const url = `/projects/${projectId}/tasks/${taskId}`
     const { data } = await api(url)
 
+    // Devuelve data para no mostrar un error cuando el usuario hace clic sobre una de sus tareas
+    return data;
+
+    // En el frontend puedes cambiar el estado de la tarea y se vera almacenado los cambios en la base de datos
+
     // Imprime la respuesta de la petición (información de la tarea, tiene la propiedad completedBy con el id del usuario que ha completado la tarea)
     // console.log(data)
 
