@@ -1,6 +1,9 @@
 import { useForm } from "react-hook-form";
 import ErrorMessage from "../ErrorMessage";
 import { User, UserProfileForm } from "@/types/index";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { updateProfile } from "@/api/ProfileAPI";
+import { toast } from "react-toastify";
 
 type ProfileFormProps = {
   data: User;
@@ -15,7 +18,23 @@ export default function ProfileForm({ data }: ProfileFormProps) {
     formState: { errors },
   } = useForm<UserProfileForm>({ defaultValues: data });
 
-  const handleEditProfile = (formData: UserProfileForm) => {};
+  const queryClient = useQueryClient();
+
+  // Llama a la función updateProfile dentro de un useMutation
+  const { mutate } = useMutation({
+    mutationFn: updateProfile,
+    onError: (error) => toast.error(error.message),
+    onSuccess: (data) => {
+      toast.success(data);
+      // Invalida el key que se encuentra en el hook useAuth --> ['user'], contiene los datos del usuario
+      queryClient.invalidateQueries({ queryKey: ["user"] });
+    },
+  });
+
+  // Llama a mutate y se le pasa el formData
+  const handleEditProfile = (formData: UserProfileForm) => mutate(formData);
+
+  // Para observar el cambio, sin actualizar la pagina, en la pagina de actualizar el perfil del usuario, abre el menú y veras el texto que dice "Hola " y el nombre del usuario
 
   return (
     <>
