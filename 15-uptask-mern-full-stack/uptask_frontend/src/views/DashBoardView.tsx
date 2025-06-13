@@ -8,12 +8,12 @@ import {
 } from "@headlessui/react";
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
 import { Link, useNavigate } from "react-router-dom";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteProject, getProjects } from "@/api/ProjectAPI";
-import { toast } from "react-toastify";
+import { useQuery } from "@tanstack/react-query";
+import { getProjects } from "@/api/ProjectAPI";
 import { useAuth } from "@/hooks/useAuth";
 import { isManager } from "@/utils/policies";
 import DeleteProjectModal from "@/components/projects/DeleteProjectModal";
+// En VSCode puedes pulsar F1 y escribir "TypeScript: Remove Unused Imports" para eliminar las importaciones que no se estan utilizando
 
 export default function DashBoardView() {
   // Instancia de useLocation
@@ -25,19 +25,6 @@ export default function DashBoardView() {
   const { data, isLoading } = useQuery({
     queryKey: ["projects"],
     queryFn: getProjects,
-  });
-
-  const queryClient = useQueryClient();
-
-  const { mutate } = useMutation({
-    mutationFn: deleteProject,
-    onError: (error) => {
-      toast.error(error.message);
-    },
-    onSuccess: (data) => {
-      toast.success(data);
-      queryClient.invalidateQueries({ queryKey: ["projects"] });
-    },
   });
 
   // Al imprimir data, si no viene la propiedad manager, se debe hacer una modificacion en types/index.ts

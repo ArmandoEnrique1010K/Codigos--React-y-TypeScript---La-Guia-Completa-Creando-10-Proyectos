@@ -10,9 +10,10 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import ErrorMessage from "../ErrorMessage";
 import { CheckPasswordForm } from "@/types/index";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { checkPassword } from "@/api/AuthAPI";
 import { toast } from "react-toastify";
+import { deleteProject } from "@/api/ProjectAPI";
 
 export default function DeleteProjectModal() {
   const initialValues: CheckPasswordForm = {
@@ -28,8 +29,11 @@ export default function DeleteProjectModal() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({ defaultValues: initialValues });
+
+  const queryClient = useQueryClient();
 
   // Recuerda que con mutation se utiliza para tener todas las funciones y datos de las mutaciones
 
@@ -37,6 +41,23 @@ export default function DeleteProjectModal() {
   const checkUserPaswordMutation = useMutation({
     mutationFn: checkPassword,
     onError: (error) => toast.error(error.message),
+  });
+
+  // Renombra la función como deleteProjectMutation, es el mutation encargado de eliminar el proyecto
+  const deleteProjectMutation = useMutation({
+    mutationFn: deleteProject,
+    onError: (error) => {
+      toast.error(error.message);
+    },
+    onSuccess: (data) => {
+      toast.success(data);
+      queryClient.invalidateQueries({ queryKey: ["projects"] });
+
+      // Reinicia el formulario
+      reset();
+      // Cierra la ventana modal eliminando los query params
+      navigate(location.pathname, { replace: true });
+    },
   });
 
   const handleForm = async (formData: CheckPasswordForm) => {
@@ -48,8 +69,11 @@ export default function DeleteProjectModal() {
     // Se tiene que utilizar la versión asincrona de mutate con el metodo mutateAsync
     await checkUserPaswordMutation.mutateAsync(formData);
 
-    console.log("Despues de la mutación");
+    // console.log("Despues de la mutación");
     // Si el password es incorrecto, ya no imprimira el mensaje de la consola
+
+    // Se pasa el id del proyecto desde la URL (se toma como parametro)
+    await deleteProjectMutation.mutateAsync(deleteProjectId);
   };
 
   return (

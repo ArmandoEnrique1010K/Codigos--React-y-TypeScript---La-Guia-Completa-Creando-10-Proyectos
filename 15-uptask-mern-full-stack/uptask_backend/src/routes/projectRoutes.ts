@@ -58,13 +58,13 @@ router.put('/:id',
   body('description')
     .notEmpty().withMessage('La descripción del proyecto es obligatoria'),
   handleInputErrors,
-  hasAuthorization,
+  // hasAuthorization,
   ProjectController.updateProject)
 
 router.delete('/:id',
   param('id').isMongoId().withMessage('ID no válido'),
   handleInputErrors,
-  hasAuthorization,
+  // hasAuthorization,
   ProjectController.deleteProject)
 
 
