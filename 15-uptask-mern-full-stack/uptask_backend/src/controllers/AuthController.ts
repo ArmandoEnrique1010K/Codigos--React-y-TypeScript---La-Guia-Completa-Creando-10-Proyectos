@@ -224,6 +224,37 @@ export class AuthController {
     res.json(req.user)
     return
   }
+
+  // Actualizar perfil del usuario
+  static updateProfile = async (req: Request, res: Response) => {
+    const { name, email } = req.body
+
+    // Se tiene en cuenta que como esta función se llama luego del middleware authenticate, solamente se establecen los datos porque el middleware se encarga de buscar al usuario
+    req.user.name = name;
+    req.user.email = email;
+
+    // Se tiene que realizar una validación, el email debe ser unico y no debe coincidir con uno existente
+    // Si solamente se quiere cambiar el nombre del usuario, validara tambien el email, es algo que se debe omitir
+    const userExists = await User.findOne({ email })
+    // Tambien verifica que el usuario existente no sea el mismo usuario que ha sido autenticado
+    if (userExists && userExists.id.toString() !== req.user.id.toString()) {
+      const error = new Error('Ese email ya esta registrado');
+      res.status(409).json({ error: error.message })
+      return
+    }
+
+
+
+
+    // Realiza los cambios en la base de datos    
+    try {
+      await req.user.save();
+      res.send('Perfil actualizado correctamente')
+    } catch (error) {
+      res.status(500).send('Hubo un error')
+    }
+
+  }
 }
 
 

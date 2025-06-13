@@ -57,9 +57,29 @@ router.get('/user',
   AuthController.user
 )
 
-
 // En postman, luego de autenticarse al iniciar sesión, copia el token
 // Añade un nuevo request (petición) de tipo GET, hacia localhost:4000/api/auth/user
 // pega el token en "Bearer Token" y al realizar la petición devuelve los datos del usuario
+
+
+/** Profile */
+// Actualizar el perfil del usuario
+router.put('/profile',
+  // Requiere estar auntenticado
+  authenticate,
+  // Validacion del nombre y el email
+  body('name').notEmpty().withMessage('El nombre no puede ir vacio'),
+  body('email').isEmail().withMessage('E-mail no valido'),
+  handleInputErrors,
+  AuthController.updateProfile)
+
+// Añade una nueva carpeta en Postman llamada PROFILE para agrupar los endpoints relacionados a profile
+// PUT - localhost:4000/api/auth/profile
+// BODY
+// {
+//   "name": "Juan el Fullstack",
+//     "email": "admin@correo.com"
+// }
+// AUTH: Bearer Token - (JWT generado al autenticarse)
 
 export default router;
