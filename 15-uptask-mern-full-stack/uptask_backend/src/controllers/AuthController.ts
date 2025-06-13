@@ -243,13 +243,42 @@ export class AuthController {
       return
     }
 
-
-
-
     // Realiza los cambios en la base de datos    
     try {
       await req.user.save();
       res.send('Perfil actualizado correctamente')
+    } catch (error) {
+      res.status(500).send('Hubo un error')
+    }
+  }
+
+  // Metodo para actualizar la contraseña
+  static updateCurrentUserPassword = async (req: Request, res: Response) => {
+    // No se va a generar un token y enviarlo al email del usuario
+
+    // Obten los campos del body
+    const { current_password, password } = req.body
+
+    // Debes consultar en la base de datos y obtener el usuario
+    const user = await User.findById(req.user.id);
+
+    // Recuerda que esta función compara la contraseña del usuario sin hashear (lo que ha ingresado desde el formulario) con la contraseña hasheada del usuario
+    const isPasswordCorrect = await checkPassword(current_password, user.password);
+
+    // Si no es la contraseña correcta
+    if (!isPasswordCorrect) {
+      const error = new Error('El Password actual es incorrecto')
+      res.status(401).json({ error: error.message })
+      return
+    }
+
+    try {
+      // Establece en el campo password la contraseña hasheada
+      user.password = await hashPassword(password)
+
+      // Guarda los cambios en la base de datos y da una respuesta
+      await user.save()
+      res.send('El Password se modifico correctamente')
     } catch (error) {
       res.status(500).send('Hubo un error')
     }

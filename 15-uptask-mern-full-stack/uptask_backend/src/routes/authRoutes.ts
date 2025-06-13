@@ -82,4 +82,31 @@ router.put('/profile',
 // }
 // AUTH: Bearer Token - (JWT generado al autenticarse)
 
+
+// Para cambiar el password debes garantizar que la persona sepa su password anterior
+router.post('/update-password',
+  authenticate,
+  // Valida los 3 passwords
+  body('current_password').notEmpty().withMessage('El password actual no puede ir vacio'),
+  body('password').isLength({ min: 8 }).withMessage('El password es muy corto, minimo 8 caracteres'),
+  // Recuerda que la validación de la nueva contraseña ingresada se hace aqui, el valor ingresado en el campo password debe ser igual al valor de este campo
+  body('password_confirmation').custom((value, { req }) => {
+    if (value !== req.body.password) {
+      throw new Error('Los Password no son iguales')
+    }
+    return true
+  }),
+  handleInputErrors,
+  AuthController.updateCurrentUserPassword,
+)
+
+// POST - localhost:4000/api/auth/update-password
+// BODY
+// {
+//   "current_password": "password",
+//     "password": "password2",
+//       "password_confirmation": "password2"
+// }
+// AUTH: Bearer Token - (JWT generado al autenticarse)
+
 export default router;
