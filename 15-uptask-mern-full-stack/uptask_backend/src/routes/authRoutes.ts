@@ -109,4 +109,20 @@ router.post('/update-password',
 // }
 // AUTH: Bearer Token - (JWT generado al autenticarse)
 
+
+// Verificar la contraseña del usuario
+router.post('/check-password',
+  authenticate,
+  body('password').notEmpty().withMessage('El password no puede ir vacio'),
+  handleInputErrors,
+  AuthController.checkPassword,
+)
+
+// POST - localhost:4000/api/auth/check-password
+// BODY
+// {
+//   "password": "password"
+// }
+// AUTH: Bearer Token - (JWT generado al autenticarse)
+
 export default router;
