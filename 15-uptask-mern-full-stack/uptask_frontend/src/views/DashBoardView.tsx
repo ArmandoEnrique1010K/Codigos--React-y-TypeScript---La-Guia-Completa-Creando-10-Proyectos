@@ -7,14 +7,18 @@ import {
   Transition,
 } from "@headlessui/react";
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteProject, getProjects } from "@/api/ProjectAPI";
 import { toast } from "react-toastify";
 import { useAuth } from "@/hooks/useAuth";
 import { isManager } from "@/utils/policies";
+import DeleteProjectModal from "@/components/projects/DeleteProjectModal";
 
 export default function DashBoardView() {
+  // Instancia de useLocation
+  const navigate = useNavigate();
+
   // Renombra las variables traidas de useAuth
   const { data: user, isLoading: authLoading } = useAuth();
 
@@ -149,7 +153,15 @@ export default function DashBoardView() {
                               <button
                                 type="button"
                                 className="block px-3 py-1 text-sm leading-6 text-red-500"
-                                onClick={() => mutate(project._id)}
+                                // onClick={() => mutate(project._id)}
+
+                                // Navega hacia la misma URL y añade un query param deleteProject
+                                onClick={() =>
+                                  navigate(
+                                    location.pathname +
+                                      `?deleteProject=${project._id}`
+                                  )
+                                }
                               >
                                 Eliminar Proyecto
                               </button>
@@ -175,6 +187,9 @@ export default function DashBoardView() {
             </Link>
           </p>
         )}
+
+        {/* Muestra la ventana modal de borrar el proyecto */}
+        <DeleteProjectModal />
       </>
     );
 }
