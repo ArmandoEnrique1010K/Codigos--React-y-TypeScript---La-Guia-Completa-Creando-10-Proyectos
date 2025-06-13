@@ -42,6 +42,8 @@ export const noteSchema = z.object({
   content: z.string(),
   createdBy: userSchema,
   task: z.string(),
+  // La fecha de creación
+  createdAt: z.string()
 })
 
 export type Note = z.infer<typeof noteSchema>
@@ -70,6 +72,10 @@ export const taskSchema = z.object({
     _id: z.string(), // Tambien se requiere el id
     user: userSchema,
     status: taskStatusSchema
+  })),
+  // Campo para las notas, puedes añadir más propiedades con extend
+  notes: z.array(noteSchema.extend({
+    createdBy: userSchema
   })),
   createdAt: z.string(),
   updatedAt: z.string(),

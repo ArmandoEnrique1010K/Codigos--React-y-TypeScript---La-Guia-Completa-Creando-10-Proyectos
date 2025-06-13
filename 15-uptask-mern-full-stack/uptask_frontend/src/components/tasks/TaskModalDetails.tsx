@@ -122,7 +122,7 @@ export default function TaskModalDetails() {
                     {/* Muestra el historial de cambios si hay al menos 1 cambio en completedBy (recuerda que cuando se crea una tarea, completedBy se inicializa como null) */}
                     {data.completedBy.length ? (
                       <>
-                        <p className="text-2xl text-slate-500 mb-2">
+                        <p className="font-bold text-2xl text-slate-600 my-5">
                           Historial de cambios
                         </p>
 
@@ -160,8 +160,8 @@ export default function TaskModalDetails() {
                       </select>
                     </div>
 
-                    {/* Renderiza el componente de panel de notas */}
-                    <NotesPanel />
+                    {/* Renderiza el componente de panel de notas, pasa las notas como prop */}
+                    <NotesPanel notes={data.notes} />
                   </DialogPanel>
                 </TransitionChild>
               </div>

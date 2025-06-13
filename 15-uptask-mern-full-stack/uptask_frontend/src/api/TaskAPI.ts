@@ -43,9 +43,15 @@ export async function getTaskById({ projectId, taskId }: Pick<TaskAPI, 'projectI
 
     // Hay un problema si una tarea tiene el campo completedBy el valor null, mostrara un error en la consola, si se imprime data
 
+    /* */
+
+    // Recordar que al imprimir data, tambien incluye la propiedad notes con los datos de cada nota
+
     const response = taskSchema.safeParse(data)
 
     if (response.success) {
+      // Al imprimir response.data, si no trae los datos de las notas, se tiene que modifcar taskSchema
+      console.log(response.data)
       return response.data
     }
 
