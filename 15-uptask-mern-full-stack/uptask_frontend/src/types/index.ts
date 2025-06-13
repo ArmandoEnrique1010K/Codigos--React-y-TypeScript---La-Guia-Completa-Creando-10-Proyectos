@@ -5,6 +5,7 @@ import { z } from 'zod';
 export const authSchema = z.object({
   name: z.string(),
   email: z.string().email(),
+  current_password: z.string(), // Añade el campo de la contraseña actual
   password: z.string(),
   password_confirmation: z.string(),
   token: z.string()
@@ -18,6 +19,12 @@ export type RequestConfirmationCodeForm = Pick<Auth, 'email'>
 export type ForgotPasswordForm = Pick<Auth, "email">
 export type ConfirmToken = Pick<Auth, "token">
 export type NewPasswordForm = Pick<Auth, "password" | "password_confirmation">
+
+// Type para el formulario de perfil de usuario
+export type UserProfileForm = Pick<User, 'name' | 'email'>
+
+// Añade un type para el formulario de cambiar la contraseña
+export type UpdateCurrentUserPasswordForm = Pick<Auth, 'current_password' | 'password' | 'password_confirmation'>;
 
 /** Users */
 
@@ -34,8 +41,7 @@ export const userSchema = authSchema.pick({
 // Infiere el tipo de dato de userSchema
 export type User = z.infer<typeof userSchema>
 
-// Type para el formulario de perfil de usuario
-export type UserProfileForm = Pick<User, 'name' | 'email'>
+
 
 // Una nota se encuentra dentro de una tarea, por lo cual se define antes que Tasks
 
