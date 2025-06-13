@@ -20,7 +20,10 @@ router.use(authenticate)
 router.post('/',
   // llama al middleware de authenticate
   // authenticate,
-  hasAuthorization, // No olvidar el middleware
+  // No olvidar el middleware
+
+  // Corrección, quitar el middleware hasAuthorization
+  // hasAuthorization,
   body('projectName')
     .notEmpty().withMessage('El nombre del proyecto es obligatorio'),
   body('clientName')
@@ -55,11 +58,13 @@ router.put('/:id',
   body('description')
     .notEmpty().withMessage('La descripción del proyecto es obligatoria'),
   handleInputErrors,
+  hasAuthorization,
   ProjectController.updateProject)
 
 router.delete('/:id',
   param('id').isMongoId().withMessage('ID no válido'),
   handleInputErrors,
+  hasAuthorization,
   ProjectController.deleteProject)
 
 
@@ -71,6 +76,7 @@ router.param('projectId',
 )
 
 router.post('/:projectId/tasks',
+  hasAuthorization,
   body('name')
     .notEmpty().withMessage('El nombre de la tarea es obligatorio'),
   body('description')
