@@ -17,7 +17,8 @@ export default function NotesPanel({ notes }: NotePanelProps) {
           <>
             <p className="font-bold text-2xl text-slate-600 my-5">Notas:</p>
             {notes.map((note) => (
-              <NoteDetail />
+              // Pasa las props necesarias, note contiene un objeto que contiene los datos de cada nota
+              <NoteDetail key={note._id} note={note} />
             ))}
           </>
         ) : (

@@ -33,7 +33,7 @@ export default function TaskModalDetails() {
   const show = taskId ? true : false;
 
   const { data, isError, error } = useQuery({
-    queryKey: ["task", taskId],
+    queryKey: ["task", taskId], // Se tiene que invalidar este key cuando se agrega una tarea
     queryFn: () => getTaskById({ projectId, taskId }),
     enabled: !!taskId,
     retry: false,
