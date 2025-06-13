@@ -1,7 +1,11 @@
+import { deleteNote } from "@/api/NoteAPI";
 import { useAuth } from "@/hooks/useAuth";
 import { Note } from "@/types/index";
 import { formatDate } from "@/utils/utils";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useMemo } from "react";
+import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 type NoteDetailProps = {
   note: Note;
@@ -14,6 +18,28 @@ export default function NoteDetail({ note }: NoteDetailProps) {
 
   // Debes verificar si el usuario autenticado es la persona que ha creado la nota para que lo pueda eliminar
   const canDelete = useMemo(() => data?._id === note.createdBy._id, [data]);
+
+  // Extrae el id del parametro de la URL
+  const params = useParams();
+  const projectId = params.projectId!;
+
+  // Extrae los query params de la URL
+  const queryParams = new URLSearchParams(location.search);
+  const taskId = queryParams.get("viewTask")!;
+
+  // Instancia de useQueryClient
+  const queryClient = useQueryClient();
+
+  // Instancia de useMutation
+  const { mutate } = useMutation({
+    mutationFn: deleteNote,
+    onError: (error) => toast.error(error.message),
+    onSuccess: (data) => {
+      toast.success(data);
+      // Invalida el queryKey
+      queryClient.invalidateQueries({ queryKey: ["task", taskId] });
+    },
+  });
 
   if (isLoading) return "Cargando...";
 
@@ -29,7 +55,16 @@ export default function NoteDetail({ note }: NoteDetailProps) {
           {formatDate(note.createdAt)}
         </p>
       </div>
-      {canDelete && <button type="button" className="bg-red-400 hover:bg-red-500 p-2 text-xs text-white font-bold cursor-pointer transition-colors">Eliminar</button>}
+      {canDelete && (
+        <button
+          type="button"
+          className="bg-red-400 hover:bg-red-500 p-2 text-xs text-white font-bold cursor-pointer transition-colors"
+          // Llama a la función mutate directamente
+          onClick={() => mutate({ projectId, taskId, noteId: note._id })}
+        >
+          Eliminar
+        </button>
+      )}
     </div>
   );
 }
