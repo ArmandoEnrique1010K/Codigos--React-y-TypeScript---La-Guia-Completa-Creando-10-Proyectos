@@ -26,6 +26,9 @@ export type UserProfileForm = Pick<User, 'name' | 'email'>
 // Añade un type para el formulario de cambiar la contraseña
 export type UpdateCurrentUserPasswordForm = Pick<Auth, 'current_password' | 'password' | 'password_confirmation'>;
 
+// Type para el formulario de cambio de contraseña
+export type CheckPasswordForm = Pick<Auth, 'password'>
+
 /** Users */
 
 // Schema de usuario que fue autenticado

@@ -9,9 +9,13 @@ import {
 import { useNavigate, useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import ErrorMessage from "../ErrorMessage";
+import { CheckPasswordForm } from "@/types/index";
+import { useMutation } from "@tanstack/react-query";
+import { checkPassword } from "@/api/AuthAPI";
+import { toast } from "react-toastify";
 
 export default function DeleteProjectModal() {
-  const initialValues = {
+  const initialValues: CheckPasswordForm = {
     password: "",
   };
   const location = useLocation();
@@ -27,7 +31,26 @@ export default function DeleteProjectModal() {
     formState: { errors },
   } = useForm({ defaultValues: initialValues });
 
-  const handleForm = async (formData) => {};
+  // Recuerda que con mutation se utiliza para tener todas las funciones y datos de las mutaciones
+
+  // Pero como van a haber 2 mutaciones: 1 para revisar el password y la otra para eliminar el proyecto
+  const checkUserPaswordMutation = useMutation({
+    mutationFn: checkPassword,
+    onError: (error) => toast.error(error.message),
+  });
+
+  const handleForm = async (formData: CheckPasswordForm) => {
+    // checkUserPaswordMutation.mutate(formData);
+
+    // Al escribir el password mal y pulsar el botón de eliminar proyecto en la ventana modal, primero aparece el mensaje de la consola y luego realiza la mutación, ejecuta la función mutate
+    // console.log("Despues de la mutación");
+
+    // Se tiene que utilizar la versión asincrona de mutate con el metodo mutateAsync
+    await checkUserPaswordMutation.mutateAsync(formData);
+
+    console.log("Despues de la mutación");
+    // Si el password es incorrecto, ya no imprimira el mensaje de la consola
+  };
 
   return (
     <Transition appear show={show} as={Fragment}>
