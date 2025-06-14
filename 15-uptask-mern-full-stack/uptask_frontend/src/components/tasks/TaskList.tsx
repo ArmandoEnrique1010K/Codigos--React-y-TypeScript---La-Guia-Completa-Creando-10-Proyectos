@@ -1,4 +1,4 @@
-import { DndContext } from "@dnd-kit/core";
+import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { Task } from "@/types/index";
 import TaskCard from "./TaskCard";
 import { statusTranslations } from "@/locales/es";
@@ -36,13 +36,34 @@ export default function TaskList({ tasks, canEdit }: TaskListProps) {
     return { ...acc, [task.status]: currentGroup };
   }, initialStatusGroups);
 
+  // Pasa un evento, el tipo de dato es DragEndEvent
+  const handleDragEnd = (e: DragEndEvent) => {
+    // Arrastra la tarea hacia un dropabble para imprimir el mensaje
+    // console.log("Soltates...");
+
+    // Al imprimir el evento e, muestra un objeto que contiene la prop active, dnetro contiene un id que es el id de la tarea definido en useDraggable, la propiedad over contiene otro id que es el id de donde se esta dejando el elemento, si se arrastra el elemento hacia cualquier otra parte (que no sea el elemento draggable), simplemente la propiedad over tiene el valor null
+    // console.log(e);
+
+    // Obten las propiedades necesarias
+    const { over, active } = e;
+
+    // Arrastra la tarea hacia un droppable para imprimir el valor valido
+    if (over && over.id) {
+      console.log("Valido...");
+    } else {
+      console.log("No Valido...");
+    }
+  };
+
   return (
     <>
       <h2 className="text-5xl font-black my-10">Tareas</h2>
 
       <div className="flex gap-5 overflow-x-scroll 2xl:overflow-auto pb-32">
         {/* Debes llamar al componente DndContext y rodear todo el contenido que se podra arrastrar, se trata del contexto de Drag and drop, puedes definir varios contextos en una aplicacion web */}
-        <DndContext>
+
+        {/* Soporta varias prop: onDragEnd, cuando sueltas el elemento en un droppable */}
+        <DndContext onDragEnd={handleDragEnd}>
           {Object.entries(groupedTasks).map(([status, tasks]) => (
             <div key={status} className="min-w-[300px] 2xl:min-w-0 2xl:w-1/5">
               <h3
@@ -52,7 +73,8 @@ export default function TaskList({ tasks, canEdit }: TaskListProps) {
               </h3>
 
               {/* Muestra el componente DropTask */}
-              <DropTask />
+              {/* Pasale el estatus de la tarea como prop */}
+              <DropTask status={status} />
               <ul className="mt-5 space-y-5">
                 {tasks.length === 0 ? (
                   <li className="text-gray-500 text-center pt-3">
