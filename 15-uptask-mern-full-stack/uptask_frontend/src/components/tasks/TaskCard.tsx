@@ -60,6 +60,17 @@ export default function TaskCard({ task, canEdit }: TaskCardProps) {
 
         // translate3d permite mover un elemento en el eje x, y, y z (fondo, no se aplica en este caso)
         transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+
+        // Como no se puede colocar las configuraciones de dnd-kit en el elemento padre li porque elimina las funcionalidades del menu de una tarea, se puede optar por añadir unos estilos
+
+        // Añade estos estilos, recuerda que se aplica en el contenido arrastrable
+        padding: "1.25rem",
+        backgroundColor: "#FFF",
+        width: "300px",
+        display: "flex",
+        borderWidth: "1px",
+        borderColor: "rgb(203 213 225)",
+        // borderColor: "rgb(203 213 225 / var(--tw-border-opacity))",
       }
     : undefined;
 
@@ -75,15 +86,15 @@ export default function TaskCard({ task, canEdit }: TaskCardProps) {
         style={style}
         className="min-w-0 flex flex-col gap-y-4"
       >
-        <button
-          type="button"
+        {/* Convierte el boton a un parrafo y elimina el evento onClick */}
+        <p
           className="text-xl font-bold text-slate-600 text-left"
           // Correción, debe ser editTask y no viewTask
           // Ahora al hacer clic en el titulo de una tarea, abre la ventana de ver tarea
-          onClick={() => navigate(location.pathname + `?viewTask=${task._id}`)}
+          // onClick={() => navigate(location.pathname + `?viewTask=${task._id}`)}
         >
           {task.name}
-        </button>
+        </p>
         <p className="text-slate-500">{task.description}</p>
       </div>
       <div>
