@@ -1,8 +1,12 @@
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
-import { Task } from "@/types/index";
+import { Task, TaskStatus } from "@/types/index";
 import TaskCard from "./TaskCard";
 import { statusTranslations } from "@/locales/es";
 import DropTask from "./DropTask";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { updateStatus } from "@/api/TaskAPI";
+import { toast } from "react-toastify";
+import { useParams } from "react-router-dom";
 
 type TaskListProps = {
   tasks: Task[];
@@ -30,6 +34,28 @@ const statusStyles: { [key: string]: string } = {
 };
 
 export default function TaskList({ tasks, canEdit }: TaskListProps) {
+  // Obten el projectId de la URL
+  const params = useParams();
+  const projectId = params.projectId!;
+
+  const queryClient = useQueryClient();
+
+  // Llama al hook useMutation para actualizar el estado desde el backend
+  const { mutate } = useMutation({
+    mutationFn: updateStatus,
+    onError: (error) => {
+      toast.error(error.message);
+    },
+    onSuccess: (data) => {
+      toast.success(data);
+      queryClient.invalidateQueries({ queryKey: ["project", projectId] });
+
+      // No es necesario invalidar el queryKey de taskId, porque al arrastrar una tarea, luego pulsas ver tarea, ahi se hace la nueva consulta...
+
+      // queryClient.invalidateQueries({ queryKey: ["task", taskId] });
+    },
+  });
+
   const groupedTasks = tasks.reduce((acc, task) => {
     let currentGroup = acc[task.status] ? [...acc[task.status]] : [];
     currentGroup = [...currentGroup, task];
@@ -49,7 +75,20 @@ export default function TaskList({ tasks, canEdit }: TaskListProps) {
 
     // Arrastra la tarea hacia un droppable para imprimir el valor valido
     if (over && over.id) {
-      console.log("Valido...");
+      // console.log("Valido...");
+
+      // Imprime el id de la tarea que fue arrastrada
+      // console.log(active.id);
+
+      const taskId = active.id.toString();
+
+      // Imprime el estado de la terea
+      // console.log(over.id)
+
+      const status = over.id as TaskStatus;
+
+      // taskId es de tipo string y status debe ser uno de los valores especificados en TaskStatus
+      mutate({ projectId, taskId, status });
     } else {
       console.log("No Valido...");
     }
