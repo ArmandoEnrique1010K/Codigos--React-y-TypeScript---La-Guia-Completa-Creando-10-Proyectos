@@ -17,6 +17,7 @@ export default function ProjectDetailsView() {
   const params = useParams();
   const projectId = params.projectId!;
 
+  // data no deberia ser de tipo any
   const { data, isLoading, isError } = useQuery({
     queryKey: ["project", projectId],
     queryFn: () => getProjectById(projectId),

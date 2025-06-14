@@ -107,6 +107,7 @@ export const projectSchema = z.object({
   manager: z.string(userSchema.pick({ _id: true })) // Añade la propiedad manager
 })
 
+
 export const dashBoardSchema = z.array(
   projectSchema.pick({
     _id: true,
@@ -116,6 +117,13 @@ export const dashBoardSchema = z.array(
     manager: true // Muestra la propiedad manager
   })
 )
+
+// Añade un schema nuevo, datos de edición de un proyecto, no se incluyen las tareas
+export const editProjectSchema = projectSchema.pick({
+  projectName: true,
+  clientName: true,
+  description: true,
+})
 
 export type Project = z.infer<typeof projectSchema>
 
