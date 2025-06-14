@@ -89,6 +89,40 @@ export default function TaskList({ tasks, canEdit }: TaskListProps) {
 
       // taskId es de tipo string y status debe ser uno de los valores especificados en TaskStatus
       mutate({ projectId, taskId, status });
+
+      // Al arrastrar una tarea, se ve que hay un retardo en llamar a la función para actualizar el estado de la tarea
+
+      // Puedes utilizar queryClient, la función asincrona setQueryData permite agregar datos adicionales o actualizarlos para que no espere a invalidar los querys y realizar la peticion de forma optimista. Lleva un queryKey y una función para actualizar
+
+      // https://tanstack.com/query/latest/docs/reference/QueryClient#queryclientsetquerydata
+
+      // Toma el queryKey de project junto con el projectId
+      queryClient.setQueryData(["project", projectId], (prevData) => {
+        // Arrastra una tarea y imprime los datos previos antes de que se realice los cambios al arrastrar la tarea
+        // console.log(prevData)
+
+        // Busca la tarea que es igual a taskId
+        const updatedTasks = prevData.task.map((task: Task) => {
+          if (task._id === taskId) {
+            // Si es igual, devuelve una copia de la tarea y pasa el nuevo status
+            return {
+              ...task,
+              status,
+            };
+          }
+
+          // Mantiene las demás tareas tal y como estan
+          return task;
+        });
+
+        // Devuelve las tareas actualizadas
+        return {
+          ...prevData,
+          tasks: updatedTasks,
+        };
+
+        // En lugar de esperar a que se invaliden los queryKeys y se haga la petición, solamente se presenta los datos previos y se adelanta (detras de escena hace la petición hacia el backend porque muestra el mensaje de exito, pero en el frontend los cambios se aplican en la vista del usuario antes que mostrar los datos modificados traidos desde el backend). La actualización es optimista.
+      });
     } else {
       console.log("No Valido...");
     }
