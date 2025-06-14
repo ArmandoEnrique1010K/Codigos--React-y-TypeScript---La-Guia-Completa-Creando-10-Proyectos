@@ -54,12 +54,21 @@ export default function TaskCard({ task, canEdit }: TaskCardProps) {
 
   /* */
   // Llama a transform y aplica los estilos
-  const style = transform ? {} : undefined;
+  const style = transform
+    ? {
+        // translateX permite mover el elemento en el eje X (izquierda a derecha), existe tambien un translateY para moverlas de arriba a abajo
+
+        // translate3d permite mover un elemento en el eje x, y, y z (fondo, no se aplica en este caso)
+        transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+      }
+    : undefined;
 
   return (
+    // No coloques las configuraciones de dnd-kit en este elemento, porque deshabilita la funcionalidad de las opciones de la tarea: ver, editar y eliminar
     <li className="p-5 bg-white border border-slate-300 flex justify-between gap-3">
       {/* Toma este elemento padre div, pasale la funcionalidad de listeners tal y como se muestra para que aplique las configuraciones, tambien los atributtes y setNodeRef, tambien especifica los estilos que se aplicaran */}
       <div
+        // Configuraciones de dnd-kit
         {...listeners}
         {...attributes}
         ref={setNodeRef}
