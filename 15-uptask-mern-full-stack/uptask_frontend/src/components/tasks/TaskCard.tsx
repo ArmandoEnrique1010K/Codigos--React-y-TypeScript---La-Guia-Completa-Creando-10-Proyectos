@@ -1,4 +1,4 @@
-import { Task } from "@/types/index";
+import { TaskProject } from "@/types/index";
 import {
   Menu,
   MenuButton,
@@ -15,7 +15,8 @@ import { toast } from "react-toastify";
 import { useDraggable } from "@dnd-kit/core";
 
 type TaskCardProps = {
-  task: Task;
+  // Corrige el type de task
+  task: TaskProject;
   canEdit: boolean;
 };
 export default function TaskCard({ task, canEdit }: TaskCardProps) {

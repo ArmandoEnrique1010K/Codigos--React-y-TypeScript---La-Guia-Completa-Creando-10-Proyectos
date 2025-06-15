@@ -1,5 +1,5 @@
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
-import { Task, TaskStatus } from "@/types/index";
+import { Project, TaskProject, TaskStatus } from "@/types/index";
 import TaskCard from "./TaskCard";
 import { statusTranslations } from "@/locales/es";
 import DropTask from "./DropTask";
@@ -9,12 +9,15 @@ import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 
 type TaskListProps = {
-  tasks: Task[];
+  // tasks: Task[];
+  // Corrige el type de tasks
+  tasks: TaskProject[];
   canEdit: boolean;
 };
 
 type GroupedTask = {
-  [key: string]: Task[];
+  // [key: string]: Task[];
+  [key: string]: TaskProject[];
 };
 
 const initialStatusGroups: GroupedTask = {
@@ -96,13 +99,14 @@ export default function TaskList({ tasks, canEdit }: TaskListProps) {
 
       // https://tanstack.com/query/latest/docs/reference/QueryClient#queryclientsetquerydata
 
-      // Toma el queryKey de project junto con el projectId
-      queryClient.setQueryData(["project", projectId], (prevData) => {
+      // Toma el queryKey de project junto con el projectId, asigna el type de Project
+      queryClient.setQueryData(["project", projectId], (prevData: Project) => {
         // Arrastra una tarea y imprime los datos previos antes de que se realice los cambios al arrastrar la tarea
         // console.log(prevData)
 
         // Busca la tarea que es igual a taskId
-        const updatedTasks = prevData.task.map((task: Task) => {
+        // Quita el type de task
+        const updatedTasks = prevData.tasks.map((task) => {
           if (task._id === taskId) {
             // Si es igual, devuelve una copia de la tarea y pasa el nuevo status
             return {

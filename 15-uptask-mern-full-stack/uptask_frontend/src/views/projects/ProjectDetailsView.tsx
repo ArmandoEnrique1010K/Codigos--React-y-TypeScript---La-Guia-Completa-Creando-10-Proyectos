@@ -1,4 +1,4 @@
-import { getProjectById } from "@/api/ProjectAPI";
+import { getFullProjectById } from "@/api/ProjectAPI";
 import AddTaskModal from "@/components/tasks/AddTaskModal";
 import EditTaskData from "@/components/tasks/EditTaskData";
 import TaskList from "@/components/tasks/TaskList";
@@ -20,13 +20,18 @@ export default function ProjectDetailsView() {
   // data no deberia ser de tipo any
   const { data, isLoading, isError } = useQuery({
     queryKey: ["project", projectId],
-    queryFn: () => getProjectById(projectId),
+    // Llama a la nueva función, si colocas el cursor en getFullProjectById se ven las propiedades
+    queryFn: () => getFullProjectById(projectId),
     retry: false,
   });
 
   // Para evitar que una función se ejecute varias veces se utiliza useMemo, memoriza el resultado de una función hasta que una de sus depedencias cambie su valor
 
   // Función para verificar que el usuario pueda editar
+
+  /* */
+
+  // La propiedad manager ahora no existe, se debe modificar la validación de schemas o crear otra función
   const canEdit = useMemo(() => data?.manager === user?._id, [data, user]);
   // console.log(canEdit);
 
@@ -63,6 +68,7 @@ export default function ProjectDetailsView() {
         )}
 
         {/* Pasa la prop canEdit */}
+        {/* Se muestra un error, corrige el type de las props */}
         <TaskList tasks={data.tasks} canEdit={canEdit} />
         <AddTaskModal />
         <EditTaskData />

@@ -94,9 +94,21 @@ export const taskSchema = z.object({
   updatedAt: z.string(),
 })
 
+// Genera un nuevo schema
+export const taskProjectSchema = taskSchema.pick({
+  // Extrae las propiedades requeridas
+  _id: true,
+  name: true,
+  description: true,
+  status: true,
+})
+
 export type Task = z.infer<typeof taskSchema>;
 
 export type TaskFormData = Pick<Task, 'name' | 'description'>
+
+// Infiere el tipo de taskProjectSchema
+export type TaskProject = z.infer<typeof taskProjectSchema>
 
 /** Proyects */
 export const projectSchema = z.object({
@@ -104,7 +116,11 @@ export const projectSchema = z.object({
   projectName: z.string(),
   clientName: z.string(),
   description: z.string(),
-  manager: z.string(userSchema.pick({ _id: true })) // Añade la propiedad manager
+  manager: z.string(userSchema.pick({ _id: true })), // Añade la propiedad manager
+  // Al llamar a las propiedades con un Pick cuando se define un type, puedes agregar nuevas propiedades al schema
+  tasks: z.array(taskProjectSchema),
+  // Tambien se obtiene el team
+  team: z.array(z.string(userSchema.pick({ _id: true })))
 })
 
 
