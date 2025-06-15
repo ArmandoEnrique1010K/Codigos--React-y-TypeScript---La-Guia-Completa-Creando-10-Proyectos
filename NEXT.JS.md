@@ -159,4 +159,56 @@ route --> componente para endpoint de REST API
 
 ---
 
+## Rendering en Next.js
+
+Componentes del cliente y el servidor
+
+### Server Components
+
+Una de las principales caracteristicas que tiene Next.js desde que fue lanzado es poder ejecutar codigo de React en el servidor
+
+En versiones anteriores el mismo codigo se ejecutaba primero en el servidor y despues en el cliente
+
+Desde Next 13, con el app directory, todos los componentes se ejecutan por default en el servidor
+
+En caso de que sea necesarios se puede añadir que un componente sea ejecutado en el cliente con la directiva "use client"
+
+Cuando tienes aplicaciones con componentes de servidor y cliente es muy importante mencionar que el codigo es unidireccional
+
+---
+
+Pirmero se ejecuta los componentes de servidor y luego los del cliente
+
+### Consideraciones server y client Components
+
+Un componente de servidor puede renderizar componentes de cliente sin problemas.
+
+Si tienes un componente de servidor y dentro se renderiza uno de cliente y dentro del cliente se renderiza un servidor, no va a funcionar
+
+Si tienes uno de servidor, dentro se tiene uno de cliente y dentro del componente de cliente se renderiza otro componente de tipo cliente, en automatico pasa a ser componente de cliente (aunque no tenga la directiva).
+
+
+
+### ¿Cuando utilizar Server Components?
+
+Obtener datos desde un ORM y mostrar la información.
+
+Ejecutar funciones del servidor y acceder a recursos unicamentes en el backend
+
+Autenticacion, API Keys o Tokens
+
+### ¿Cuando utilizar client Components?
+
+Cuando deseees utilizar eventos o añadir interaccion a tus aplicaicones por medio de onClick, onSubmit, onChange, etc.
+
+Si deseas utilizar los hooks de React como useState, useEffect y useReducer, etc.
+
+Utilizar librerias que no se ejecutan en el servidor como toast, zustand u otras que solo funcionan en el cliente.
+
+Utilizar API's del navegador como LocalStorage, Notification API, GeoLocation API, etc.
+
+Consumir datos de una API externa en JSON.
+
+
+
 
