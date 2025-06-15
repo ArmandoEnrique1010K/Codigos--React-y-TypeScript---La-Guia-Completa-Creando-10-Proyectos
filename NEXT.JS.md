@@ -112,4 +112,51 @@ export default function Home() {
 
 Guarda los cambios y se detecta los cambios y actualiza automaticamente el navegador.
 
+## Archivos reservados
+
+Son para organizar los proyectos
+
+Con el App Router Next.js agrego una gran cantidad de archivos reservados que cumplen ciertas funcionalidades y dan orden a tus aplicaciones.
+
+Tambien las carpetas forman parte importante de tus ya que cada carpeta sera una ruta
+
+## Carpetas en NEXT.JS
+
+Si se quiere estructura la URL de la forma /products/new, debes crear una carpeta products y dentro de ella una carpeta new (concepto de segmentos en Next.js)
+
+---
+
+NextJs escanea los archivos existentes, detecta una nueva carpeta en app  y si vas a 
+
+![](assets/2025-06-15-18-04-04-image.png)
+
+```tsx
+export default function ProductsPage() {
+  return <div>ProductsPage</div>;
+}
+
+```
+
+![](assets/2025-06-15-18-04-45-image.png)
+
+Si vas a localhost:3000/products, automaticamente se muestra el componente page.tsx (se encuentra dentro de la carpeta products)
+
+Ese fue el sistema de URLs y rutas
+
+## Convensiones de archivos .js, .jsx o tsx
+
+layout --> diseño global que comparte una URL o sus segmentos hijos, ayuda a no repetir tanto codigo
+
+page --> diseño unico para una URL
+
+loading --> componente que se muestra mientras carga una pagina con suspense
+
+not-fount --> componente que se muestra mientras un recurso no es encontrado - 404
+
+error --> componente que se muestra cuando hay errores inesperados.
+
+route --> componente para endpoint de REST API
+
+---
+
 
