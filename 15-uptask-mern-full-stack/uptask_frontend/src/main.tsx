@@ -29,3 +29,7 @@ createRoot(document.getElementById("root")!).render(
 
 // Documentación: https://dndkit.com/ & https://docs.dndkit.com/
 // Ejemplos: https://examples.dndkit.com/, el hook useDragable tiene varias opciones
+
+/* */
+
+// Al momento de desplegar en Vercel, como el proyecto tiene diferentes rutas y es un single page application, se mantiene las paginas cuando recargas, para aquello se crea el archivo vercel.json en la carpeta src, (el codigo dentro del archivo es universal, se puede utilizar para cualquier proyecto desplegado en Vercel)
