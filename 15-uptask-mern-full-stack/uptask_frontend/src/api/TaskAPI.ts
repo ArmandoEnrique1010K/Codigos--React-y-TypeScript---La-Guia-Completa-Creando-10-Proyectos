@@ -51,7 +51,7 @@ export async function getTaskById({ projectId, taskId }: Pick<TaskAPI, 'projectI
 
     if (response.success) {
       // Al imprimir response.data, si no trae los datos de las notas, se tiene que modifcar taskSchema
-      console.log(response.data)
+      // console.log(response.data)
       return response.data
     }
 
@@ -100,4 +100,5 @@ export async function updateStatus({ projectId, taskId, status }: Pick<TaskAPI, 
     }
   }
 }
+
 

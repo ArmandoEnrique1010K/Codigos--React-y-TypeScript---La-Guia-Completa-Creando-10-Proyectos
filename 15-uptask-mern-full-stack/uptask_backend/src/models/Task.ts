@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document, Types } from "mongoose";
+import Note from "./Note";
 
 const taskStatus = {
   PENDING: 'pending',
@@ -81,5 +82,47 @@ export const TaskSchema: Schema = new Schema({
   // Cuando agregas una tarea, revisa en la base de datos que se añade el campo completedBy
 }, { timestamps: true })
 
+/* */
+
+// Desde el frontend, si eliminas una tarea, se elimina, pero en notas (collección notes en la base de datos) se mantiene las notas referenciadas a la tarea eliminada
+
+// Puedes utilizar un middleware de mongoose, previamente conocido como hooks, son funciones que se ejecutan despues o antes de que ocurra cualquier acción
+
+// Middleware: https://mongoosejs.com/docs/middleware.html
+// Los middlewares son propios del schema
+
+// Antes de que se ejecute el metodo deleteOne en alguna acción
+// document retorna el documento eliminado
+
+TaskSchema.pre('deleteOne', { document: true, /* query: false */ }, async function () {
+  // No debe ser una función de flecha, porque el significado de this cambia si es una función de flecha
+
+  // Imprime el documento que se va a eliminar
+  // console.log(this)
+
+  // Imprime el id de la tarea, es un objectId
+  // console.log(this._id)
+
+  // Toma el id de la tarea
+  const taskId = this._id
+  if (!taskId) return;
+
+  // Si hay un id de la tarea, borra varias notas cuya propiedad task tiene el valor de taskId (por referencia de documentos, en la base de datos, al revisar la colección tasks, cada uno de ellos tiene una propiedad llamada notes que almacena los objectId de cada tarea
+  await Note.deleteMany({
+    task: taskId
+  })
+
+
+})
+
+// Si pasas document como false y query como true, aparece demasiada información
+// TaskSchema.pre('deleteOne', { document: false, query: true }, async function () {
+//   console.log(this)
+
+//   // Imprime el id de la tarea
+//   console.log(this.getQuery()._id)
+// })
+
+// El orden si importa, coloca el middleware de mongoose antes de definir el modelo
 const Task = mongoose.model<ITask>('Task', TaskSchema)
 export default Task
