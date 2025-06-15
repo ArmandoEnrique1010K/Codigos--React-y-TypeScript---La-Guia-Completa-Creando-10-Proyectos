@@ -125,27 +125,28 @@ export class ProjectController {
   }
 
   static updateProject = async (req: Request, res: Response) => {
-    const { id } = req.params
+    // const { id } = req.params
 
     try {
-      const project = await Project.findById(id)
+      // const project = await Project.findById(id)
 
-      if (!project) {
-        const error = new Error('Proyecto no encontrado')
-        res.status(404).json({ error: error.message })
-      }
+      // if (!project) {
+      //   const error = new Error('Proyecto no encontrado')
+      //   res.status(404).json({ error: error.message })
+      // }
 
-      // Comprueba que sea el manager del proyecto sea el usuario autenticado para modificar el proyecto
-      if (project.manager.toString() !== req.user.id.toString()) {
-        const error = new Error('Solo el manager puede actualizar un proyecto')
-        res.status(404).json({ error: error.message })
-      }
+      // // Comprueba que sea el manager del proyecto sea el usuario autenticado para modificar el proyecto
+      // if (project.manager.toString() !== req.user.id.toString()) {
+      //   const error = new Error('Solo el manager puede actualizar un proyecto')
+      //   res.status(404).json({ error: error.message })
+      // }
 
-      project.projectName = req.body.projectName
-      project.clientName = req.body.clientName
-      project.description = req.body.description
+      // Como project ya no existe, existe en el request (desde projectExists se almacena el project en el request), se llama a req.project
+      req.project.projectName = req.body.projectName
+      req.project.clientName = req.body.clientName
+      req.project.description = req.body.description
 
-      await project.save()
+      await req.project.save()
 
       res.send('Proyecto Actualizado')
     } catch (error) {
@@ -154,23 +155,24 @@ export class ProjectController {
   }
 
   static deleteProject = async (req: Request, res: Response) => {
-    const { id } = req.params
+    // const { id } = req.params
 
     try {
-      const project = await Project.findById(id)
+      // const project = await Project.findById(id)
 
-      if (!project) {
-        const error = new Error('Proyecto no encontrado')
-        res.status(404).json({ error: error.message })
-      }
+      // if (!project) {
+      //   const error = new Error('Proyecto no encontrado')
+      //   res.status(404).json({ error: error.message })
+      // }
 
-      // Comprueba que sea el manager del proyecto sea el usuario autenticado para eliminar el proyecto
-      if (project.manager.toString() !== req.user.id.toString()) {
-        const error = new Error('Solo el manager puede eliminar un proyecto')
-        res.status(404).json({ error: error.message })
-      }
+      // // Comprueba que sea el manager del proyecto sea el usuario autenticado para eliminar el proyecto
+      // if (project.manager.toString() !== req.user.id.toString()) {
+      //   const error = new Error('Solo el manager puede eliminar un proyecto')
+      //   res.status(404).json({ error: error.message })
+      // }
 
-      await project.deleteOne()
+      // Realiza el mismo procedimiento en delete
+      await req.project.deleteOne()
       res.send('Proyecto Eliminado')
     } catch (error) {
       console.log(error)
@@ -179,3 +181,7 @@ export class ProjectController {
 
   // No olvidar colocar el JWT del usuario autenticado en "Bearer Token" (Pestaña Auth) para realizar las solicitudes a los endpoints
 }
+
+/* */
+
+// Si se tiene codigo repetido en express, se recomienda colocarlo en un middleware

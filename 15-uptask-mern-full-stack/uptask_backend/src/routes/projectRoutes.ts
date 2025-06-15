@@ -49,8 +49,16 @@ router.get('/:id',
   ProjectController.getProjectById)
 
 
-router.put('/:id',
-  param('id').isMongoId().withMessage('ID no válido'),
+// Opcionalmente puedes mover la validación del parametro projectId hacia arriba, en este caso, antes de acutalizar un proyecto
+router.param('projectId',
+  projectExists
+)
+
+// Las funciones relacionadas deberian estar cerca de las funciones que las estan llamando
+
+// Cambia el parametro id por projectId
+router.put('/:projectId',
+  param('projectId').isMongoId().withMessage('ID no válido'),
   body('projectName')
     .notEmpty().withMessage('El nombre del proyecto es obligatorio'),
   body('clientName')
@@ -58,22 +66,22 @@ router.put('/:id',
   body('description')
     .notEmpty().withMessage('La descripción del proyecto es obligatoria'),
   handleInputErrors,
-  // hasAuthorization,
+
+  // Coloca hasAuthorization para utilizar el middleware que verifica que el usuario se ha autenticado, solamente el manager puede actualizar o eliminar un proyecto
+  hasAuthorization,
   ProjectController.updateProject)
 
-router.delete('/:id',
-  param('id').isMongoId().withMessage('ID no válido'),
+router.delete('/:projectId',
+  param('projectId').isMongoId().withMessage('ID no válido'),
   handleInputErrors,
-  // hasAuthorization,
+  hasAuthorization,
   ProjectController.deleteProject)
 
 
 
 /** Routes for task */
 
-router.param('projectId',
-  projectExists
-)
+
 
 router.post('/:projectId/tasks',
   hasAuthorization,

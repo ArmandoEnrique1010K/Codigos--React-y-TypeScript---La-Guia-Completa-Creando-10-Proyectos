@@ -10,6 +10,7 @@ declare global {
   }
 }
 
+// Revisa si el proyecto existe, si es correcto, pasa al siguiente middleware
 export async function projectExists(req: Request, res: Response, next: NextFunction) {
   try {
 

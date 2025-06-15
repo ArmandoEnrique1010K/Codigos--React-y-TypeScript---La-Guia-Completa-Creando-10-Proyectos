@@ -42,7 +42,7 @@ export function taskBelongsToProject(req: Request, res: Response, next: NextFunc
 // Middleware para validar si el usuario tiene autorización para crear tareas, actualizar y eliminar tareas
 export function hasAuthorization(req: Request, res: Response, next: NextFunction) {
 
-  console.log(req.project);
+  // console.log(req.project);
   // Si el usuario que realiza la acción, es diferente que el manager
   if (req.user.id.toString() !== req.project.manager.toString()) {
     const error = new Error('Acción no valida')
