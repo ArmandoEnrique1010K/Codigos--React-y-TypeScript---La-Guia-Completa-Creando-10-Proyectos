@@ -111,8 +111,6 @@ TaskSchema.pre('deleteOne', { document: true, /* query: false */ }, async functi
   await Note.deleteMany({
     task: taskId
   })
-
-
 })
 
 // Si pasas document como false y query como true, aparece demasiada información

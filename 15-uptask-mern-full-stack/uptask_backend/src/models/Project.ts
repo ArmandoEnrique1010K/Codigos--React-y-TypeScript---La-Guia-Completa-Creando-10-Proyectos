@@ -1,6 +1,7 @@
 import mongoose, { Schema, Document, PopulatedDoc, Types } from "mongoose";
-import { ITask } from "./Task";
+import Task, { ITask } from "./Task";
 import { IUser } from "./User";
+import Note from "./Note";
 
 export interface IProject extends Document {
   projectName: string
@@ -51,6 +52,28 @@ const ProjectSchema: Schema = new Schema({
   ],
   // Agrega un nuevo proyecto desde el frontend para ver que se tenga esa propiedad team (inicialmente un arreglo vacio)
 }, { timestamps: true })
+
+
+// Agrega el middleware para eliminar las tareas que corresponden al proyecto, se define antes del modelo, de lo contrairo no funcionara
+ProjectSchema.pre('deleteOne', { document: true }, async function () {
+  const projectId = this._id;
+  if (!projectId) return;
+
+  // Pero, al eliminar un proyecto, se ve que las notas de las tareas se mantienen en la base de datos, porque el middleware que se encuentra en Task esta registrado con el metodo de deleteOne
+  // Se tiene que eliminar las tareas y las notas.
+  // Tambien debe encontrar las tareas que pertenecen al proyecto
+  const tasks = await Task.find({
+    project: projectId
+  })
+
+  // Itera sobre las tareas relacionadas al proyecto y elimina las notas que corresponden a esa tarea
+  for (const task of tasks) {
+    await Note.deleteMany({ task: task.id })
+  }
+
+
+  await Task.deleteMany({ project: projectId })
+})
 
 
 const Project = mongoose.model<IProject>('Project', ProjectSchema)
