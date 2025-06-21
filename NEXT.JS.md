@@ -107,7 +107,6 @@ Imprime hola mundo
 export default function Home() {
   return <h1>Hola Mundo Next.js</h1>;
 }
-
 ```
 
 Guarda los cambios y se detecta los cambios y actualiza automaticamente el navegador.
@@ -134,7 +133,6 @@ NextJs escanea los archivos existentes, detecta una nueva carpeta en app  y si v
 export default function ProductsPage() {
   return <div>ProductsPage</div>;
 }
-
 ```
 
 ![](assets/2025-06-15-18-04-45-image.png)
@@ -187,8 +185,6 @@ Si tienes un componente de servidor y dentro se renderiza uno de cliente y dentr
 
 Si tienes uno de servidor, dentro se tiene uno de cliente y dentro del componente de cliente se renderiza otro componente de tipo cliente, en automatico pasa a ser componente de cliente (aunque no tenga la directiva).
 
-
-
 ### ¿Cuando utilizar Server Components?
 
 Obtener datos desde un ORM y mostrar la información.
@@ -209,6 +205,79 @@ Utilizar API's del navegador como LocalStorage, Notification API, GeoLocation AP
 
 Consumir datos de una API externa en JSON.
 
+## Prisma ORM
 
+Prisma es un ORM open Source que se puede utilizar con JavaScript o TypeScript.
+
+Consta de 3 herramientas: Prisma-Client, Prisma Migrate y Prisma Studio.
+
+### Herramientas de Prisma
+
+Prisma Cliente es el Query Builder o la herramienta que te permite consultar tu base de datos, soporta Node.js y TypeScript y se puede utilizar con Next.js sin ningun problema.
+
+Prisma Migrate, en Prisma puedes definir tus tablas y relaciones y esta herramienta se encarga de generar toda la base de datos por ti.
+
+Prisma Studio, es la unica herramienta de Prisma que no es Open Source pero se puede utilizar localmente, es para ver tu base de datos.
+
+### Bases de datos soportadas por Prisma
+
+MariaDB
+
+SQL Server 2017, 2019 y 2022
+
+MongoDB
+
+MySQL
+
+PostgreSQL 
+
+SQLite
+
+## Instalando prisma
+
+Introduce el comando `npm i @prisma/client` para utilizar Prisma y tener acceso a las funciones, además de la dependencia de desarrollo `npm i -D prisma`.
+
+Luego ejecuta `npx prisma init`, genera la carpeta de prisma y dentro se tiene un schema.prisma, ahi se coloca las tablas y las columnas de como se van a relacionar, por defecto utiliza postgresql
+
+![](assets/2025-06-21-18-26-20-image.png)
+
+```prisma
+generator client {
+  provider = "prisma-client-js"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+```
+
+Tambien genera el archivo .env, en donde se coloca la direccion de una base de datos (no funcional)
+
+```env
+DATABASE_URL="prisma+postgres://localhost:51213/?api_key=eyJkYXRhYmFzZVVybCI6InBvc3RncmVzOi8vcG9zdGdyZXM6cG9zdGdyZXNAbG9jYWxob3N0OjUxMjE0L3RlbXBsYXRlMT9zc2xtb2RlPWRpc2FibGUmY29ubmVjdGlvbl9saW1pdD0xJmNvbm5lY3RfdGltZW91dD0wJm1heF9pZGxlX2Nvbm5lY3Rpb25fbGlmZXRpbWU9MCZwb29sX3RpbWVvdXQ9MCZzaW5nbGVfdXNlX2Nvbm5lY3Rpb25zPXRydWUmc29ja2V0X3RpbWVvdXQ9MCIsIm5hbWUiOiJkZWZhdWx0Iiwic2hhZG93RGF0YWJhc2VVcmwiOiJwb3N0Z3JlczovL3Bvc3RncmVzOnBvc3RncmVzQGxvY2FsaG9zdDo1MTIxNS90ZW1wbGF0ZTE_c3NsbW9kZT1kaXNhYmxlJmNvbm5lY3Rpb25fbGltaXQ9MSZjb25uZWN0X3RpbWVvdXQ9MCZtYXhfaWRsZV9jb25uZWN0aW9uX2xpZmV0aW1lPTAmcG9vbF90aW1lb3V0PTAmc2luZ2xlX3VzZV9jb25uZWN0aW9ucz10cnVlJnNvY2tldF90aW1lb3V0PTAifQ"
+```
+
+Puedes utilizar render para crear una base de datos
+
+![](assets/2025-06-21-18-27-58-image.png)
+
+![](assets/2025-06-21-18-28-29-image.png)
+
+![](assets/2025-06-21-18-28-38-image.png)
+
+![](assets/2025-06-21-18-28-50-image.png)
+
+![](assets/2025-06-21-18-28-55-image.png)
+
+![](assets/2025-06-21-18-29-53-image.png)
+
+Selecciona la opcion de extenral DatabaseURL y  reemplaza la linea del codigo en env.-
+
+```.env
+DATABASE_URL="postgresql://root:jAssa4ywOu4SgV8wCDczDWAXfGKVP9KA@dpg-d1bk0cur433s739lq710-a.oregon-postgres.render.com/quiosconext_s6b9"
+```
 
 
