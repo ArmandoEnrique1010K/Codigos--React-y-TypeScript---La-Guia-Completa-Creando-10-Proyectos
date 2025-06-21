@@ -280,4 +280,24 @@ Selecciona la opcion de extenral DatabaseURL y  reemplaza la linea del codigo en
 DATABASE_URL="postgresql://root:jAssa4ywOu4SgV8wCDczDWAXfGKVP9KA@dpg-d1bk0cur433s739lq710-a.oregon-postgres.render.com/quiosconext_s6b9"
 ```
 
+npx prisma studio
 
+![](assets/2025-06-21-18-40-12-image.png)
+
+Puedes acceder a los registros, agregar registros, similar a DBeaver, para hacerlo en DBeaver solamente se requiere La URL externa de la base de datos
+
+---
+
+Si hay relaciones en 2 tablas, se mostraran tambien
+
+![](assets/2025-06-21-18-56-14-image.png)
+
+
+
+![](assets/2025-06-21-18-56-37-image.png)
+
+Se recomienda instalar prisma como extension de vscode
+
+https://marketplace.visualstudio.com/items?itemName=Prisma.prisma
+
+---
