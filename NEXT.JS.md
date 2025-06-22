@@ -456,3 +456,45 @@ Vuelve a ejecutar (quizas en otra terminal) el comando npx prisma studio
 Al obtener todos los productos, en el campo Category, haz clic en el boton category para traer los datos relacionados a la categoria
 
 ![](assets/2025-06-21-22-14-55-image.png)
+
+## Componente Image de Next.js
+
+Muestra una imagen optimizada (requiere 4 props necesarias)
+
+```ts
+      <Image
+        width={400}
+        height={500}
+        src={`/products/${product.image}.jpg`}
+        alt={`Imagen plantilla ${product.name}`}
+      />
+
+```
+
+Pulsa F12, seccion Red, filtra solamente las imagenes pulsando Img, vuelva a cargar la pagina y observa que solamente carga las imagenes requeridas
+
+![](assets/2025-06-21-22-35-59-image.png)
+
+Desplazate en la imagen bajando la regleta de carga o la barra de desplazamiento y podras ver que se cargan más imagenes cuando más abajo vayas.
+
+El resultado es el performance del proyecto
+
+Nextjs genera la imagen jpg en formato webp, formato moderno para tener imagenes de buena calidad y ligero
+
+      <Image
+
+        width={400}
+
+        height={500}
+
+        src={`/products/${product.image}.jpg`}
+
+        alt={`Imagen plantilla ${product.name}`}
+
+        // La prop quality establece la calidad (100 muestra imagenes pesadas, 1 muestra imagenes pixeleadas), valor recomendado: 75
+
+        quality={75}
+
+      />
+
+
