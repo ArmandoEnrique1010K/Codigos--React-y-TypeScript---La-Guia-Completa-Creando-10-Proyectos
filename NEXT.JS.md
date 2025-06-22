@@ -251,7 +251,6 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-
 ```
 
 Tambien genera el archivo .env, en donde se coloca la direccion de una base de datos (no funcional)
@@ -292,8 +291,6 @@ Si hay relaciones en 2 tablas, se mostraran tambien
 
 ![](assets/2025-06-21-18-56-14-image.png)
 
-
-
 ![](assets/2025-06-21-18-56-37-image.png)
 
 Se recomienda instalar prisma como extension de vscode
@@ -301,3 +298,121 @@ Se recomienda instalar prisma como extension de vscode
 https://marketplace.visualstudio.com/items?itemName=Prisma.prisma
 
 ---
+
+## Seeding
+
+Es una forma en el cual puedes agregar datos, de prueba o de forma masiva en la aplicación, los datos se recomiendan que sean lo más cercano a producción.
+
+https://www.prisma.io/docs/orm/prisma-migrate/workflows/seeding
+
+Primero instala la dependencia de ts-node, recordar que permite ejecutar codigo de TypeScript en el CLI (terminal), utiliza el comando `npm i -D ts-node`
+
+Luego crea un archivo dentro de la carpeta prisma, llamado `seed.ts`
+
+Dentro de la carpeta prisma, crea la carpeta data, dentro de ella crea los archivos categories.ts y products.ts
+
+## Errores al ejecutar `npx prisma db seed`
+
+```powershell
+PS C:\Users\USER\Desktop\ArmandoEnrique1010K\Codigos--React-y-TypeScript---La-Guia-Completa-Creando-10-Proyectos\16-quiosco-next> npx prisma db seed
+Environment variables loaded from .env
+Running seed command `ts-node --compiler-options {"module":"CommonJS"} prisma/seed.ts` ...
+C:\Users\USER\Desktop\ArmandoEnrique1010K\Codigos--React-y-TypeScript---La-Guia-Completa-Creando-10-Proyectos\16-quiosco-next\node_modules\.prisma\client\default.js:43
+    throw new Error('@prisma/client did not initialize yet. Please run "prisma generate" 
+and try to import it again.');
+          ^
+Error: @prisma/client did not initialize yet. Please run "prisma generate" and try to import it again.
+    at new PrismaClient (C:\Users\USER\Desktop\ArmandoEnrique1010K\Codigos--React-y-TypeScript---La-Guia-Completa-Creando-10-Proyectos\16-quiosco-next\node_modules\.prisma\client\default.js:43:11)
+    at Object.<anonymous> (C:\Users\USER\Desktop\ArmandoEnrique1010K\Codigos--React-y-TypeScript---La-Guia-Completa-Creando-10-Proyectos\16-quiosco-next\prisma\seed.ts:9:16)     
+    at Module._compile (node:internal/modules/cjs/loader:1358:14)
+    at Module.m._compile (C:\Users\USER\Desktop\ArmandoEnrique1010K\Codigos--React-y-TypeScript---La-Guia-Completa-Creando-10-Proyectos\16-quiosco-next\node_modules\ts-node\src\index.ts:1618:23)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1416:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\USER\Desktop\ArmandoEnrique1010K\Codigos--React-y-TypeScript---La-Guia-Completa-Creando-10-Proyectos\16-quiosco-next\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1208:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1024:12)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:174:12)
+    at phase4 (C:\Users\USER\Desktop\ArmandoEnrique1010K\Codigos--React-y-TypeScript---La-Guia-Completa-Creando-10-Proyectos\16-quiosco-next\node_modules\ts-node\src\bin.ts:649:14)
+
+An error occurred while running the seed command:
+Error: Command failed with exit code 1: ts-node --compiler-options {"module":"CommonJS"} 
+prisma/seed.ts
+```
+
+1. Elimina la carpeta node_modules y el archivo package-lock.json, luego ejecuta npm install
+
+2. INtroduce el comando npx prisma migrate dev
+
+3. Verifica que los nombres de la tablas sean category y product
+
+seed.ts
+
+```ts
+// Importa los datos
+import { categories } from "./data/categories";
+import { products } from './data/products';
+
+// PrismaClient tiene las funciones para trabajar con la base de datos
+import { PrismaClient } from '@prisma/client'
+
+// Instancia para obtener los metodos
+const prisma = new PrismaClient();
+
+async function main() {
+  try {
+    // Ingresa las categorias y productos a los modelos
+
+    // Inserta varios registros a las tablas
+    await prisma.category.createMany({
+      data: categories
+    })
+
+    await prisma.product.createMany({
+      data: products
+    })
+
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+// Ejecuta la función, en ambos casos se deben insertar los datos y luego desconectarse
+main().then(async () => {
+  await prisma.$disconnect();
+}).catch(async (e) => {
+  console.error(e)
+  await prisma.$disconnect();
+  process.exit(1)
+})
+
+// Luego realiza una modificacion en el archivo package.json, agrega la propiedad prisma
+
+/*
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+  },
+*/
+
+// Segun la documentación de Prisma, el codigo mostrado se requiere en proyectos hechos con Next.js
+
+// Luego abre la terminal y ejecuta npx prisma db seed
+```
+
+Debe mostrar lo siguiente
+
+PS C:\Users\USER\Desktop\ArmandoEnrique1010K\Codigos--React-y-TypeScript---La-Guia-Completa-Creando-10-Proyectos\16-quiosco-next> npx prisma db seed    
+Environment variables loaded from .env
+Running seed command `ts-node --compiler-options {"module":"CommonJS"} prisma/seed.ts` ...
+
+The seed command has been executed.
+
+![](assets/2025-06-21-19-51-24-image.png)
+
+Vuelve a ejecutar prisma studio con npx prisma studio
+
+Verifica que haya datos insertados
+
+![](assets/2025-06-21-19-52-44-image.png)
+
+Pulsa F5 para recargar la pagina
+
+
