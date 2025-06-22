@@ -1,14 +1,34 @@
+import { prisma } from "@/src/lib/prisma";
+async function getProducts(category: string) {
+  // Obtiene todos los productos segun la categoria
+  const products = await prisma.product.findMany({
+    // se especifica condiciones
+    where: {
+      category: {
+        // El campo slug de category debe tener el mismo valor que el parametro category
+        slug: category,
+      },
+    },
+  });
+
+  return products;
+}
+
 // Puedes extraer la prop params para ver los parametros que se encuentran en la URL (no olvidar el type Promise)
-export default async function Page({
+export default async function OrderPage({
   params,
 }: {
   params: Promise<{ category: string }>;
 }) {
   // Imprime los parametros de la URL en un objeto
-  console.log(await params);
+  // console.log(await params);
 
   // Imprime la categoria (su valor definido en slug)
-  console.log((await params).category);
+  // console.log((await params).category);
+
+  // Llama a la función e imprime los productos en consola
+  const products = await getProducts((await params).category);
+  console.log(products);
 
   return <div>OrderPage</div>;
 }

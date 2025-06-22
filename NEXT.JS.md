@@ -449,8 +449,10 @@ Crea las carpetas product e [id] tal y como se muestra
 
 products --- dentro de ella se encuentra --> [id]
 
+## Obtener la categoria
 
+Vuelve a ejecutar (quizas en otra terminal) el comando npx prisma studio
 
+Al obtener todos los productos, en el campo Category, haz clic en el boton category para traer los datos relacionados a la categoria
 
-
-
+![](assets/2025-06-21-22-14-55-image.png)
