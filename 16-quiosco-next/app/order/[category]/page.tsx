@@ -1,3 +1,4 @@
+import ProductCard from "@/components/products/ProductCard";
 import { prisma } from "@/src/lib/prisma";
 async function getProducts(category: string) {
   // Obtiene todos los productos segun la categoria
@@ -28,9 +29,17 @@ export default async function OrderPage({
 
   // Llama a la función e imprime los productos en consola
   const products = await getProducts((await params).category);
-  console.log(products);
+  // console.log(products);
 
-  return <div>OrderPage</div>;
+  return (
+    <>
+      <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4 items-start">
+        {products.map((product) => (
+          <ProductCard key={product.id} product={product} />
+        ))}
+      </div>
+    </>
+  );
 }
 
 // En nextjs cada vez que mueves un archivo, abre un archivo similar que es la version cacheada del archivo modificado, solamente cierra el archivo, si cambiaste la ubicacion de page.tsx, cierra el archivo page.ts (no guardes cambios en ese ultimo archivo)
