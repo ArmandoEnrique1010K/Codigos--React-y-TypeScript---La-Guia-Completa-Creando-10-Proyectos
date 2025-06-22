@@ -1,6 +1,7 @@
 // import { PrismaClient } from "@prisma/client";
 import { prisma } from "@/src/lib/prisma";
 import CategoryIcon from "../ui/CategoryIcon";
+import Logo from "../ui/Logo";
 
 // Instancia de prismaClient
 // const prismaClient = new PrismaClient();
@@ -20,6 +21,8 @@ export default async function OrderSidebar() {
 
   return (
     <aside className="md:w-72 md:h-screen bg-white">
+      {/* Renderiza el logo */}
+      <Logo />
       {/* Itera con las categorias similar a React, coloca el cursor sobre el parametro category para ver los tipos de dato de las propiedades una categoria, Prisma infiere con los tipos de datos */}
       <nav className="mt-10">
         {categories.map((category) => (
