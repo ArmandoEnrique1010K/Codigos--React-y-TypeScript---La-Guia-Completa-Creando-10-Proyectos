@@ -36,6 +36,8 @@ model Product {
   image       String
   categoryId  Int
   category    Category  @relation(fields: [categoryId],references: [id])
+  // Relacion de muchos a muchos con orderProducts
+  orderItems OrderProducts[]
 }
 
 // En la consola, deten prisma studio pulsando CTRL + C y luego ejecuta npx prisma migrate dev para crear otra migración, en este caso lleva el nombre "products_migration"
@@ -43,3 +45,36 @@ model Product {
 // Luego ejecuta npx prisma studio para ver los cambios
 
 // Siempre tienes que migrar cada vez que hagas un cambio en la definición de modelos
+
+// Añade los modelos de orden y productos de una orden
+// Añade un campo de tipo DateTime, @default sirve para establecer el valor por defecto, now() establece le fecha y hora actual
+// El signo ? marca el campo como opcional, puede ser null
+model Order{
+  id  Int  @id  @default(autoincrement())
+  name String
+  total Float
+  date  DateTime  @default(now())
+  status  Boolean @default(false)
+  orderReadyAt  DateTime?
+  // Relacion de muchos a muchos
+  orderProducts OrderProducts[]
+}
+
+model OrderProducts {
+  id  Int  @id  @default(autoincrement())
+  orderId   Int
+  order   Order @relation(fields: [orderId], references: [id])
+  productId   Int
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+// En relaciones de muchos a muchos, si se tiene una orden con el id 1 y 3 productos en esa ordenes se tendria lo siguiente
+// orderId productId
+// 1       1
+// 1       2
+// 1       3
+
+
+// No olvidar instalar la extensión de prisma de VSCode para tener el autocompletado
+
+// Ejecuta el comando "npx prisma migrate dev" luego de modificar este archivo "schema.prisma" para crear las migraciones, el nombre de la migración sera "order products". Recordar que debe imprimir "Your Database is now in sync with your schema", luego ejecuta "npx prisma studio" para ver los nuevos modelos creados
