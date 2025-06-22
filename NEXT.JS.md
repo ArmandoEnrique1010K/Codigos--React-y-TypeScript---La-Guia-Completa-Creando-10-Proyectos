@@ -510,6 +510,10 @@ Tambien pueden ser llamados dentro de un `useEffect` o al precionar un boton.
 
 No son exclusivos de Next.js ya que React en la version 19 los va a tener incorporados.
 
+## Relación entre tablas
 
+Video 691
+
+![](assets/2025-06-22-18-02-25-image.png)
 
 

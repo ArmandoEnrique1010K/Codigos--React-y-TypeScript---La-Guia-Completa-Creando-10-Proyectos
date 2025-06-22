@@ -43,7 +43,7 @@ export default function OrderSummary() {
 
     // Pasa data la schema de zod
     const result = OrderSchema.safeParse(data);
-    console.log(result);
+    // console.log(result);
 
     // Al imprimir result, si no hay un caracter en el campo name del formulario, imprime un objeto que tiene la propiedad success: false, el mensaje de error se puede obtener en:
     // error.issues (dentro hay un arreglo, cada elemento representa un campo del formulario, el mensaje de error se encuentra en message)

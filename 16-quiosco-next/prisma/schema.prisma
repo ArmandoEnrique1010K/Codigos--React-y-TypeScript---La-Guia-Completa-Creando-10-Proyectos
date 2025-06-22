@@ -60,12 +60,14 @@ model Order{
   orderProducts OrderProducts[]
 }
 
+// No olvidar el campo quantity (si modificas algo, debes volver a ejecutar la aplicacion luego de crear las nuevas migraciones)
 model OrderProducts {
   id  Int  @id  @default(autoincrement())
   orderId   Int
   order   Order @relation(fields: [orderId], references: [id])
   productId   Int
   product   Product @relation(fields: [productId], references: [id])
+  quantity Int
 }
 
 // En relaciones de muchos a muchos, si se tiene una orden con el id 1 y 3 productos en esa ordenes se tendria lo siguiente
