@@ -22,7 +22,7 @@ export default function OrderSummary() {
 
       {/*  Verifica si hay elementos en el state de order */}
       {order.length === 0 ? (
-        <p className="text-center my-10">El carrito esta vacio</p>
+        <p className="text-center my-10">El pedido esta vacio</p>
       ) : (
         <div className="mt-5">
           {/* Itera sobre la orden */}
@@ -34,6 +34,15 @@ export default function OrderSummary() {
             Total a pagar: {""}
             <span className="font-bold">{formatCurrency(total)}</span>
           </p>
+
+          {/* Boton para enviar el pedido, previamente en React se utilizaba React Query, en NextJS se hace de otra forma utilizando action (ultima version de Next.js) */}
+          <form className="w-full mt-10 space-y-5">
+            <input
+              type="submit"
+              className="py-2 rounded uppercase text-white bg-black w-full text-center cursor-pointer font-bold"
+              value="Confirmar pedido"
+            />
+          </form>
         </div>
       )}
     </aside>

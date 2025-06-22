@@ -468,7 +468,6 @@ Muestra una imagen optimizada (requiere 4 props necesarias)
         src={`/products/${product.image}.jpg`}
         alt={`Imagen plantilla ${product.name}`}
       />
-
 ```
 
 Pulsa F12, seccion Red, filtra solamente las imagenes pulsando Img, vuelva a cargar la pagina y observa que solamente carga las imagenes requeridas
@@ -496,5 +495,21 @@ Nextjs genera la imagen jpg en formato webp, formato moderno para tener imagenes
         quality={75}
 
       />
+
+## Server Actions en Next.js
+
+Los server Actions son funciones asincronas que se ejecutan en el servidor, se pueden utilizar con clientes de Componente y Servidor.
+
+Se utilizan para crear datos o mutarlos y estan muy unidos al CRUD.
+
+Utilizan la directiva "use server" que en el caso de componentes de servidor debe ser la primera linea de la función, mientras que en client componentes se deben importar de otro archivo que en la parte superior deben tener esta directiva.
+
+Los server actions deben estar dentro del atributo `action` de un `<form>`
+
+Tambien pueden ser llamados dentro de un `useEffect` o al precionar un boton.
+
+No son exclusivos de Next.js ya que React en la version 19 los va a tener incorporados.
+
+
 
 
