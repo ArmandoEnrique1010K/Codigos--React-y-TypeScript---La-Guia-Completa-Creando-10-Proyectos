@@ -10,8 +10,9 @@ import { toast } from "react-toastify";
 import { OrderSchema } from "@/src/schema";
 
 export default function OrderSummary() {
-  // Trae el state de order, asegurate que sea el del store, no el de zustand
+  // Trae el state de order, asegurate que sea el del store, no el de zustand. Tambien la función para limpiar la orden
   const order = useStore((state) => state.order);
+  const clearOrder = useStore((state) => state.clearOrder);
 
   // Calcula el total a pagar con la función reduce
   const total = useMemo(
@@ -77,6 +78,10 @@ export default function OrderSummary() {
     if (response?.errors) {
       response.errors.forEach((issue) => toast.error(issue.message));
     }
+
+    // Si las validaciones pasan (tanto en el cliente y el servidor, además del bloque try catch), muestra un mensaje al usuario y limpia la orden
+    toast.success("Pedido realizado correctamente");
+    clearOrder();
   };
 
   return (
