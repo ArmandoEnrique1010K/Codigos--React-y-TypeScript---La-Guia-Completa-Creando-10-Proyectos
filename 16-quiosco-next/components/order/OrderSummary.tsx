@@ -6,8 +6,8 @@ import ProductDetails from "./ProductDetails";
 import { useMemo } from "react";
 import { formatCurrency } from "@/src/utils";
 import { createOrder } from "@/actions/create-order-action";
-import { OrderSchema } from "@/src/schema";
 import { toast } from "react-toastify";
+import { OrderSchema } from "@/src/schema";
 
 export default function OrderSummary() {
   // Trae el state de order, asegurate que sea el del store, no el de zustand
@@ -19,8 +19,8 @@ export default function OrderSummary() {
     [order]
   );
 
-  // Función para crear la orden (asigna el interface FormData al parametro formData, ya viene incluido en TypeScript )
-  const handleCreateOrder = (formData: FormData) => {
+  // Función para crear la orden (asigna el interface FormData al parametro formData, ya viene incluido en TypeScript), la función debe ser asincrona
+  const handleCreateOrder = async (formData: FormData) => {
     // Si colocas use server aqui, no va a funcionar, solamente funciona en componentes de cliente (en la primera linea de codigo)
     // "use server"
     // La solución es crear un archivo aparte, en este caso, en la carpeta actions (en la raiz del proyecto) y dentro de ella un archivo .ts
@@ -40,11 +40,12 @@ export default function OrderSummary() {
 
     // Pasa data la schema de zod
     const result = OrderSchema.safeParse(data);
-    console.log(result);
+    // console.log(result);
 
     // Al imprimir result, si no hay un caracter en el campo name del formulario, imprime un objeto que tiene la propiedad success: false, el mensaje de error se puede obtener en:
     // error.issues (dentro hay un arreglo, cada elemento representa un campo del formulario, el mensaje de error se encuentra en message)
 
+    // VALIDACIÓN DEL CLIENTE
     // Si success es falso, puedes utilizar los mensajes de error
     if (!result.success) {
       // console.log(result.error);
@@ -54,12 +55,25 @@ export default function OrderSummary() {
         // Como hay solamente un campo se muestra el mensaje de error en un toast
         toast.error(issue.message);
       });
+
+      // No olvidar colocar return para no seguir con el codigo
+      return;
     }
 
     // Con ello, se ha validado los campos del formulario en el cliente, tambien se puede validar los campos en el servidor
 
-    // Llama a la función createOrder (componente de servidor)
-    createOrder();
+    // Llama a la función createOrder (componente de servidor), pasa data como argumento
+    // createOrder(data);
+
+    // VALIDACIÓN DEL SERVIDOR
+    // Devuelve los mensajes de errores si no ha pasado la validacion
+    const response = await createOrder(data);
+    // console.log(response);
+
+    // Muestra los mensajes de errores traidos desde el servidor hacia el cliente y lo renderiza
+    if (response?.errors) {
+      response.errors.forEach((issue) => toast.error(issue.message));
+    }
   };
 
   return (
