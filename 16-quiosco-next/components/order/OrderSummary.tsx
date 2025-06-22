@@ -7,6 +7,7 @@ import { useMemo } from "react";
 import { formatCurrency } from "@/src/utils";
 import { createOrder } from "@/actions/create-order-action";
 import { OrderSchema } from "@/src/schema";
+import { toast } from "react-toastify";
 
 export default function OrderSummary() {
   // Trae el state de order, asegurate que sea el del store, no el de zustand
@@ -43,6 +44,19 @@ export default function OrderSummary() {
 
     // Al imprimir result, si no hay un caracter en el campo name del formulario, imprime un objeto que tiene la propiedad success: false, el mensaje de error se puede obtener en:
     // error.issues (dentro hay un arreglo, cada elemento representa un campo del formulario, el mensaje de error se encuentra en message)
+
+    // Si success es falso, puedes utilizar los mensajes de error
+    if (!result.success) {
+      // console.log(result.error);
+
+      // Itera con los elementos del arreglo issues (cada elemento es de tipo ZodIssue)
+      result.error.issues.forEach((issue) => {
+        // Como hay solamente un campo se muestra el mensaje de error en un toast
+        toast.error(issue.message);
+      });
+    }
+
+    // Con ello, se ha validado los campos del formulario en el cliente, tambien se puede validar los campos en el servidor
 
     // Llama a la función createOrder (componente de servidor)
     createOrder();

@@ -31,6 +31,8 @@ export default function RootLayout({
       >
         {children}
       </body>
+
+      {/* Aqui no puedes renderizar <ToastNotificaction/> porque es un componente de servidor, en el caso de hacerlo aparecera mensajes de errores en la consola */}
     </html>
   );
 }

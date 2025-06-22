@@ -2,6 +2,7 @@
 
 import OrderSidebar from "@/components/order/OrderSidebar";
 import OrderSummary from "@/components/order/OrderSummary";
+import ToastNotification from "@/components/ui/ToastNotification";
 
 // Este codigo se obtiene desde app/layout.tsx
 export default function RootLayout({
@@ -23,6 +24,9 @@ export default function RootLayout({
         {/* El resumen de la orden */}
         <OrderSummary />
       </div>
+
+      {/* Este layout es de servidor, solamente va a estar disponible el componente de ToastNotification en los componentes que se encuentran en la carpeta de order (este layout.tsx se encuentra en la carpeta order) */}
+      <ToastNotification />
     </>
   );
 }
