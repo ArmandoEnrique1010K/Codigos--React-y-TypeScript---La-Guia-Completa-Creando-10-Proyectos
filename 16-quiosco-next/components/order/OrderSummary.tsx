@@ -6,6 +6,7 @@ import ProductDetails from "./ProductDetails";
 import { useMemo } from "react";
 import { formatCurrency } from "@/src/utils";
 import { createOrder } from "@/actions/create-order-action";
+import { OrderSchema } from "@/src/schema";
 
 export default function OrderSummary() {
   // Trae el state de order, asegurate que sea el del store, no el de zustand
@@ -26,14 +27,25 @@ export default function OrderSummary() {
     // Imprime en la consola del navegador (es un componente de cliente)
     // console.log("Desde handleCreateOrder");
 
-    // Llama a la función createOrder (componente de servidor)
-    createOrder();
-
     // Imprime formData, se obtiene un objeto
     // console.log(formData);
 
     // Obtiene el valor escrito en el campo name (valor escrito en el atributo name, en este caso, nombre del usuario)
-    console.log(formData.get("name"));
+    // console.log(formData.get("name"));
+
+    const data = {
+      name: formData.get("name"),
+    };
+
+    // Pasa data la schema de zod
+    const result = OrderSchema.safeParse(data);
+    console.log(result);
+
+    // Al imprimir result, si no hay un caracter en el campo name del formulario, imprime un objeto que tiene la propiedad success: false, el mensaje de error se puede obtener en:
+    // error.issues (dentro hay un arreglo, cada elemento representa un campo del formulario, el mensaje de error se encuentra en message)
+
+    // Llama a la función createOrder (componente de servidor)
+    createOrder();
   };
 
   return (
