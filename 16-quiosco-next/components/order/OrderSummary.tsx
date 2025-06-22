@@ -17,8 +17,8 @@ export default function OrderSummary() {
     [order]
   );
 
-  // Función para crear la orden
-  const handleCreateOrder = () => {
+  // Función para crear la orden (asigna el interface FormData al parametro formData, ya viene incluido en TypeScript )
+  const handleCreateOrder = (formData: FormData) => {
     // Si colocas use server aqui, no va a funcionar, solamente funciona en componentes de cliente (en la primera linea de codigo)
     // "use server"
     // La solución es crear un archivo aparte, en este caso, en la carpeta actions (en la raiz del proyecto) y dentro de ella un archivo .ts
@@ -28,6 +28,12 @@ export default function OrderSummary() {
 
     // Llama a la función createOrder (componente de servidor)
     createOrder();
+
+    // Imprime formData, se obtiene un objeto
+    // console.log(formData);
+
+    // Obtiene el valor escrito en el campo name (valor escrito en el atributo name, en este caso, nombre del usuario)
+    console.log(formData.get("name"));
   };
 
   return (
@@ -52,10 +58,21 @@ export default function OrderSummary() {
           {/* Boton para enviar el pedido, previamente en React se utilizaba React Query, en NextJS se hace de otra forma utilizando action (ultima version de Next.js), coloca el atributo action con una función */}
           <form className="w-full mt-10 space-y-5" action={handleCreateOrder}>
             <input
+              type="text"
+              placeholder="Tu Nombre"
+              className="bg-white border border-gray-100 p-2 w-full"
+              // Añade la propiedad name
+              name="name"
+            />
+            <input
               type="submit"
               className="py-2 rounded uppercase text-white bg-black w-full text-center cursor-pointer font-bold"
               value="Confirmar pedido"
             />
+
+            {/* En NextJs con los actions no es necesario colocar los valores del formulario en el state, para recuperar los valores en la función, se hace colocando un atributo data y en la función handleCreateOrden automaticamente se pasa un argumento llamado formData, contiene los datos ingresados en el formulario 
+            
+            (similar a la forma en que se hizo antiguamente en el desarrollo web de hace 20 años) */}
           </form>
         </div>
       )}
