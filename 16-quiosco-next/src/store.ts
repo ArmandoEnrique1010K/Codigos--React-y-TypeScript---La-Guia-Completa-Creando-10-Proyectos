@@ -10,7 +10,7 @@ interface Store {
 }
 
 // Llama a la función set para escribir en el state
-export const useStore = create<Store>((set) => ({
+export const useStore = create<Store>((set, get) => ({
   // Valores iniciales de los estados
   order: [],
 
@@ -26,13 +26,31 @@ export const useStore = create<Store>((set) => ({
     // Imprime las propiedades necesarias
     // console.log(data);
 
-    set((state) => ({
+    // Para no tener 2 funciones set, se declara una variable order para almacenar la orden
+    let order: OrderItem[] = []
+
+    // Condición que revisa si el elemento que fue agregado ya se encuentra en el carrito
+    if (get().order.find(item => item.id === product.id)) {
+      order = get().order.map(item => item.id === product.id ? {
+        // Si esta en el carrito, solamente modifica los campos quantity y subtotal, manteniendo los demás items tal y como esta
+        ...item,
+        quantity: item.quantity + 1,
+        subtotal: item.price * (item.quantity + 1)
+      } : item)
+    } else {
+      // Si no esta en el carrito...
       // Se necesita escribir en el state de order las propieades quantity y subtotal
-      order: [...state.order, {
+      order = [...get().order, {
         ...data,
         quantity: 1,
         subtotal: 1 * product.price
       }]
+    }
+
+    // Modifica el state de order
+    set(() => ({
+      // order: state.order
+      order
     }))
   }
 }))
