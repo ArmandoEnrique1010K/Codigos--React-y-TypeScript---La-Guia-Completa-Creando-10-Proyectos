@@ -415,4 +415,16 @@ Verifica que haya datos insertados
 
 Pulsa F5 para recargar la pagina
 
+## Data fetching, obtener datos en next.js
+
+Data Fetching en Next.js se puede hacerse con 4 formas diferentes:
+
+- En el servidor con fetch()
+
+- En el servidor con un ORM o consultas SQL
+
+- En el cliente con un Route Handler y una peticion GET
+
+- En el cliente con React Query, Axios, SWR u otras opciones
+
 
