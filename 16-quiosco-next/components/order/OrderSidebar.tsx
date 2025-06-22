@@ -16,7 +16,7 @@ export default async function OrderSidebar() {
   // Llama a la función, nextjs si soporta llamado de funciones asincronas (es imposible hacerlo en React, pero en nextjs si funciona)
   // Imprime en la consola del servidor las categorias
   const categories = await getCategories();
-  console.log(categories);
+  // console.log(categories);
 
   return (
     <aside className="md:w-72 md:h-screen bg-white">

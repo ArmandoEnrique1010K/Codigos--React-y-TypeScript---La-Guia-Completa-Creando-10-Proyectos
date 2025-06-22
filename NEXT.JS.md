@@ -431,4 +431,26 @@ Data Fetching en Next.js se puede hacerse con 4 formas diferentes:
 
 Se colocan en la carpeta public, se colocan imagenes, logos, iconos, etc. Puedes elimianr las imagenes svg que se generan por defecto al crear un proyecto de nextjs
 
+---
+
+## Routing Dinamico en NEXT.JS
+
+Muchas veces vas a querer acceder a un recurso en la base de datos por su ID o slug, ya sea para ver los detalles de un producto, leer una entrada de blog o datos de un cliente
+
+En estos casos se utiliza el Routing Dinamico
+
+En App Router la forma en la que generas el Routing dinamico es con una carpeta y un nombre entre corchetes, ejemplo: [id], [slug], [paymentId], etc.
+
+### Ejemplo de Routing Dinamico
+
+/products/20
+
+Crea las carpetas product e [id] tal y como se muestra
+
+products --- dentro de ella se encuentra --> [id]
+
+
+
+
+
 
