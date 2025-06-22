@@ -36,11 +36,14 @@ export default function OrderSummary() {
 
     const data = {
       name: formData.get("name"),
+      // En total se pasa el total a pagar
+      total, // total: total
+      order, // order: order
     };
 
     // Pasa data la schema de zod
     const result = OrderSchema.safeParse(data);
-    // console.log(result);
+    console.log(result);
 
     // Al imprimir result, si no hay un caracter en el campo name del formulario, imprime un objeto que tiene la propiedad success: false, el mensaje de error se puede obtener en:
     // error.issues (dentro hay un arreglo, cada elemento representa un campo del formulario, el mensaje de error se encuentra en message)
@@ -52,7 +55,7 @@ export default function OrderSummary() {
 
       // Itera con los elementos del arreglo issues (cada elemento es de tipo ZodIssue)
       result.error.issues.forEach((issue) => {
-        // Como hay solamente un campo se muestra el mensaje de error en un toast
+        // Muestra los mensajes de error en un toast
         toast.error(issue.message);
       });
 
