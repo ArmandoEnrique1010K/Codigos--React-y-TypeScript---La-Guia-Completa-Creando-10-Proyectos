@@ -1,5 +1,6 @@
 // import { PrismaClient } from "@prisma/client";
 import { prisma } from "@/src/lib/prisma";
+import CategoryIcon from "../ui/CategoryIcon";
 
 // Instancia de prismaClient
 // const prismaClient = new PrismaClient();
@@ -17,7 +18,16 @@ export default async function OrderSidebar() {
   const categories = await getCategories();
   console.log(categories);
 
-  return <aside className="md:w-72 md:h-screen bg-white">OrderSidebar</aside>;
+  return (
+    <aside className="md:w-72 md:h-screen bg-white">
+      {/* Itera con las categorias similar a React, coloca el cursor sobre el parametro category para ver los tipos de dato de las propiedades una categoria, Prisma infiere con los tipos de datos */}
+      <nav className="mt-10">
+        {categories.map((category) => (
+          <CategoryIcon key={category.id} category={category} />
+        ))}
+      </nav>
+    </aside>
+  );
 }
 
 // En versiones anteriores de Next.js, cuando era unicamente pages, la función de getServerSideProps se utilizaba para obtener datos en las paginas, pero no podias hacerlo en los componentes.

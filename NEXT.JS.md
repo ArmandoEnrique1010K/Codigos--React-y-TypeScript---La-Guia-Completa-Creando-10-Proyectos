@@ -427,4 +427,8 @@ Data Fetching en Next.js se puede hacerse con 4 formas diferentes:
 
 - En el cliente con React Query, Axios, SWR u otras opciones
 
+## Archivos externos
+
+Se colocan en la carpeta public, se colocan imagenes, logos, iconos, etc. Puedes elimianr las imagenes svg que se generan por defecto al crear un proyecto de nextjs
+
 
