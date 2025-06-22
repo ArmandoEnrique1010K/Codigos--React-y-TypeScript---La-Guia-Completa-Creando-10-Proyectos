@@ -8,6 +8,7 @@ interface Store {
   order: OrderItem[]
   addToOrder: (product: Product) => void
   increaseQuantity: (id: Product['id']) => void
+  decreaseQuantity: (id: Product['id']) => void
 }
 
 // Llama a la función set para escribir en el state
@@ -64,5 +65,20 @@ export const useStore = create<Store>((set, get) => ({
         subtotal: item.price * (item.quantity + 1)
       } : item)
     }))
-  }
+  },
+
+  // Función para decrementar la cantidad de un producto en el carrito
+  decreaseQuantity: (id) => {
+
+    // En este caso se crea una constante para actualizar el state de order antes de establecerlo en la función set
+    const order = get().order.map(item => item.id === id ? {
+      ...item,
+      quantity: item.quantity - 1,
+      subtotal: item.price * (item.quantity - 1)
+    } : item)
+
+    set(() => ({
+      order
+    }))
+  },
 }))
