@@ -9,6 +9,7 @@ interface Store {
   addToOrder: (product: Product) => void
   increaseQuantity: (id: Product['id']) => void
   decreaseQuantity: (id: Product['id']) => void
+  removeItem: (id: Product['id']) => void
 }
 
 // Llama a la función set para escribir en el state
@@ -79,6 +80,14 @@ export const useStore = create<Store>((set, get) => ({
 
     set(() => ({
       order
+    }))
+  },
+
+  // Eliminar un producto del carrito 
+  removeItem: (id) => {
+    // Se realiza la verificacion dentro del set, elimina el producto de la orden
+    set((state) => ({
+      order: state.order.filter(item => item.id !== id)
     }))
   },
 }))

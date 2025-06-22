@@ -20,6 +20,7 @@ export default function ProductDetails({ item }: ProductDetailsProps) {
 
   const increaseQuantity = useStore((state) => state.increaseQuantity);
   const decreaseQuantity = useStore((state) => state.decreaseQuantity);
+  const removeItem = useStore((state) => state.removeItem);
 
   // Deshabilita el boton de decrementar si la cantidad del item es igual a 1, depende de item
   const disableDecreaseButton = useMemo(
@@ -38,7 +39,7 @@ export default function ProductDetails({ item }: ProductDetailsProps) {
         <div className="flex justify-between items-start">
           <p className="text-xl font-bold">{item.name} </p>
 
-          <button type="button" onClick={() => {}}>
+          <button type="button" onClick={() => removeItem(item.id)}>
             <XCircleIcon className="text-red-600 h-8 w-8" />
           </button>
         </div>
