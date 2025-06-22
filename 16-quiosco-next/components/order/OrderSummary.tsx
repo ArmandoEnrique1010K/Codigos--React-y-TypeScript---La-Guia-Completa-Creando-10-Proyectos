@@ -2,6 +2,7 @@
 "use client";
 
 import { useStore } from "@/src/store";
+import ProductDetails from "./ProductDetails";
 
 export default function OrderSummary() {
   // Trae el state de order, asegurate que sea el del store, no el de zustand
@@ -16,7 +17,10 @@ export default function OrderSummary() {
         <p className="text-center my-10">El carrito esta vacio</p>
       ) : (
         <div className="mt-5">
-          <p>Si hay algo</p>
+          {/* Itera sobre la orden */}
+          {order.map((item) => (
+            <ProductDetails key={item.id} item={item} />
+          ))}
         </div>
       )}
     </aside>
