@@ -11,6 +11,7 @@ export default function OrderSummary() {
     <aside className="lg:h-screem lg:overflow-y-scroll md:w-64 lg:w-96 p-5">
       <h1 className="text-4xl text-center font-black">Mi pedido</h1>
 
+      {/*  Verifica si hay elementos en el state de order */}
       {order.length === 0 ? (
         <p className="text-center my-10">El carrito esta vacio</p>
       ) : (

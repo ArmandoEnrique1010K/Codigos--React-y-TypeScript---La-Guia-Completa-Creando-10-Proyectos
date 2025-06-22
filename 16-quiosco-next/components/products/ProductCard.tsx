@@ -1,6 +1,7 @@
 import { Product } from "@prisma/client";
 import { formatCurrency } from "@/src/utils/index";
 import Image from "next/image";
+import AddProductButton from "./AddProductButton";
 
 // Establece el type de product (generado automaticamente con prisma)
 type ProductCardProps = {
@@ -26,13 +27,11 @@ export default function ProductCard({ product }: ProductCardProps) {
           {formatCurrency(product.price)}
         </p>
 
-        {/* Boton */}
-        <button
-          type="button"
-          className="bg-indigo-600 hover:bg-indigo-800 text-white w-full mt-5 p-3 uppercase font-bold cursor-pointer"
-        >
-          Agregar
-        </button>
+        {/* Si conviertes este componente a un cliente de next, hay un problema,
+        solamente una parte del codigo es de cliente: el boton para agregar el
+        producto, para aquello se ha creado otro componente para representar el
+        boton de agregar al carrito */}
+        <AddProductButton product={product} />
       </div>
     </div>
   );
