@@ -7,6 +7,7 @@ import { Product } from '@prisma/client'
 interface Store {
   order: OrderItem[]
   addToOrder: (product: Product) => void
+  increaseQuantity: (id: Product['id']) => void
 }
 
 // Llama a la función set para escribir en el state
@@ -51,6 +52,17 @@ export const useStore = create<Store>((set, get) => ({
     set(() => ({
       // order: state.order
       order
+    }))
+  },
+
+  // Función para incrementar la cantidad de un producto en el carrito
+  increaseQuantity: (id) => {
+    set((state) => ({
+      order: state.order.map(item => item.id === id ? {
+        ...item,
+        quantity: item.quantity + 1,
+        subtotal: item.price * (item.quantity + 1)
+      } : item)
     }))
   }
 }))

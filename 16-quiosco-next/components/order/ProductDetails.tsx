@@ -1,6 +1,7 @@
 import { XCircleIcon, MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { OrderItem } from "@/src/types";
 import { formatCurrency } from "@/src/utils";
+import { useStore } from "@/src/store";
 
 type ProductDetailsProps = {
   item: OrderItem;
@@ -8,9 +9,12 @@ type ProductDetailsProps = {
 
 export default function ProductDetails({ item }: ProductDetailsProps) {
   // El mensaje se muestra en la consola del navegador, porque el componente padre OrderSummary es de tipo cliente ('use client'), afecta a sus componentes hijos
-  console.log(item);
+  // console.log(item);
 
   // Recuerda instalar heroicons con npm i @heroicons/react
+
+  const increaseQuantity = useStore((state) => state.increaseQuantity);
+
   return (
     <div className="shadow space-y-1 p-4 bg-white  border-t border-gray-200 ">
       <div className="space-y-4">
@@ -31,7 +35,13 @@ export default function ProductDetails({ item }: ProductDetailsProps) {
 
           <p className="text-lg font-black ">{item.quantity}</p>
 
-          <button type="button" onClick={() => {}}>
+          {/* Llama a la función increaseQuantity pasando el id del producto */}
+          <button
+            type="button"
+            onClick={() => {
+              increaseQuantity(item.id);
+            }}
+          >
             <PlusIcon className="h-6 w-6" />
           </button>
         </div>
