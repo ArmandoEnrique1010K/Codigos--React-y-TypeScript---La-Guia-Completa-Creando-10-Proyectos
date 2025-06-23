@@ -1,4 +1,5 @@
 import { OrderWithProducts } from "@/src/types";
+import { formatCurrency } from "@/src/utils";
 
 type OrderCardProps = {
   order: OrderWithProducts;
@@ -6,7 +7,7 @@ type OrderCardProps = {
 
 export default function OrderCard({ order }: OrderCardProps) {
   // Imprime en la consola del servidor una orden con sus datos y los
-  console.log(order);
+  // console.log(order);
 
   return (
     <section
@@ -19,11 +20,26 @@ export default function OrderCard({ order }: OrderCardProps) {
       </p>
       <p className="text-lg font-medium text-gray-900">Productos Ordenados: </p>
       <dl className="mt-6 space-y-4">
+        {order.orderProducts.map((product) => (
+          <div
+            key={product.productId}
+            className="flex items-center gap-2 border-t border-gray-200 pt-4"
+          >
+            <dt className="flex items-center text-sm text-gray-600">
+              <span className="font-black">({product.quantity}) </span>
+            </dt>
+            <dd className="text-sm font-medium text-gray-900">
+              {product.product.name}
+            </dd>
+          </div>
+        ))}
         <div className="flex items-center justify-between border-t border-gray-200 pt-4">
           <dt className="text-base font-medium text-gray-900">
             Total a Pagar:
           </dt>
-          <dd className="text-base font-medium text-gray-900">{}</dd>
+          <dd className="text-base font-medium text-gray-900">
+            {formatCurrency(order.total)}
+          </dd>
         </div>
       </dl>
 

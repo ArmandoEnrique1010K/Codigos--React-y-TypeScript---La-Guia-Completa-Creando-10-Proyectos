@@ -10,6 +10,6 @@ export type OrderItem = Pick<Product, 'id' | 'name' | 'price'> & {
 // Type para una orden con productos (se asignan los types de prisma), es el type de Order y se asigna la propiedad orderProducts, que es de tipo arreglo
 export type OrderWithProducts = Order & {
   orderProducts: (OrderProducts & {
-    product: Product
+    product: Product,
   })[]
 }
