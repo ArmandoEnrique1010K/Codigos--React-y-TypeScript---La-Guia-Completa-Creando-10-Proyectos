@@ -1,3 +1,4 @@
+import { completeOrder } from "@/actions/complete-order-action";
 import { OrderWithProducts } from "@/src/types";
 import { formatCurrency } from "@/src/utils";
 
@@ -8,6 +9,15 @@ type OrderCardProps = {
 export default function OrderCard({ order }: OrderCardProps) {
   // Imprime en la consola del servidor una orden con sus datos y los
   // console.log(order);
+
+  // Este es un componente de servidor, puedes crear la función (es una sintaxis no recomendada usar "use server" dentro de una función)
+  // console.log('SERVIDOR...')
+
+  // async function completedOrder() {
+  //   "use server";
+
+  //   console.log("desde completeOrder");
+  // }
 
   return (
     <section
@@ -43,7 +53,7 @@ export default function OrderCard({ order }: OrderCardProps) {
         </div>
       </dl>
 
-      <form>
+      <form action={completeOrder}>
         <input
           type="submit"
           className="bg-indigo-600 hover:bg-indigo-800 text-white w-full mt-5 p-3 uppercase font-bold cursor-pointer"
