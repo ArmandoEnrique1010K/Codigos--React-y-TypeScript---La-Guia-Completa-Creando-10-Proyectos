@@ -17,3 +17,9 @@ export const OrderSchema = z.object({
 })
 
 // La ventaja de zod es que el mismo mensaje de validacion se puede utilizar tanto en el cliente como en el servidor
+
+
+// Puedes realizar la transformación de string a number con zod, tambien valida con refine si el valor transformado es mayor que 0, de lo contrario muestra un mensaje
+export const OrderIdSchema = z.object({
+  orderId: z.string().transform((value) => parseInt(value)).refine(value => value > 0, { message: 'Hay errores' })
+})
