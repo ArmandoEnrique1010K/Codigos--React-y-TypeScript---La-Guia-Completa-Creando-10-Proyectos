@@ -516,4 +516,22 @@ Video 691
 
 ![](assets/2025-06-22-18-02-25-image.png)
 
+## Revalidación de datos
+
+Existen 2 tipos de revalidaciones en NextJs, una basada en el tiempo y otra basada en ciertos eventos
+
+Actualizacion de datos en tiempo real
+
+[Data Fetching: Fetching, Caching, and Revalidating | Next.js](https://nextjs.org/docs/14/app/building-your-application/data-fetching/fetching-caching-and-revalidating#fetching-data-on-the-client-with-route-handlers)
+
+Ejemplo: Pulsa un boton, hace un refetch y trae los datos actualizados sin la necesidad ed pulsar F5 en el navegador.
+
+Basado en el tiempo: requiere los milisegundos
+
+En ciertos eventos: Al hacer clic en un boton, mediante un tag (nombre similar a un key), revalidate path (revalida la URL).
+
+import { revalidatePath } from "next/cache" <-- revalida la URL completa
+
+import { revalidateTag } from "next/cache"
+
 

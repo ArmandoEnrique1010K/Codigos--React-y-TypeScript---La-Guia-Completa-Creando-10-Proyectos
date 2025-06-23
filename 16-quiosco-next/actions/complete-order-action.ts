@@ -1,5 +1,5 @@
 "use server"
-
+import { revalidatePath } from "next/cache"
 import { prisma } from "@/src/lib/prisma";
 import { OrderIdSchema } from "@/src/schema";
 
@@ -34,6 +34,11 @@ export async function completeOrder(formData: FormData) {
           orderReadyAt: new Date(Date.now())
         }
       })
+
+      // Revalida los datos (solamente un refetch) solamente obtiene datos actualizados sin necesidad de pulsar F5 en el navegador
+      revalidatePath('/admin/orders')
+
+      // Haz clic en "Marcar Orden Completada" y veras que la orden desparece de la vista, porque se actualiza la base de datos (marca la orden como completa) y solamente en el navegador se muestran las ordenes incompletas
     } catch (error) {
       console.log(error)
     }
