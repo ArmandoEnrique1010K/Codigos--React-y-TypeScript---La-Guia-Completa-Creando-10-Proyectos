@@ -1,6 +1,13 @@
+import ProductsPagination from "@/components/products/ProductsPagination";
 import ProductTable from "@/components/products/ProductsTable";
 import Heading from "@/components/ui/Heading";
 import { prisma } from "@/src/lib/prisma";
+
+// Para limitar la cantidad de paginas, debes limitar segun la cantidad de productos
+async function productCount() {
+  // Muestra la cantidad de productos en la base de datos
+  return await prisma.product.count();
+}
 
 async function getProducts(page: number, pageSize: number) {
   // Si estas en la pagina 2, se salta los primeros 10 y muestra los siguietes productos
@@ -27,6 +34,8 @@ async function getProducts(page: number, pageSize: number) {
   return products;
 }
 
+// https://nextjs.org/docs/app/api-reference/file-conventions/page
+
 // La tercera forma es definir un type basado en el valor que retorna una función, en este caso getProducts, retorna un arreglo de productos
 export type ProductWithCategory = Awaited<ReturnType<typeof getProducts>>;
 
@@ -50,10 +59,25 @@ export default async function ProductsPage({
   console.log(currentPage);
 
   // Obtén los productos desde la base de datos
-  const products = await getProducts(currentPage, pageSize);
+  const productsData = getProducts(currentPage, pageSize);
 
   // Imprime los productos en la consola
   // console.log(products);
+
+  // Accede a... para ver los productos (segun el paginador)
+  // http://localhost:3000/admin/products?page=2
+  // http://localhost:3000/admin/products?page=3
+
+  // Cantidad de productos
+  const totalProductsData = productCount();
+
+  // Como hay 2 consultas totalmente independientes, se utiliza un Promise.all, hace que las consultas sean paralelas, que inicien al mismo tiempo, sin que espere a que una termine para ejecutar la otra (consultas independientes)
+  const [products, totalProducts] = await Promise.all([
+    productsData,
+    totalProductsData,
+  ]);
+
+  console.log(totalProducts);
 
   return (
     <>
@@ -61,6 +85,9 @@ export default async function ProductsPage({
 
       {/* Pasa los productos como prop al componente */}
       <ProductTable products={products} />
+
+      {/* Pasale la prop de page */}
+      <ProductsPagination page={currentPage} />
     </>
   );
 }
