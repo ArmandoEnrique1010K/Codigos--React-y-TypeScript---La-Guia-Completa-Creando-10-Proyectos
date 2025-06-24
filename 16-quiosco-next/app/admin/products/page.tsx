@@ -56,7 +56,7 @@ export default async function ProductsPage({
   const currentPage = parseInt(page as string, 10) || 1;
   const pageSize = 10;
 
-  console.log(currentPage);
+  // console.log(currentPage);
 
   // Obtén los productos desde la base de datos
   const productsData = getProducts(currentPage, pageSize);
@@ -77,7 +77,13 @@ export default async function ProductsPage({
     totalProductsData,
   ]);
 
-  console.log(totalProducts);
+  // console.log(totalProducts);
+
+  // Si hay 31 registros y en cada pagina se tiene 10 registros, dividiendo se obtiene 3.1 paginas, debes redondear al siguiente numero, 4 paginas en total.
+
+  // El metodo Math.ceil(3.1) retorna 4, la función se utiliza para redondear hacia arriba, puedes cambiar pageSize para establecer la cantidad de registros por pagina
+  const totalPages = Math.ceil(totalProducts / pageSize);
+  // console.log(totalPages);
 
   return (
     <>
@@ -87,7 +93,7 @@ export default async function ProductsPage({
       <ProductTable products={products} />
 
       {/* Pasale la prop de page */}
-      <ProductsPagination page={currentPage} />
+      <ProductsPagination page={currentPage} totalPages={totalPages} />
     </>
   );
 }
