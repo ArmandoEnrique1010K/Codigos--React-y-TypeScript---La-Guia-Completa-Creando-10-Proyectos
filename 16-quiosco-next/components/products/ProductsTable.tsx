@@ -1,9 +1,33 @@
+import { ProductWithCategory } from "@/app/admin/products/page";
 import { formatCurrency } from "@/src/utils";
-import { Product } from "@prisma/client";
+// import { Category, Product } from "@prisma/client";
 import Link from "next/link";
 
 type ProductTableProps = {
-  products: Product[];
+  // products: Product[];
+
+  // Una forma es inferir el type de products (no se utiliza el de prisma, omite las relaciones hacia los campos de la otra tabla), pero la desventaja es que debes actualizar el type cada vez que haces cambios en las tablas
+  // products: ({
+  //   category: {
+  //     name: string;
+  //     id: number;
+  //     slug: string;
+  //   };
+  // } & {
+  //   name: string;
+  //   id: number;
+  //   price: number;
+  //   image: string;
+  //   categoryId: number;
+  // })[];
+
+  // Otra forma es utilizar los types de prisma
+  // products: ({
+  //   category: Category;
+  // } & Product)[];
+
+  // Tercera forma, utiliza el type definido en el componente padre
+  products: ProductWithCategory;
 };
 
 // Tabla de productos
@@ -48,8 +72,13 @@ export default function ProductTable({ products }: ProductTableProps) {
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                       {formatCurrency(product.price)}
                     </td>
+
+                    {/* No se puede autocompletar con el nombre de la categoria, prisma define los types, pero no para las relaciones entre tablas */}
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      {product.categoryId}
+                      {/* {product.categoryId} */}
+
+                      {/* Muestra el nombre de la categoria en la vista, pero no se tiene un buen autocompletado */}
+                      {product.category.name}
                     </td>
                     <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                       {/* Boton de editar, href dinamico */}
