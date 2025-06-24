@@ -2,6 +2,7 @@ import ProductsPagination from "@/components/products/ProductsPagination";
 import ProductTable from "@/components/products/ProductsTable";
 import Heading from "@/components/ui/Heading";
 import { prisma } from "@/src/lib/prisma";
+import { redirect } from "next/navigation";
 
 // Para limitar la cantidad de paginas, debes limitar segun la cantidad de productos
 async function productCount() {
@@ -58,6 +59,10 @@ export default async function ProductsPage({
 
   // console.log(currentPage);
 
+  // Si se introduce un valor negativo en el query string de page, mostrara un error de prisma, para aquello se redirige al usuario a la pagina de products
+  // El siguiente codigo debe ir antes de hacer la petición con prisma
+  if (currentPage < 0) redirect("/admin/products");
+
   // Obtén los productos desde la base de datos
   const productsData = getProducts(currentPage, pageSize);
 
@@ -84,6 +89,9 @@ export default async function ProductsPage({
   // El metodo Math.ceil(3.1) retorna 4, la función se utiliza para redondear hacia arriba, puedes cambiar pageSize para establecer la cantidad de registros por pagina
   const totalPages = Math.ceil(totalProducts / pageSize);
   // console.log(totalPages);
+
+  // Verifica que si la pagina actual es mayor que el total de paginas, redirige al usuario a la pagina (utiliza la función redirect de next/navigation)
+  if (currentPage > totalPages) redirect("/admin/products");
 
   return (
     <>
