@@ -23,3 +23,9 @@ export const OrderSchema = z.object({
 export const OrderIdSchema = z.object({
   orderId: z.string().transform((value) => parseInt(value)).refine(value => value > 0, { message: 'Hay errores' })
 })
+
+// Schema para el formulario de busqueda
+export const SearchSchema = z.object({
+  // Elimina los espacios en blanco por demás y debe tener al menos 1 caracter
+  search: z.string().trim().min(1, { message: 'La busqueda no puede ir vacia' })
+})
