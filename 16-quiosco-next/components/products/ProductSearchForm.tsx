@@ -1,6 +1,6 @@
 "use client";
 import { SearchSchema } from "@/src/schema";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 // Utiliza el hook de useRouter de next/navigation para redireccionar en el cliente en el app router
 
@@ -10,7 +10,7 @@ export default function ProductSearchForm() {
 
   // Este componente no interactua con prisma, es un componente de servidor que tiene que ser convertido a un componente de cliente para mostrar los mensajes de toast
 
-  // Función para
+  // Función auxiliar
   const handleSearchForm = (formData: FormData) => {
     const data = {
       // Obtiene el valor introducido en el campo search
