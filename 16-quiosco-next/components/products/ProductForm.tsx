@@ -1,8 +1,17 @@
+import { prisma } from "@/src/lib/prisma";
 import React from "react";
 
-// Formulario para crear o editar un producto
+// Obtiene todas las categorias
+async function getCategories() {
+  return await prisma.category.findMany();
+}
 
+// Formulario para crear o editar un producto
 export default async function ProductForm() {
+  // Imprime las categorias en la terminal del servidor
+  const categories = await getCategories();
+  // console.log(categories)
+
   return (
     <>
       <div className="space-y-2">
@@ -40,6 +49,12 @@ export default async function ProductForm() {
           name="categoryId"
         >
           <option value="">-- Seleccione --</option>
+          {/* Itera con las categorias encontradas, en el value se coloca el valor que se enviara a la base de datos */}
+          {categories.map((category) => (
+            <option key={category.id} value={category.id}>
+              {category.name}
+            </option>
+          ))}
         </select>
       </div>
     </>
