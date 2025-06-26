@@ -534,4 +534,68 @@ import { revalidatePath } from "next/cache" <-- revalida la URL completa
 
 import { revalidateTag } from "next/cache"
 
+## Subida de imagenes con Cloudinary
+
+Es un servicio para subir imagenes, puedes instalar la dependencia con npm para integrar alguna otra libreria de subida de imagenes,
+
+Puedes registrarte con tu cuenta de google
+
+![](assets/2025-06-25-21-01-16-image.png)
+
+Una vez registrado, ve a la pestaña assets
+
+![](assets/2025-06-25-21-02-36-image.png)El plan gratuito ofrece lo siguiente:
+
+![](assets/2025-06-25-21-04-32-image.png)
+
+![](assets/2025-06-25-21-04-43-image.png)
+
+Dan 25 creditos mensuales
+
+Se va a utilizar para hospedar imagenes
+
+Ve a la pestaña de configuración, opcion API keys
+
+![](assets/2025-06-25-21-11-48-image.png)
+
+![](assets/2025-06-25-21-11-28-image.png)
+
+Necesitas copiar el API Key, no es necesario el API Secret
+
+Se necesita la dependencia de Next Cloudinary
+
+usa el comando `npm i next-cloudinary`
+
+[Next Cloudinary - NPM](https://www.npmjs.com/package/next-cloudinary)
+
+Se requieren 3 variables de entorno en el archivo .env
+
+```
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME="<Your Cloudinary Cloud Name>"
+NEXT_PUBLIC_CLOUDINARY_API_KEY="<Your Cloudinary API Key>"
+CLOUDINARY_API_SECRET="<Your Cloudinary API Secret>"
+```
+
+El Cloud Name lo encuentras en la opción de Product Environments
+
+![](assets/2025-06-25-21-25-43-image.png)
+
+Las 2 ultimas variables de entornos son las misma que el ultimo API Key generado el API Key y API Secret
+
+![](assets/2025-06-25-21-28-00-image.png)
+
+El API Secret requiere que envies un codigo desde tu correo (token)
+
+Puedes reiniciar la consola con npm run dev
+
+
+
+
+
+
+
+
+
+
+
 

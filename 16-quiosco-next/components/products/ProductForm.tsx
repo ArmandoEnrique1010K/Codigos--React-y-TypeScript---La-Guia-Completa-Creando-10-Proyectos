@@ -1,5 +1,6 @@
 import { prisma } from "@/src/lib/prisma";
 import React from "react";
+import ImageUpload from "./ImageUpload";
 
 // Obtiene todas las categorias
 // async y await solamente estan soportados en los componentes de servidor
@@ -63,6 +64,9 @@ export default async function ProductForm() {
           ))}
         </select>
       </div>
+
+      {/* Componente de subida de imagenes */}
+      <ImageUpload />
     </>
   );
 }
