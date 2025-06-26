@@ -1,6 +1,9 @@
 // No olvidar colocar use client para que se convierta en un componente de cliente de nextjs
 "use client";
 
+import { ProductSchema } from "@/src/schema";
+import { toast } from "react-toastify";
+
 // Este formulario contiene la logica de agregar un producto
 // React.ReactNode sirve para pasarle un componente de cliente o servidor
 export default function AddProductForm({
@@ -16,7 +19,36 @@ export default function AddProductForm({
     // Debe ser capaz de mostrar un mensaje en un toast
 
     // Imprime el mensaje en la consola del servidor
-    console.log("desde handleSumbit");
+    // console.log("desde handleSumbit");
+
+    // Obtiene los valores introducidos en los campos del formulario en objeto cuyas propiedades tienes pares de campo y valor
+    const data = {
+      name: formData.get("name"),
+      price: formData.get("price"),
+      categoryId: formData.get("categoryId"),
+    };
+
+    // console.log(data);
+
+    // Aplica las validaciones definidas en el schema
+    const result = ProductSchema.safeParse(data);
+    // console.log(result);
+
+    // Muestra los mensajes de errores en un toast
+    if (!result.success) {
+      result.error.issues.forEach((issue) => {
+        toast.error(issue.message);
+      });
+
+      // No es necesario agregar lógica extra aquí.
+      // En Next.js, cuando usas un formulario con action={handleSubmit} y la función handleSubmit no recarga la página ni retorna un redirect, los campos del formulario NO se limpian automáticamente si hay un return temprano (como en una validación fallida).
+      // Por lo tanto, el formulario conservará los valores ingresados si la validación falla y simplemente retornas.
+      return;
+    }
+
+    // Si paasa la validación
+    console.log(result.data);
+    return;
   };
 
   return (
