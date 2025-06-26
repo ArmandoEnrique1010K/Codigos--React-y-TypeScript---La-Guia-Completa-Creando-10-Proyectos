@@ -6,6 +6,8 @@ import React from "react";
 
 // Un componente de servidor puede renderizar componentes de cliente, pero uno de cliente no puede renderizar componentes del servidor, a excepción de que utilices "composición"
 
+// Cuando colocas "use client" en un componente, se transformara a un componente de cliente incluyendo sus componentes hijos.
+
 async function getCategories() {
   return await prisma.category.findMany();
 }

@@ -1,7 +1,13 @@
-import ProductForm from "./ProductForm";
+// No olvidar colocar use client para que se convierta en un componente de cliente de nextjs
+"use client";
 
 // Este formulario contiene la logica de agregar un producto
-export default function AddProductForm() {
+// React.ReactNode sirve para pasarle un componente de cliente o servidor
+export default function AddProductForm({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const handleSubmit = async (formData: FormData) => {
     // "use server";
 
@@ -17,7 +23,11 @@ export default function AddProductForm() {
     <div className="bg-white mt-10 px-5 py-10 rounded-md shadow-md max-w-3xl mx-auto">
       {/* PRINCIPIO SOLID - OCP (Open Closed Principle), utilizar el mismo formulario para hacer diferentes acciones sin modificar el codigo de este formulario */}
       <form className="space-y-5" action={handleSubmit}>
-        <ProductForm />
+        {/* <ProductForm /> */}
+
+        {/* children (reserva un espacio), el codigo se ejecuta de forma unidireccional, el codigo que se recibe en children se ejecuta en el servidor, a esto se le conoce como un "composition pattern" en NextJs */}
+        {children}
+
         <input
           type="submit"
           className="bg-indigo-600 hover:bg-indigo-800 text-white w-full mt-5 p-3 uppercase font-bold cursor-pointer"
