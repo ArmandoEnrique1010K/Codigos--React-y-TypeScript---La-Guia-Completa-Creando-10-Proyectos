@@ -562,7 +562,7 @@ Ve a la pestaña de configuración, opcion API keys
 
 Necesitas copiar el API Key, no es necesario el API Secret
 
-Se necesita la dependencia de Next Cloudinary
+Se necesita la dependencia de Next Cloudinary (solamente funciona en componentes de cliente)
 
 usa el comando `npm i next-cloudinary`
 
@@ -588,14 +588,80 @@ El API Secret requiere que envies un codigo desde tu correo (token)
 
 Puedes reiniciar la consola con npm run dev
 
+### Vista para subir una imagen
 
+![](assets/2025-06-25-21-52-06-image.png)
 
+## Generar un upload preset
 
+Ve a la pestaña de upload
 
+![](assets/2025-06-25-22-05-59-image.png)
 
+Haz clic en el boton Add Upload Preset, agregale un nombre y Cambia el valor de signing mode a unsigned
 
+![](assets/2025-06-25-22-18-13-image.png)
 
+utiliza este upload-preset ene lcodigo fuente
 
+Para uqe permita subir contenido desde el navegador, agregale una propiedad llamada uploadPreset y coloca ahi el uploadpreset
 
+Clic en el boton save
 
+```tsx
+"use client";
+import { CldUploadWidget } from "next-cloudinary";
+// Instala react-icons para los iconos con npm i react-icons
+// Importa el componente de una fotografia
+import { TbPhotoPlus } from "react-icons/tb";
 
+export default function ImageUpload() {
+  return (
+    // Requiere una prop llamada uploadPreset, el valor lo encuentras en cloudinary, sección config, upload, upload Presets
+    <CldUploadWidget
+      uploadPreset="new_upload_preset"
+      options={{
+        maxFiles: 1, // Numero de archivos maximo
+        // multiple: true, // Habilitar subida multiple
+      }}
+    >
+      {/* El children es un callback, desestructra el metodo open para llamar a la función de abrir */}
+      {({ open }) => (
+        // Al hacer clic en el recuadro, se abrira una vista de cloudinary para subir una imagen
+        <>
+          <div className="space-y-2">
+            <label className="text-slate-800">Imagen Producto</label>
+            <div
+              className="relative cursor-pointer hover:opacity-70 transition p-10 border-neutral-300 flex flex-col justify-center items-center gap-4 text-neutral-400 bg-slate-100"
+              onClick={() => open()}
+            >
+              {/* Tamaño del icono en pixeles */}
+              <TbPhotoPlus size={50} />
+              <p className="text-lg font-semibold">Agregar Imagen</p>
+            </div>
+          </div>
+        </>
+      )}
+    </CldUploadWidget>
+  );
+}
+
+// POST https://api.cloudinary.com/v1_1/dv4v0uvdy/upload 400 (Bad Request)
+// Cuando subes imágenes en Cloudinary desde el front end te piden que generes lo que se conoce como un upload preset
+```
+
+Al subir una imagen ya no deberia mostrarte un error en la consola
+
+![](assets/2025-06-25-22-10-42-image.png)
+
+---
+
+## Subio la imagen
+
+Automaticamente se cierra la ventana modal de cloudinary, para ver si la imagen ya se subio a cloudinary:
+
+1. Ve a la pestaña assets, media library > assets
+
+2. Podras ver las imagenes subidas ,aparte de las imagenes que vienen de muestra
+
+![](assets/2025-06-25-22-24-02-image.png)
