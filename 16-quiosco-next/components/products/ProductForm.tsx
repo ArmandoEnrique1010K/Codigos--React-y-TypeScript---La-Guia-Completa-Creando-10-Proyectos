@@ -2,6 +2,10 @@ import { prisma } from "@/src/lib/prisma";
 import React from "react";
 
 // Obtiene todas las categorias
+// async y await solamente estan soportados en los componentes de servidor
+
+// Un componente de servidor puede renderizar componentes de cliente, pero uno de cliente no puede renderizar componentes del servidor, a excepción de que utilices "composición"
+
 async function getCategories() {
   return await prisma.category.findMany();
 }
