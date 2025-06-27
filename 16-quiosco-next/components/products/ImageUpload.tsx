@@ -1,4 +1,5 @@
 "use client";
+import { getImagePath } from "@/src/utils";
 import { CldUploadWidget } from "next-cloudinary";
 import Image from "next/image";
 import { useState } from "react";
@@ -6,7 +7,7 @@ import { useState } from "react";
 // Importa el componente de una fotografia
 import { TbPhotoPlus } from "react-icons/tb";
 
-export default function ImageUpload() {
+export default function ImageUpload({ image }: { image: string | undefined }) {
   // estado de la URL de la imagen
   const [imageUrl, setImageUrl] = useState("");
 
@@ -67,8 +68,28 @@ export default function ImageUpload() {
             </div>
           </div>
 
+          {/* Si el producto tiene una imagen se muestra lo siguiente */}
+          {/* Una vez que se sube la imagen, no se debe mostrar la imagen actual (cuando se edita un producto) */}
+          {image && !imageUrl && (
+            <div className="space-y-2">
+              <label>Imagen Actual: </label>
+              <div className="relative w-64 h-64">
+                <Image fill src={getImagePath(image)} alt="Imagen Producto" />
+              </div>
+            </div>
+          )}
+
           {/* Input oculto, solamente contiene la URL de la imagen subida, se puede aplicar validaciones... */}
-          <input type="hidden" name="image" value={imageUrl} />
+          {/* Recordar que lo que esta en el value es lo que se manda al servidor, si imageUrl existe lo debe utilizar, de lo contrario utiliza el de image (para que sobreescriba en la base de datos con la misma imagen cuando se edita un producto) */}
+          <input
+            type="hidden"
+            name="image"
+            // Puedes usar value o defaultValue (ese ultimo si se muestra un error en la consola al utilizar value)
+            // A component is changing an uncontrolled input to be controlled. This is likely caused by the value changing from undefined to a defined value, which should not happen. Decide between using a controlled or uncontrolled input element for the lifetime of the component.
+            defaultValue={imageUrl ? imageUrl : image}
+          />
+
+          {/* Pulsa F12 y revisa el formulario de editar producto y crear producto, si el input hidden tiene un value */}
         </>
       )}
     </CldUploadWidget>

@@ -1,5 +1,6 @@
 import EditProductForm from "@/components/products/EditProductForm";
 import ProductForm from "@/components/products/ProductForm";
+import GoBackButton from "@/components/ui/GoBackButton";
 import Heading from "@/components/ui/Heading";
 import { prisma } from "@/src/lib/prisma";
 import { notFound } from "next/navigation";
@@ -45,6 +46,10 @@ export default async function EditProductsPage({
   return (
     <>
       <Heading>Editar Producto: {product.name}</Heading>
+
+      {/* EL boton de ir hacia sirve para mantener la paginación, ejemplo: estas en la pagina 5, haces clic en el boton de editar y cuando pulsas el boton, te vas hacia atras, no redirige hacia otra pagina */}
+      <GoBackButton />
+
       {/* Renderiza el formulario de editar, pasale la prop product */}
       <EditProductForm>
         <ProductForm product={product} />
