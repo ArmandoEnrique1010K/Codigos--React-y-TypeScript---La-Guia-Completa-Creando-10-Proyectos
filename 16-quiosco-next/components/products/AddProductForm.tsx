@@ -1,7 +1,9 @@
 // No olvidar colocar use client para que se convierta en un componente de cliente de nextjs
 "use client";
 
+import { createProduct } from "@/actions/create-product-action";
 import { ProductSchema } from "@/src/schema";
+import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
 // Este formulario contiene la logica de agregar un producto
@@ -11,6 +13,9 @@ export default function AddProductForm({
 }: {
   children: React.ReactNode;
 }) {
+  // El hook useRouter es de next/navigation
+  const router = useRouter();
+
   const handleSubmit = async (formData: FormData) => {
     // "use server";
 
@@ -26,6 +31,7 @@ export default function AddProductForm({
       name: formData.get("name"),
       price: formData.get("price"),
       categoryId: formData.get("categoryId"),
+      image: formData.get("image"),
     };
 
     // console.log(data);
@@ -46,9 +52,23 @@ export default function AddProductForm({
       return;
     }
 
-    // Si paasa la validación
-    console.log(result.data);
-    return;
+    // Si pasa la validación
+    // console.log(result.data);
+
+    const response = await createProduct(result.data);
+
+    // Itera con los mensajes de errores de la respuesta
+    if (response?.errors) {
+      response.errors.forEach((issue) => {
+        toast.error(issue.message);
+      });
+
+      return;
+    }
+
+    // Muestra un mensaje de exito y redirige al usuario a la pagina de inicio
+    toast.success("Producto Creado Correctamente");
+    router.push("/admin/products");
   };
 
   return (

@@ -665,3 +665,11 @@ Automaticamente se cierra la ventana modal de cloudinary, para ver si la imagen 
 2. Podras ver las imagenes subidas ,aparte de las imagenes que vienen de muestra
 
 ![](assets/2025-06-25-22-24-02-image.png)
+
+## Borrar imagenes de Cloudinary
+
+Puedes pulsar CTRL + A para seleccionar todas las imagenes y luego pulsar el botón de la papelera
+
+![](assets/2025-06-26-20-13-55-image.png)
+
+![](assets/2025-06-26-20-14-02-image.png)

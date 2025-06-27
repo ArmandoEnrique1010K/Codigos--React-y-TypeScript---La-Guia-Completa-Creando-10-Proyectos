@@ -22,6 +22,7 @@ export default function ImageUpload() {
       onSuccess={(result, { widget }) => {
         // Imprime un objeto con varias propiedades, hay una propiedad llamada secure_url que contiene la url de la imagen subida, se puede recuperar del formData y guardarlo en la base de datos
         // console.log(result);
+        // console.log(result.info.secure_url);
 
         // Si se ha subido la imagen
         if (result.event === "success") {
@@ -29,7 +30,7 @@ export default function ImageUpload() {
           widget.close();
 
           //@ts-expect-error 'Omite o ignora que el valor de info es un objeto que contiene la propiedad secure_url'
-          setImageUrl(result.info?.secure_url);
+          setImageUrl(result.info.secure_url);
         }
       }}
     >
@@ -67,7 +68,7 @@ export default function ImageUpload() {
           </div>
 
           {/* Input oculto, solamente contiene la URL de la imagen subida, se puede aplicar validaciones... */}
-          <input type="hidden" name="imagen" value={imageUrl} />
+          <input type="hidden" name="image" value={imageUrl} />
         </>
       )}
     </CldUploadWidget>
