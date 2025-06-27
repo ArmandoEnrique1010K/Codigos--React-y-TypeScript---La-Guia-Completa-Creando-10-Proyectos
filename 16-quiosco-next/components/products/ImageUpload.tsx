@@ -74,7 +74,12 @@ export default function ImageUpload({ image }: { image: string | undefined }) {
             <div className="space-y-2">
               <label>Imagen Actual: </label>
               <div className="relative w-64 h-64">
-                <Image fill src={getImagePath(image)} alt="Imagen Producto" />
+                <Image
+                  fill
+                  src={getImagePath(image)}
+                  alt="Imagen Producto"
+                  style={{ objectFit: "contain" }}
+                />
               </div>
             </div>
           )}

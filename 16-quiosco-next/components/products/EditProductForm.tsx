@@ -1,9 +1,10 @@
 "use client";
 
-import { createProduct } from "@/actions/create-product-action";
+import { updateProduct } from "@/actions/update-product-action";
 import { ProductSchema } from "@/src/schema";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import { useParams } from "next/navigation";
 
 export default function EditProductForm({
   children,
@@ -12,6 +13,10 @@ export default function EditProductForm({
 }) {
   const router = useRouter();
 
+  // Extrae el id de los parametros de la URL
+  const params = useParams();
+  const id = +params.id!;
+
   const handleSubmit = async (formData: FormData) => {
     const data = {
       name: formData.get("name"),
@@ -19,6 +24,9 @@ export default function EditProductForm({
       categoryId: formData.get("categoryId"),
       image: formData.get("image"),
     };
+
+    // Verifica si imprime los datos en la consola, la imagen es un widget de cloudinary
+    // console.log(data)
 
     const result = ProductSchema.safeParse(data);
     if (!result.success) {
@@ -29,7 +37,7 @@ export default function EditProductForm({
       return;
     }
 
-    const response = await createProduct(result.data);
+    const response = await updateProduct(result.data, id);
 
     if (response?.errors) {
       response.errors.forEach((issue) => {
@@ -39,7 +47,7 @@ export default function EditProductForm({
       return;
     }
 
-    toast.success("Producto Creado Correctamente");
+    toast.success("Producto Actualizado Correctamente");
     router.push("/admin/products");
   };
 

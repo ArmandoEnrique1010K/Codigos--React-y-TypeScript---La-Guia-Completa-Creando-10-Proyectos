@@ -50,6 +50,8 @@ export default async function EditProductsPage({
       {/* EL boton de ir hacia sirve para mantener la paginación, ejemplo: estas en la pagina 5, haces clic en el boton de editar y cuando pulsas el boton, te vas hacia atras, no redirige hacia otra pagina */}
       <GoBackButton />
 
+      {/* Un ejemplo de SOLID, principio de Open Clousure es el del formulario de crear/editar */}
+
       {/* Renderiza el formulario de editar, pasale la prop product */}
       <EditProductForm>
         <ProductForm product={product} />
