@@ -1,6 +1,7 @@
 import { prisma } from "@/src/lib/prisma";
 import React from "react";
 import ImageUpload from "./ImageUpload";
+import { Product } from "@prisma/client";
 
 // Obtiene todas las categorias
 // async y await solamente estan soportados en los componentes de servidor
@@ -13,8 +14,13 @@ async function getCategories() {
   return await prisma.category.findMany();
 }
 
+// Pasale el type de Product de prisma (propiedad opcional)
+type ProductFormProps = {
+  product?: Product;
+};
+
 // Formulario para crear o editar un producto
-export default async function ProductForm() {
+export default async function ProductForm({ product }: ProductFormProps) {
   // Imprime las categorias en la terminal del servidor
   const categories = await getCategories();
   // console.log(categories)
@@ -31,6 +37,8 @@ export default async function ProductForm() {
           name="name"
           className="block w-full p-3 bg-slate-100"
           placeholder="Nombre Producto"
+          // Valor por defecto
+          defaultValue={product?.name}
         />
       </div>
 
@@ -43,6 +51,7 @@ export default async function ProductForm() {
           name="price"
           className="block w-full p-3 bg-slate-100"
           placeholder="Precio Producto"
+          defaultValue={product?.price}
         />
       </div>
 
@@ -54,6 +63,8 @@ export default async function ProductForm() {
           className="block w-full p-3 bg-slate-100"
           id="categoryId"
           name="categoryId"
+          // Selecciona la categoria del producto a editar
+          defaultValue={product?.categoryId}
         >
           <option value="">-- Seleccione --</option>
           {/* Itera con las categorias encontradas, en el value se coloca el valor que se enviara a la base de datos */}
