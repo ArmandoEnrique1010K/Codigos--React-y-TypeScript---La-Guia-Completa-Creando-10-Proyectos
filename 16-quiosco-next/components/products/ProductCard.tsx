@@ -1,5 +1,5 @@
 import { Product } from "@prisma/client";
-import { formatCurrency } from "@/src/utils/index";
+import { formatCurrency, getImagePath } from "@/src/utils/index";
 import Image from "next/image";
 import AddProductButton from "./AddProductButton";
 
@@ -9,13 +9,16 @@ type ProductCardProps = {
 };
 
 export default function ProductCard({ product }: ProductCardProps) {
+  const imagePath = getImagePath(product.image);
+
   return (
     <div className="border-none bg-white ">
       {/* El componente Image sirve para mostrar una imagen */}
       <Image
         width={400}
         height={500}
-        src={`/products/${product.image}.jpg`}
+        // Aqui se llama a la función para verificar la URL
+        src={imagePath}
         alt={`Imagen plantilla ${product.name}`}
         // La prop quality establece la calidad (100 muestra imagenes pesadas, 1 muestra imagenes pixeleadas), valor recomendado: 75
         // quality={75}
